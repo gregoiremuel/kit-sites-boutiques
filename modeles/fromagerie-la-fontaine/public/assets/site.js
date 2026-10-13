@@ -49,6 +49,31 @@
     el.classList.add('today');
   });
 
+  /* Mouvement discret : le texte de l'accueil arrive, les parties apparaissent doucement au défilement.
+     Rien si le visiteur demande moins d'animations, ni dans l'aperçu de l'espace boutique (classe « calme »). */
+  (function () {
+    var calme = document.body.classList.contains('calme') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (calme) return;
+    document.documentElement.classList.add('anime');
+    var els = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.sec > .wrap > *, .sec > .wrap > .grid > *'), function (el) {
+      if (el.classList.contains('grid')) return;
+      var i = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.classList.add('rev');
+      el.style.transitionDelay = (Math.min(i, 2) * 110) + 'ms';
+      els.push(el);
+    });
+    var montrer = function (el) { el.classList.add('vu'); };
+    if (!('IntersectionObserver' in window)) { els.forEach(montrer); return; }
+    var io = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (en) { if (en.isIntersecting) { montrer(en.target); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+    els.forEach(function (el) { io.observe(el); });
+    /* Filet de sécurité : rien ne reste caché (liens vers #demande, #horaires…) */
+    var filet = function () { els.forEach(function (el) { if (!el.classList.contains('vu') && el.getBoundingClientRect().top < innerHeight) montrer(el); }); };
+    setTimeout(filet, 2500); window.addEventListener('hashchange', function () { setTimeout(filet, 400); });
+  })();
+
   var btn = document.getElementById('menu-btn'), sheet = document.getElementById('menu');
   if (btn && sheet) {
     var regler = function (ouvrir) {

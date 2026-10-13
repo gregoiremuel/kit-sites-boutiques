@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 5, 13 octobre 2026. Grégoire Muel.
+Version 6, 13 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -94,6 +94,8 @@ Cloudflare « Import a repository » sur le dépôt privé du client (nom du pro
 
 ### 2.9 Typographie et mouvement (niveau « pro »)
 Titres de page autour de 56 px au plus sur ordinateur, titres de section 36 à 40 px, texte 16 à 17 px, petites lignes de rubrique à 13 px. Mouvements : apparitions douces au défilement (0,9 s, décalées de 70 ms), chiffres qui montent, en-tête qui s'affine au défilement, soulignés qui se dessinent au survol. Jamais dans l'aperçu de l'espace de modification, jamais pour les visiteurs qui demandent moins d'animations, et rien ne reste caché si le script ne tourne pas.
+
+Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joaillerie) et la vitrine (commerce de quartier) n'en gardent que l'essentiel, pour ne pas paraître chargés : texte de l'accueil qui arrive, apparitions plus courtes (16 px, 1 s, trois décalages au plus), ombre légère sous l'en-tête au défilement (catalogue), menu du téléphone en fondu. Pas de chiffres animés, pas de zoom sur les photos, pas d'en-tête qui change de taille (sur un en-tête collant, le contenu sauterait). Titres : accueil autour de 52 à 58 px sur ordinateur, sections 32 à 34 px, texte 16 à 17 px ; titres de la vitrine en graisse 500 plutôt que 600. Le même interrupteur partout : option `calme` dans l'aperçu de l'espace de modification (classe `calme` sur body), et rien pour les visiteurs qui demandent moins d'animations.
 
 ## 3. Règles d'or
 

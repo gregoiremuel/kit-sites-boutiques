@@ -121,7 +121,7 @@ export function cssTheme(C, url) {
 export const favicon = (C) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="5" fill="${couleur((C.theme || {}).couleur, '#46667f')}"/><text x="16" y="23" font-family="Georgia,serif" font-weight="700" font-size="20" fill="#ffffff" text-anchor="middle">${esc(cap(((C.boutique || {}).nom || 'B').replace(/^(la |le |les |l')/i, '')).charAt(0))}</text></svg>`);
 
 /*
-  o = { maquette, urlPolice: (fichier) => url, css | cssHref, js | jsHref, lienMentions, lienAdmin, apiCommande }
+  o = { maquette, urlPolice: (fichier) => url, css | cssHref, js | jsHref, lienMentions, lienAdmin, apiCommande, calme (aperçu de l'espace boutique : sans animations) }
 */
 function tete(C, o, titre, description) {
   const theme = cssTheme(C, o.urlPolice || ((f) => '/fonts/' + f));
@@ -418,7 +418,7 @@ export function rendreSite(C, o = {}) {
   JOURS.forEach((j, d) => H[d].forEach((s) => jsonld.openingHoursSpecification.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: EN[d], opens: hhmm(s[0]), closes: hhmm(s[1]) })));
 
   return `${tete(C, o, `${nom}, ${V.titrePage}`, T.description_google || '')}
-<body class="accueil-${ST.accueil} titres-${ST.titres} angles-${ST.angles}">
+<body class="accueil-${ST.accueil} titres-${ST.titres} angles-${ST.angles}${o.calme ? ' calme' : ''}">
 <a class="skip" href="#contenu">Aller au contenu</a>
 ${bandeauMaquette}
 ${annonce}

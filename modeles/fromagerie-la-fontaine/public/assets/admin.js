@@ -515,8 +515,8 @@ let siteMontre = false;
 let cadres = [];
 function rendreApercu() {
   const o = DEMO
-    ? { maquette: true, urlPolice: (f) => DEMO.polices[f] || '', css: DEMO.css, js: DEMO.js, lienMentions: '#', apiCommande: '' }
-    : { maquette: E.maquette, cssHref: '/assets/site.css', jsHref: '/assets/site.js', lienMentions: '#', apiCommande: '' };
+    ? { maquette: true, urlPolice: (f) => DEMO.polices[f] || '', css: DEMO.css, js: DEMO.js, lienMentions: '#', apiCommande: '', calme: true }
+    : { maquette: E.maquette, cssHref: '/assets/site.css', jsHref: '/assets/site.js', lienMentions: '#', apiCommande: '', calme: true };
   const page = rendreSite(E.C, o);
   cadres.forEach((f) => {
     let y = 0; try { y = f.contentWindow.scrollY; } catch (e) { /* rien */ }
