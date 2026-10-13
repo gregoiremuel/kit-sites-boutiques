@@ -5,11 +5,11 @@ description: Méthode de Greg pour les sites de commerces (moteur + espace bouti
 
 # Sites boutiques : la méthode de Greg
 
-Greg (Grégoire Muel, joaillier à Paris 16e) crée des sites pour les commerces de son quartier, et le site de la Maison Tcheskiss (joaillerie de son employeur). Chaque site est livré avec un **espace boutique** : une page privée où le commerçant modifie tout et reçoit les demandes de ses clients. Tout est déjà construit et testé : **on ne refait jamais le moteur, on remplit un contenu.**
+Greg (Grégoire Muel, joaillier à Paris 16e) crée des sites pour les commerces de son quartier, pour des entreprises (Opéria, maître d'œuvre à Vertou) et le site de la Maison Tcheskiss (joaillerie de son employeur). Chaque site est livré avec un **espace boutique** : une page privée où le commerçant modifie tout et reçoit les demandes de ses clients. Tout est déjà construit et testé : **on ne refait jamais le moteur, on remplit un contenu.**
 
 ## 1. Trouver le kit avant toute chose
 
-Le kit `kit-sites-boutiques` contient la méthode complète (`METHODE.md`), les prompts, les pitchs et les deux moteurs. Dans l'ordre :
+Le kit `kit-sites-boutiques` contient la méthode complète (`METHODE.md`), les prompts, les pitchs et les trois moteurs. Dans l'ordre :
 1. Un fichier `kit-sites-boutiques.zip` joint à la conversation : le décompresser dans le dossier de travail.
 2. Sinon, le dépôt GitHub privé `gregoiremuel/kit-sites-boutiques` s'il existe : l'ajouter à la session et le cloner.
 3. Sinon, demander à Greg de joindre le zip (une phrase), et en attendant, n'avancer que sur ce qui ne demande pas le moteur (notes, liste « à valider », pitch).
@@ -19,6 +19,7 @@ Lire `METHODE.md` en entier avant de commencer. Ce skill en est le résumé ; en
 ## 2. Choisir le moteur
 
 - **Vitrine** (`modeles/fromagerie-la-fontaine`) : commerce de quartier, une page (horaires, produits, offres, demande en ligne, presse, accès). Contenu fait par le prompt `prompts/1-site-et-espace-boutique.md` (Claude ou GLM), puis `npm run nouvelle-boutique -- ../contenu.json`.
+- **Agence** (`modeles/agence-operia`) : entreprise de services ou du bâtiment, haut de gamme, plusieurs pages (expertises, méthode, réalisations avec page et galerie, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts). Copier le dossier et réécrire `contenu-initial.json` ; les photos d'essai des réalisations portent d'office « Photo d'illustration ».
 - **Catalogue** (`modeles/maison-tcheskiss`) : maison qui vend des pièces (collections, catalogue filtré, page par pièce, panier qui envoie une **demande de commande**, sans paiement en ligne). Copier le dossier et réécrire `contenu-initial.json` en gardant exactement la même forme.
 
 ## 3. Le déroulé d'une maquette
@@ -28,6 +29,10 @@ Lire `METHODE.md` en entier avant de commencer. Ce skill en est le résumé ; en
 3. Construire dans le dossier de la boutique : `npm install`, `npm run verifier` (aucune erreur), `npm test` (tout « ok »), `npm run apercu`.
 4. Vérifier en vrai : ouvrir la démo dans un navigateur sans cadre et dans un cadre « allow-scripts » (comme l'aperçu de l'app Claude), à 390 px et 1280 px : navigation, panier ou demande, connexion à l'espace boutique (n'importe quel mot de passe), changer un prix, enregistrer, revoir le site. Aucune erreur JavaScript, aucun débordement horizontal.
 5. Livrer avec SendUserFile : `demonstration.html` (à afficher) et le zip du projet (sans `node_modules`, `.wrangler`, `.dev.vars`, `demonstration.html`, `demo-en-ligne/`).
+
+## 3 bis. Vidéo de fond (les trois moteurs)
+
+Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et case « Vidéo en fond (sinon la photo) » dans l'accueil de l'espace de modification. La photo reste l'image d'attente, bouton pause intégré. Une vidéo d'iPhone (.mov) se convertit avec ffmpeg (commande dans `METHODE.md`, partie 2.7). Sans vidéo du client, un lent mouvement sur une de ses photos (ffmpeg zoompan) fait une bonne démonstration.
 
 ## 4. Règles d'or
 
@@ -42,12 +47,15 @@ Lire `METHODE.md` en entier avant de commencer. Ce skill en est le résumé ; en
 ## 5. Pièges connus (et la parade, déjà dans les moteurs)
 
 - Aperçu de l'app Claude : formulaires et mémoire du navigateur bloqués. Boutons « type=button » avec un clic, mémoire de secours, jamais de `<form>` envoyé.
+- Démos ouvertes depuis l'ordinateur : elles partagent la même mémoire du navigateur. Chaque démo range ses essais sous une clé propre au site et à sa version, avec un bouton « Remettre la démonstration à zéro » ; ne jamais revenir à une clé commune.
 - Démo : la mémoire du navigateur fait ~5 Mo. Les images déjà dans le fichier ne doivent pas y être recopiées ; si elle est pleine, le dire au lieu de « Enregistré ».
 - **iPhone : un fichier HTML ne s'ouvre pas.** Il faut un lien : `demo-en-ligne/` (fabriqué par `npm run apercu`) à déposer sur Cloudflare Pages, uniquement pour une boutique fictive ou signée.
 - Photo verticale : hauteur plafonnée sur ordinateur (`max-height`) pour les bandes photo et texte.
 - Réunion des scripts pour la démo : deux noms identiques au premier niveau la cassent (`apercu` le signale).
 - Dans l'espace cloud de Claude : Unsplash et Cloudflare sont bloqués. Utiliser des photos de remplacement pour les captures, et faire la mise en ligne depuis l'ordinateur de Greg avec Claude Code (texte prêt dans le `LISEZMOI.md` du projet).
 - Captures « page entière » : images blanches possibles. Capturer en faisant défiler l'écran.
+- Le Chromium des tests ne lit pas le H.264 : tester la lecture vidéo avec un WebM.
+- Site d'un client à refaire : l'espace cloud ne télécharge pas ses photos ni son logo ; WebFetch lit les textes, Greg joint le logo (détourage en PNG transparent avec sharp).
 
 ## 6. Mise en ligne (sur l'ordinateur de Greg, Claude Code)
 
