@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 1, 13 octobre 2026. Grégoire Muel.
+Version 2, 13 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -9,8 +9,9 @@ Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir le
 ## 0. En une minute
 
 - **L'offre** : un site rapide, à leur nom, avec un **espace boutique**, une page privée où le commerçant change lui-même ses horaires, prix, photos et textes, affiche ou masque chaque partie, et reçoit les demandes de ses clients. Maquette gratuite en 48 h, puis 590 € photos comprises et 29 € par mois (hébergement et mises à jour). Ces prix sont des recommandations de départ, pas des tarifs du marché.
-- **Deux moteurs, déjà testés**, dans `modeles/` :
+- **Trois moteurs, déjà testés**, dans `modeles/` :
   - **Vitrine** (`modeles/fromagerie-la-fontaine`) : une page pour un commerce de quartier (accueil, la boutique, produits, offres, demande en ligne, presse et note Google, questions, horaires, accès). Des variantes combinables (accueil sur grande photo, partagé ou sobre ; titres ; angles ; offres ; ordre des parties) et trois jeux de polices, pour que deux boutiques voisines ne se ressemblent pas.
+  - **Agence** (`modeles/agence-operia`) : un site de plusieurs pages, haut de gamme, pour une entreprise de services ou du bâtiment (expertises, méthode, réalisations avec une page et une galerie par projet, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts : Nouvelle, Rappelé, Devis envoyé, Signée, Classée).
   - **Catalogue** (`modeles/maison-tcheskiss`) : un site de plusieurs pages pour une maison qui vend des pièces (accueil, collections, catalogue avec filtres, une page par pièce, panier, pages d'information, mentions légales). Le panier envoie une **demande de commande**, sans paiement en ligne : la maison rappelle, encaisse et expédie. Stripe pourra s'ajouter plus tard.
 - **L'IA n'écrit jamais de code** pour un nouveau site. Elle remplit un seul fichier de contenu (`contenu.json`) à partir d'un squelette fixe. Le moteur, l'espace boutique et le serveur restent les mêmes partout.
 - **Hébergement** : Cloudflare Workers, offre gratuite (le site, l'espace boutique et le stockage). Seul le nom de domaine se paie, au nom du client.
@@ -61,6 +62,12 @@ Il n'a pas encore de prompt pour GLM : le contenu se prépare avec Claude.
 > Pars de `modeles/maison-tcheskiss`. Copie-le dans un nouveau dossier au nom de la boutique, puis réécris `contenu-initial.json` pour [boutique] avec mes notes et mes photos jointes, en gardant exactement la même forme. Mets mes photos dans `public/assets/photos/` (1200 px de large au plus, sans données GPS). Lance `npm run verifier`, `npm test` et `npm run apercu`, puis donne-moi la démonstration.
 
 Ce qui se règle dans ce contenu : nom, logo (SVG ou PNG transparent), couleurs du thème (fond, encre, gris, trait), collections avec leur couleur, types de pièces, pièces (photos, photo portée, prix ou « prix sur demande », tailles, gravure, vendue, masquée, exemple), pages (atelier, la maison, entretien, guide des tailles, commande et livraison, conditions de vente), réglages des demandes, mentions légales.
+
+### 2.4 bis Le moteur agence (entreprise de services, bâtiment, cabinet)
+Comme le catalogue : le contenu se prépare avec Claude, à partir du site actuel du client (refonte : ses propres faits et textes, réécrits) ou de tes notes.
+> Pars de `modeles/agence-operia`. Copie-le dans un nouveau dossier au nom du client, puis réécris `contenu-initial.json` pour [client] avec ces éléments, en gardant exactement la même forme. Mets le logo (fond transparent) dans `public/assets/`. Lance `npm run verifier`, `npm test` et `npm run apercu`, puis donne-moi la démonstration.
+
+Les photos d'essai des réalisations portent automatiquement la mention « Photo d'illustration » : on ne fait jamais passer une photo de banque d'images pour un chantier du client.
 
 ### 2.5 La démonstration
 - `npm run apercu` fabrique `demonstration.html` : **un seul fichier**, sans serveur, qui s'ouvre sur le site puis « Essayer l'espace boutique » (n'importe quel mot de passe). On y modifie tout et le site de la démo change. Rien n'est publié.
@@ -115,6 +122,9 @@ Compte gratuit sur https://dash.cloudflare.com, puis dans le dossier de la bouti
 | Le vérificateur cachait des erreurs | Il s'arrêtait trop tôt | Il ne s'arrête que si la forme est cassée ; sinon il liste tout |
 | Captures « page entière » avec des images blanches | Chromium ne peint pas les images décodées en asynchrone hors écran | Capturer en faisant défiler l'écran |
 | Mise en ligne impossible depuis l'espace cloud de Claude | Cloudflare n'est pas joignable de là | Mise en ligne depuis l'ordinateur, avec Claude Code |
+| Le site du client ne se télécharge pas depuis l'espace cloud de Claude (photos, logo) | Seuls les registres de paquets et GitHub sont joignables | Greg joint le logo et les photos ; WebFetch lit les textes ; Unsplash : WebFetch d'une page de recherche donne les adresses des photos |
+| Logo reçu en JPEG sur fond blanc | Pas de fichier vectoriel | Détourage automatique (sharp) en PNG transparent + version blanche pour les fonds foncés ; demander un SVG pour la version finale |
+| Grille « à la une » avec une case vide | Nombre de projets qui ne remplit pas la grille | Le moteur agence prend 6 projets (un grand et cinq) ou 3 |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
 
 ---
