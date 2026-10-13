@@ -41,6 +41,17 @@ Ouvre-le avec internet si le contenu utilise des photos en ligne. `apercu-site.h
 
 **Sur iPhone, un fichier HTML ne s'ouvre pas** (ni Safari ni Chrome) : il faut un lien. `npm run apercu` prépare aussi le dossier `demo-en-ligne/` : zippe-le et dépose-le sur https://dash.cloudflare.com, « Workers & Pages », « Create application », « Pages », « Drag and drop your files » (gratuit, faisable depuis un iPhone). Le lien `nom-du-projet.pages.dev` marche partout ; « Create a new deployment » pour le mettre à jour. Ce lien est public pour qui l'a : jamais au nom d'un commerce qui n'a pas signé (utilise une boutique fictive pour ta démo de prospection). Sur ordinateur et Android, le fichier s'ouvre directement.
 
+## Vidéo de fond (accueil)
+
+Dans l'espace boutique, rubrique « Photos et textes », groupe « Accueil » : « Vidéo de fond », puis la case « Vidéo en fond (sinon la photo) ». Case décochée, le site garde la photo, comme avant ; la vidéo reste enregistrée pour plus tard. La photo sert aussi d'image d'attente pendant le chargement, et un petit bouton pause s'affiche en bas à droite (obligatoire pour l'accessibilité). Les visiteurs qui ont demandé moins d'animations voient la vidéo à l'arrêt.
+
+Une bonne vidéo de fond :
+- **MP4**, 10 à 20 secondes, **sans son** (elle est toujours muette), **à l'horizontale** ;
+- un mouvement lent et régulier (atelier, gestes, matière, lieu), sans texte incrusté, qui boucle bien ;
+- **20 Mo au plus** (8 Mo dans la démonstration). Sur Android, la caméra enregistre déjà en MP4 : coupez la vidéo à 15 secondes dans la galerie, en 1080p ou 720p ;
+- **iPhone** : la caméra enregistre en .mov, que tous les navigateurs ne lisent pas. Envoyez la vidéo à Grégoire (ou à Claude) : elle sera convertie en MP4 léger, ou utilisez une application de conversion.
+- On peut aussi coller un lien https vers un fichier .mp4 déjà en ligne.
+
 ## Mettre en ligne (avec Claude Code)
 
 Il faut un compte gratuit sur https://dash.cloudflare.com. Ensuite, dans Claude Code ouvert dans le dossier de la boutique :

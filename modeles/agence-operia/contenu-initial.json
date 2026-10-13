@@ -31,6 +31,7 @@
   "accueil": {
     "photo": "https://images.unsplash.com/photo-1497366216548-37526070297c",
     "video": "",
+    "fond_video": false,
     "sur_titre": "Maître d'œuvre et contractant général",
     "titre": "Rénover et aménager vos locaux, clé en main.",
     "texte": "Bureaux, commerces, locaux d'activité : Opéria conçoit, coordonne et livre vos travaux à Nantes et dans le Grand Ouest, avec un seul interlocuteur et un prix global.",

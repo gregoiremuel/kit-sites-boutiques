@@ -98,6 +98,15 @@ function src(p, largeur) {
   if (/^(https:\/\/|data:image\/|\/photos\/)/i.test(p)) return p;
   return '';
 }
+/* Vidéo de fond (accueil) : fichier envoyé depuis l'espace de modification, lien https .mp4/.webm, ou fichier du site */
+export const videoSrc = (v) => { v = String(v || '').trim(); return /^(https:\/\/\S+\.(mp4|webm)(\?\S*)?|\/videos\/[a-z0-9-]+|\/assets\/\S+\.(mp4|webm)|data:video\/(mp4|webm);base64,\S+)$/i.test(v) ? v : ''; };
+const ICO_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';
+function videoFond(v, poster, cls) {
+  const s = videoSrc(v);
+  if (!s) return '';
+  const type = /^data:video\/webm|\.webm(\?|$)/i.test(s) ? 'video/webm' : 'video/mp4';
+  return `<video class="${cls}" autoplay muted loop playsinline preload="auto"${poster ? ` poster="${esc(poster)}"` : ''} aria-hidden="true" data-video-fond><source src="${esc(s)}" type="${type}"></video><button class="video-pause" type="button" data-video-pause aria-label="Mettre la vidéo en pause" aria-pressed="false">${ICO_PAUSE}</button>`;
+}
 function img(p, largeur, cls, prio) {
   const s = src(p, largeur);
   if (!s) return '';
@@ -315,7 +324,8 @@ export function rendreSite(C, o = {}) {
     </div>
   </div>`;
     if (ST.accueil === 'partage') {
-      const photo = src(T.photo_accueil, 10) ? `<div class="hero-photo">${img(T.photo_accueil, 1400, 'ph-accueil', true)}</div>` : '';
+      const vid = T.fond_video !== false ? videoSrc(T.video_accueil) : '';
+      const photo = vid ? `<div class="hero-photo">${videoFond(vid, src(T.photo_accueil, 1400), 'ph-accueil')}</div>` : (src(T.photo_accueil, 10) ? `<div class="hero-photo">${img(T.photo_accueil, 1400, 'ph-accueil', true)}</div>` : '');
       return `<header class="hero hero-partage">
   ${haut}
   <div class="wrap hero-grille${photo ? '' : ' sans-photo'}">
@@ -328,8 +338,9 @@ export function rendreSite(C, o = {}) {
   ${haut}
   ${texte('wrap hero-body')}
 </header>`;
+    const vidFond = T.fond_video !== false ? videoSrc(T.video_accueil) : '';
     return `<header class="hero">
-  ${img(T.photo_accueil, 2200, 'fond', true)}
+  ${vidFond ? videoFond(vidFond, src(T.photo_accueil, 2200), 'fond') : img(T.photo_accueil, 2200, 'fond', true)}
   ${haut}
   ${texte('wrap hero-body')}
 </header>`;

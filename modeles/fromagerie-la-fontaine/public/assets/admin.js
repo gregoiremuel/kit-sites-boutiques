@@ -45,6 +45,12 @@ const vraiApi = {
     if (!j.ok) throw new Error(j.erreur || 'Impossible de revenir en arrière.');
     return j.contenu;
   },
+  async video(fichier) {
+    const r = await fetch('/api/video', { method: 'POST', headers: { 'Content-Type': fichier.type }, body: fichier });
+    const j = await r.json().catch(() => ({}));
+    if (!j.ok) throw new Error(j.erreur || 'Envoi de la vidéo impossible.');
+    return j.url;
+  },
   async photo(blob) {
     const r = await fetch('/api/photo', { method: 'POST', headers: { 'Content-Type': blob.type }, body: blob });
     const j = await r.json().catch(() => ({}));
@@ -112,6 +118,7 @@ const demoApi = {
   },
   async annuler() { const p = memo.lire('precedent', null); if (!p) throw new Error('Aucune version précédente.'); memo.ecrire('contenu', p); return p; },
   async photo(blob) { return await new Promise((ok) => { const f = new FileReader(); f.onload = () => ok(f.result); f.readAsDataURL(blob); }); },
+  async video(fichier) { return await new Promise((ok) => { const f = new FileReader(); f.onload = () => ok(f.result); f.readAsDataURL(fichier); }); },
   async commandes() {
     const V = voc(E.C || DEMO.contenu), o = (E.C || DEMO.contenu).offres || [], D = V.demande;
     const ex = (id, h, statut, nom, n, quand, txt) => {
@@ -193,6 +200,7 @@ function champ(obj, def, apres) {
   }
   if (def.t === 'nombre') return el('div', { class: 'champ' }, lab, el('input', { id, class: 'saisie', type: 'number', inputmode: 'numeric', min: def.min, max: def.max, value: val == null ? '' : val, oninput: (e) => maj(e.target.value === '' ? '' : +e.target.value) }));
   if (def.t === 'photo') return champPhoto(id, def, val, maj);
+  if (def.t === 'video') return champVideo(id, def, val, maj);
   return el('div', { class: 'champ' }, lab, el('input', { id, class: 'saisie', type: def.type || 'text', inputmode: def.mode, placeholder: def.ph || '', value: val || '', oninput: (e) => maj(e.target.value) }));
 }
 
@@ -206,6 +214,35 @@ async function reduire(fichier, maxCote, qualite) {
     cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
     return await new Promise((ok) => cv.toBlob(ok, 'image/jpeg', qualite));
   } finally { URL.revokeObjectURL(url); }
+}
+
+/* Vidéo de fond : fichier MP4 ou WebM (20 Mo au plus), ou lien */
+const VIDEO_OK = /^(https:\/\/\S+\.(mp4|webm)(\?\S*)?|\/videos\/[a-z0-9-]+|\/assets\/\S+\.(mp4|webm)|data:video\/(mp4|webm);base64,\S+)$/i;
+function champVideo(id, def, val, maj) {
+  const etat = el('span', { class: 'ex', 'aria-live': 'polite' });
+  const apercu = el('div', { class: 'video-apercu' });
+  const montrer = (v) => {
+    apercu.replaceChildren();
+    if (v && VIDEO_OK.test(v)) apercu.append(el('video', { src: v, muted: true, loop: true, playsinline: true, autoplay: true, preload: 'metadata', 'aria-hidden': 'true' }));
+    retirer.hidden = !v; lien.value = v && !/^data:/.test(v) ? v : '';
+  };
+  const max = DEMO ? 8 : 20;
+  const fichier = el('input', {
+    id, type: 'file', accept: 'video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov',
+    onchange: async (e) => {
+      const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+      if (!/^video\/(mp4|webm)$/.test(f.type)) { etat.textContent = 'Ce format (souvent .mov sur iPhone) ne se lit pas partout : il faut un fichier MP4. Voir « Vidéo de fond » dans le guide, ou envoyez la vidéo à Grégoire.'; return; }
+      if (f.size > max * 1024 * 1024) { etat.textContent = `Vidéo trop lourde (${Math.round(f.size / 1048576)} Mo) : ${max} Mo au plus${DEMO ? ' dans la démonstration' : ''}. Raccourcissez-la (10 à 20 secondes suffisent) ou réduisez sa qualité.`; return; }
+      etat.textContent = 'Envoi de la vidéo…';
+      try { const u = await api.video(f); maj(u); montrer(u); etat.textContent = 'Vidéo prête : cochez « Vidéo en fond » si besoin, puis enregistrez.'; } catch (x) { etat.textContent = x.message; }
+    },
+  });
+  const choisir = el('label', { class: 'btn sec petit', for: id, text: val ? 'Changer la vidéo' : 'Choisir une vidéo' });
+  const retirer = el('button', { type: 'button', class: 'btn discret petit', text: 'Retirer', onclick: () => { maj(''); montrer(''); etat.textContent = 'Vidéo retirée : la photo reprend sa place.'; } });
+  const lien = el('input', { class: 'saisie', type: 'url', placeholder: 'ou collez un lien https://….mp4', 'aria-label': 'Lien de la vidéo', onchange: (e) => { const v = e.target.value.trim(); if (!v) return; if (!VIDEO_OK.test(v)) { etat.textContent = 'Lien non valable : il doit commencer par https:// et finir par .mp4 ou .webm.'; return; } maj(v); montrer(v); etat.textContent = 'Lien enregistré : pensez à enregistrer.'; } });
+  montrer(val);
+  return el('div', { class: 'champ' }, el('span', { class: 'lab', text: def.l }), def.ex ? el('span', { class: 'ex', text: def.ex }) : null,
+    el('div', { class: 'video-champ' }, apercu, el('div', {}, el('div', { class: 'actions' }, choisir, retirer, fichier), lien, etat)));
 }
 
 function champPhoto(id, def, val, maj) {
@@ -415,7 +452,7 @@ function panneaux() {
       corps: () => {
         const g = (titre, champs, avant) => el('details', { class: 'item' }, el('summary', {}, el('span', { class: 'txt' }, el('b', { text: titre }))), el('div', { class: 'item-corps' }, avant || null, champs.map((d) => champ(E.C, d))));
         return [
-          g('Accueil', [{ k: 'textes.photo_accueil', l: 'Grande photo', t: 'photo' }, { k: 'textes.titre', l: 'Grand titre' }, { k: 'textes.intro', l: 'Phrase sous le titre', t: 'zone' }]),
+          g('Accueil', [{ k: 'textes.photo_accueil', l: 'Grande photo', t: 'photo' }, { k: 'textes.video_accueil', l: 'Vidéo de fond', ex: 'MP4 sans son, 10 à 20 secondes, 20 Mo au plus. La photo reste l’image d’attente.', t: 'video' }, { k: 'textes.fond_video', l: 'Vidéo en fond (sinon la photo)', t: 'case' }, { k: 'textes.titre', l: 'Grand titre' }, { k: 'textes.intro', l: 'Phrase sous le titre', t: 'zone' }]),
           g(V.navBoutique, [{ k: 'textes.boutique_titre', l: 'Titre' }, { k: 'textes.boutique_texte', l: 'Texte', ex: 'une ligne vide entre deux paragraphes', t: 'zone', lignes: 6 }, { k: 'textes.boutique_photo_1', l: 'Grande photo', t: 'photo' }, { k: 'textes.boutique_photo_2', l: 'Petite photo', t: 'photo' }], interrupteurPartie('boutique')),
           g(cap(P.pluriel), [{ k: 'textes.produits_titre', l: 'Titre' }, { k: 'textes.produits_intro', l: 'Texte', t: 'zone' }, { k: 'textes.produits_photo', l: 'Photo à côté de la liste', t: 'photo' }]),
           g(cap(O.pluriel), [{ k: 'textes.offres_titre', l: 'Titre' }, { k: 'textes.offres_texte', l: 'Texte', t: 'zone' }, { k: 'textes.offres_photo', l: 'Photo de fond', t: 'photo' }]),

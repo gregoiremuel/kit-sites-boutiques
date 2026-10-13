@@ -35,6 +35,15 @@ function src(p, largeur) {
   return '';
 }
 const essai = (p) => /^https:\/\/images\.unsplash\.com\//.test(String(p || ''));
+/* Vidéo de fond (accueil) : fichier envoyé depuis l'espace de modification, lien https .mp4/.webm, ou fichier du site */
+export const videoSrc = (v) => { v = String(v || '').trim(); return /^(https:\/\/\S+\.(mp4|webm)(\?\S*)?|\/videos\/[a-z0-9-]+|\/assets\/\S+\.(mp4|webm)|data:video\/(mp4|webm);base64,\S+)$/i.test(v) ? v : ''; };
+const ICO_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';
+function videoFond(v, poster, cls) {
+  const s = videoSrc(v);
+  if (!s) return '';
+  const type = /^data:video\/webm|\.webm(\?|$)/i.test(s) ? 'video/webm' : 'video/mp4';
+  return `<video class="${cls}" autoplay muted loop playsinline preload="auto"${poster ? ` poster="${esc(poster)}"` : ''} aria-hidden="true" data-video-fond><source src="${esc(s)}" type="${type}"></video><button class="video-pause" type="button" data-video-pause aria-label="Mettre la vidéo en pause" aria-pressed="false">${ICO_PAUSE}</button>`;
+}
 function img(p, largeur, cls, prio, alt) {
   const s = src(p, largeur);
   return s ? `<img class="${cls}" src="${esc(s)}" alt="${esc(alt || '')}" ${prio ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : '';
@@ -193,7 +202,7 @@ const garHero = (C) => (Array.isArray((C.accueil || {}).reperes) ? C.accueil.rep
 /* ---------- Pages ---------- */
 function accueil(C, D) {
   const A = C.accueil || {}, G = C.agence || {};
-  const video = /^https:\/\/\S+\.(mp4|webm)(\?\S*)?$/i.test(A.video || '') ? A.video : '';
+  const video = A.fond_video !== false ? videoSrc(A.video) : '';
   /* Grille de l'accueil : 6 projets (un grand et cinq) ou 3, pour qu'aucune case ne reste vide */
   const une = D.realisations.filter((x) => x.a_la_une), base = une.length >= 3 ? une : D.realisations;
   const choix = base.slice(0, base.length >= 6 ? 6 : Math.min(3, base.length));
@@ -204,7 +213,7 @@ function accueil(C, D) {
       areaServed: G.zone || undefined, ...((C.reglages || {}).url ? { url: C.reglages.url } : {}), sameAs: ['linkedin', 'instagram'].map((k) => G[k]).filter((u) => /^https:\/\//.test(u || '')) },
     corps: `
   <section class="hero">
-    ${video ? `<video class="hero-media" autoplay muted loop playsinline${src(A.photo, 2200) ? ` poster="${esc(src(A.photo, 2200))}"` : ''}><source src="${esc(video)}"></video>` : img(A.photo, 2400, 'hero-media', true, '')}
+    ${video ? videoFond(video, src(A.photo, 2200), 'hero-media') : img(A.photo, 2400, 'hero-media', true, '')}
     <div class="hero-txt wrap">
       ${A.sur_titre ? `<p class="sur sur-clair">${esc(A.sur_titre)}</p>` : ''}
       <h1>${esc(A.titre || G.nom)}</h1>

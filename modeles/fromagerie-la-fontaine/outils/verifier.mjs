@@ -41,6 +41,8 @@ const ELEMENTS = {
 };
 
 /* Mots et tics qui font « site IA » (voir le prompt) */
+/* Clés acceptées sans être obligatoires (ajoutées après le prompt) */
+const FACULTATIVES = { textes: ['video_accueil', 'fond_video'] };
 const INTERDITS = [
   [/\bbienvenue\b/i, 'Bienvenue'], [/\bdécouvr(ez|ir)\b/i, 'Découvrez'], [/n['’]hésitez pas/i, 'N’hésitez pas'], [/au c(œ|oe)ur d/i, 'au cœur de'],
   [/\bvéritable/i, 'véritable'], [/\bincontournable/i, 'incontournable'], [/\bpassion/i, 'passion'], [/savoir-faire unique/i, 'savoir-faire unique'],
@@ -89,7 +91,7 @@ export function verifier(C) {
     const nom = chemin || 'racine';
     if (!o || typeof o !== 'object' || Array.isArray(o)) { E(`« ${nom} » doit être un objet { … }.`); casse = true; continue; }
     cles.filter((k) => !(k in o)).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
-    Object.keys(o).filter((k) => !cles.includes(k)).forEach((k) => E(`Clé inconnue (faute de frappe ?) : ${chemin ? chemin + '.' : ''}${k}`));
+    Object.keys(o).filter((k) => !cles.includes(k) && !(FACULTATIVES[chemin] || []).includes(k)).forEach((k) => E(`Clé inconnue (faute de frappe ?) : ${chemin ? chemin + '.' : ''}${k}`));
   }
   for (const [liste, cles] of Object.entries(ELEMENTS)) {
     if (!Array.isArray(C[liste])) { E(`« ${liste} » doit être une liste [ … ].`); casse = true; continue; }
@@ -164,6 +166,9 @@ export function verifier(C) {
   Object.entries(STYLES).forEach(([k, valeurs]) => { if (!valeurs.includes(T[k])) E(`theme.${k} doit valoir ${valeurs.map((x) => '"' + x + '"').join(' ou ')}.`); });
   if (!Array.isArray(T.ordre) || T.ordre.length !== ORDRE_PARTIES.length || !ORDRE_PARTIES.every((k) => T.ordre.includes(k))) E(`theme.ordre doit contenir une fois chacune de ces parties, dans l'ordre voulu : ${ORDRE_PARTIES.map((x) => '"' + x + '"').join(', ')}.`);
   const sansPhoto = (v) => !String(v || '').trim();
+  const TX = C.textes || {};
+  if (TX.video_accueil && !/^(https:\/\/\S+\.(mp4|webm)(\?\S*)?|\/videos\/[a-z0-9-]+|\/assets\/\S+\.(mp4|webm)|data:video\/(mp4|webm);base64,\S+)$/i.test(TX.video_accueil)) E('textes.video_accueil : un fichier envoyé, ou un lien https se terminant par .mp4 ou .webm.');
+  if ('fond_video' in TX && typeof TX.fond_video !== 'boolean') E('textes.fond_video doit valoir true ou false.');
   if (['photo', 'partage'].includes(T.accueil) && sansPhoto((C.textes || {}).photo_accueil)) A(`theme.accueil vaut "${T.accueil}" mais textes.photo_accueil est vide : prenez "sobre" tant qu'il n'y a pas de photo.`);
   if (T.offres_fond === 'photo' && sansPhoto((C.textes || {}).offres_photo) && (C.offres || []).length) A('theme.offres_fond vaut "photo" mais textes.offres_photo est vide : prenez "clair".');
   if (['couleur', 'couleur_foncee', 'couleur_pale', 'accent'].every((k) => HEX.test(T[k] || ''))) {
