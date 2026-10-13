@@ -1,0 +1,19 @@
+{
+  "name": "fromagerie-la-fontaine",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Site et espace boutique de la Fromagerie La Fontaine (Cloudflare Workers)",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "node outils/verifier.mjs && wrangler deploy",
+    "verifier": "node outils/verifier.mjs",
+    "test": "node outils/tester.mjs",
+    "apercu": "node outils/apercu.mjs",
+    "mot-de-passe": "node outils/mot-de-passe.mjs",
+    "nouvelle-boutique": "node outils/nouvelle-boutique.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.20.0"
+  }
+}

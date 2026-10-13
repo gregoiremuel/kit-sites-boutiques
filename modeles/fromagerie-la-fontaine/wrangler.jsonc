@@ -1,0 +1,13 @@
+{
+  // Site de la Fromagerie La Fontaine : Cloudflare Worker + stockage KV.
+  "name": "fromagerie-la-fontaine",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  // Remplacer l'id par celui donné par : npx wrangler kv namespace create CONTENU
+  "kv_namespaces": [{ "binding": "CONTENU", "id": "A_REMPLACER" }],
+  // "oui" tant que la boutique n'a pas validé : bandeau de proposition, demandes en démonstration.
+  "vars": { "MAQUETTE": "oui" }
+  // Après l'achat du domaine (zone ajoutée sur Cloudflare) :
+  // "routes": [{ "pattern": "fromagerielafontaine.fr", "custom_domain": true }]
+}
