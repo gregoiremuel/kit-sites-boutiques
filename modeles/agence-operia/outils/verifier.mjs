@@ -12,7 +12,7 @@ const FORME = {
   agence: ['nom', 'logo', 'nom_image', 'nom_image_blanc', 'activite', 'zone', 'adresse', 'code_postal', 'ville', 'telephone', 'email', 'linkedin', 'instagram', 'description_google'],
   theme: ['fond', 'encre', 'gris', 'trait', 'marine', 'or'],
   annonce: ['afficher', 'texte'],
-  accueil: ['photo', 'video', 'sur_titre', 'titre', 'texte', 'intro_titre', 'intro_texte', 'photo_intro', 'appel_titre', 'appel_texte', 'photo_appel'],
+  accueil: ['photo', 'video', 'sur_titre', 'titre', 'texte', 'reperes', 'intro_titre', 'intro_texte', 'photo_intro', 'appel_titre', 'appel_texte', 'photo_appel'],
   presentation: ['titre', 'texte', 'photo'],
   garanties: ['titre', 'texte', 'points'],
   affichage: ['chiffres', 'equipe', 'references'],
@@ -101,6 +101,8 @@ export function verifier(C) {
   C.metiers.forEach((m, i) => { listeTextes(m.points, `metiers[${i}].points`); if (photoOk(`metiers[${i}].photo`, m.photo) === 'essai') essaisAutres++; });
   C.etapes.forEach((e, i) => { if (vide(e.titre)) E(`etapes[${i}].titre est vide.`); listeTextes(e.points, `etapes[${i}].points`); });
   listeTextes(C.lots, 'lots');
+  listeTextes(C.accueil.reperes, 'accueil.reperes');
+  (C.accueil.reperes || []).forEach((v, i) => { if (estTexte(v) && v.length > 40) A(`accueil.reperes[${i}] : plus de 40 signes, trop long sous la grande photo.`); });
   C.chiffres.forEach((c, i) => { if (vide(c.valeur) || vide(c.libelle)) E(`chiffres[${i}] : chiffre ou texte vide.`); });
   if (C.chiffres.length > 4) A('Plus de 4 chiffres : la ligne sera chargée.');
   C.realisations.forEach((x, i) => {
@@ -140,7 +142,7 @@ export function verifier(C) {
   if (manque.length) afaire.push('Mentions légales à compléter : ' + manque.join(', ') + '.');
 
   /* Style des textes */
-  const textes = [['accueil.sur_titre', C.accueil.sur_titre], ['accueil.titre', C.accueil.titre], ['accueil.texte', C.accueil.texte], ['accueil.intro_titre', C.accueil.intro_titre], ['accueil.intro_texte', C.accueil.intro_texte],
+  const textes = [['accueil.sur_titre', C.accueil.sur_titre], ['accueil.titre', C.accueil.titre], ['accueil.texte', C.accueil.texte], ...(C.accueil.reperes || []).map((v, i) => [`accueil.reperes[${i}]`, v]), ['accueil.intro_titre', C.accueil.intro_titre], ['accueil.intro_texte', C.accueil.intro_texte],
     ['accueil.appel_titre', C.accueil.appel_titre], ['accueil.appel_texte', C.accueil.appel_texte], ['annonce.texte', C.annonce.texte], ['contact.confirmation', K.confirmation],
     ['presentation.texte', C.presentation.texte], ['garanties.texte', C.garanties.texte], ...C.garanties.points.map((v, i) => [`garanties.points[${i}]`, v]),
     ...C.metiers.flatMap((m, i) => [[`metiers[${i}].accroche`, m.accroche], [`metiers[${i}].texte`, m.texte], ...m.points.map((v, j) => [`metiers[${i}].points[${j}]`, v])]),

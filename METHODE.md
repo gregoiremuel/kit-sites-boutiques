@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 2, 13 octobre 2026. Grégoire Muel.
+Version 3, 13 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -113,6 +113,7 @@ Compte gratuit sur https://dash.cloudflare.com, puis dans le dossier de la bouti
 |---|---|---|
 | Dans l'app Claude, un bouton ou la connexion de la démo ne fait rien | L'aperçu de l'app bloque les formulaires et la mémoire du navigateur | Boutons « type=button » avec un clic, mémoire de secours ; aucun `<form>` envoyé |
 | Une démo garde 2 ou 3 photos puis « oublie » après rechargement, tout en disant « Enregistré » | La mémoire du navigateur est limitée à ~5 Mo et les photos de base y étaient recopiées | Les photos déjà dans le fichier ne sont plus recopiées ; message clair si la mémoire est pleine, ou bloquée (aperçu de l'app Claude : rien n'est gardé après fermeture) |
+| Une démo affiche le contenu ou les photos d'une autre démo | Tous les fichiers ouverts depuis l'ordinateur partagent la même mémoire du navigateur, et effacer les données de navigation ne la vide pas toujours | Chaque démo range ses essais sous une clé propre au site et à sa version ; bouton « Remettre la démonstration à zéro » sur l'écran de connexion de la démo |
 | Le fichier HTML ne s'ouvre pas sur iPhone | iOS n'ouvre pas les fichiers HTML locaux dans un navigateur | Un lien : `demo-en-ligne/` sur Cloudflare Pages (ou Tiiny Host : en gratuit, 7 jours et 3 Mo selon un comparatif de 2026) |
 | Sur ordinateur, une photo verticale rend un bloc deux fois trop haut | L'image impose sa hauteur | Hauteur plafonnée (`max-height: min(85vh, 760px)`) |
 | Le titre de l'accueil passe sur le sujet de la photo | La photo est centrée, le titre est en bas à gauche | Recadrer la photo pour mettre le sujet dans le tiers haut |

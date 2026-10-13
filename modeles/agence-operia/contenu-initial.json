@@ -34,6 +34,11 @@
     "sur_titre": "Maître d'œuvre et contractant général",
     "titre": "Rénover et aménager vos locaux, clé en main.",
     "texte": "Bureaux, commerces, locaux d'activité : Opéria conçoit, coordonne et livre vos travaux à Nantes et dans le Grand Ouest, avec un seul interlocuteur et un prix global.",
+    "reperes": [
+      "Garantie décennale SMA BTP",
+      "Un contrat, un prix global",
+      "Nantes et le Grand Ouest"
+    ],
     "intro_titre": "Un chef d'orchestre pour vos travaux",
     "intro_texte": "Depuis une quinzaine d'années, Opéria réalise les petits et gros travaux de rénovation et d'aménagement de locaux professionnels.\n\nNous étudions votre besoin, concevons le projet, sélectionnons des entreprises qualifiées de tous corps d'état et suivons le chantier jusqu'à la réception. Vous gardez un seul interlocuteur, un contrat, une facture et un planning.",
     "photo_intro": "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
@@ -42,9 +47,18 @@
     "photo_appel": "https://images.unsplash.com/photo-1603901622056-0a5bee231395"
   },
   "chiffres": [
-    { "valeur": "1", "libelle": "interlocuteur, un contrat et un prix global" },
-    { "valeur": "6 200 m²", "libelle": "rénovés au Parc du Perray, à Nantes" },
-    { "valeur": "10 ans", "libelle": "de garantie décennale (SMA BTP)" }
+    {
+      "valeur": "1",
+      "libelle": "interlocuteur, un contrat et un prix global"
+    },
+    {
+      "valeur": "6 200 m²",
+      "libelle": "rénovés au Parc du Perray, à Nantes"
+    },
+    {
+      "valeur": "10 ans",
+      "libelle": "de garantie décennale (SMA BTP)"
+    }
   ],
   "metiers": [
     {
@@ -52,7 +66,14 @@
       "nom": "Space planning",
       "accroche": "Organiser vos surfaces et vos volumes autour de votre façon de travailler.",
       "texte": "Le space planning part de vos besoins, de vos attentes et des contraintes du lieu pour optimiser les surfaces et les volumes de vos locaux.",
-      "points": ["Refléter la culture et les valeurs de l'entreprise", "Analyser les circulations des personnes et des matériels", "Prévoir des espaces de détente et de bien-être", "Organiser les liens entre les services", "Respecter les normes d'aménagement", "Réduire l'impact environnemental et les dépenses d'énergie"],
+      "points": [
+        "Refléter la culture et les valeurs de l'entreprise",
+        "Analyser les circulations des personnes et des matériels",
+        "Prévoir des espaces de détente et de bien-être",
+        "Organiser les liens entre les services",
+        "Respecter les normes d'aménagement",
+        "Réduire l'impact environnemental et les dépenses d'énergie"
+      ],
       "photo": "https://images.unsplash.com/photo-1503387762-592deb58ef4e"
     },
     {
@@ -60,7 +81,12 @@
       "nom": "Maître d'œuvre",
       "accroche": "Un expert technique de tous les corps d'état, qui défend vos intérêts.",
       "texte": "Le maître d'œuvre vous accompagne dans l'étude, la conception et la réalisation de votre projet. Il joue le rôle de chef d'orchestre : il vous conseille, compare les solutions, dirige les travaux et défend vos intérêts face aux entreprises.",
-      "points": ["Conseil et choix des solutions", "Vérification des qualifications, des assurances et des devis des entreprises", "Contrôle des délais", "Direction et suivi du chantier"],
+      "points": [
+        "Conseil et choix des solutions",
+        "Vérification des qualifications, des assurances et des devis des entreprises",
+        "Contrôle des délais",
+        "Direction et suivi du chantier"
+      ],
       "photo": "https://images.unsplash.com/photo-1768321903661-87da7d2962b0"
     },
     {
@@ -68,21 +94,75 @@
       "nom": "Contractant général",
       "accroche": "Un contrat unique, un prix global, un seul responsable.",
       "texte": "Le contractant général prend en charge la totalité de votre projet de rénovation ou d'aménagement et sélectionne les entreprises qui interviennent. Vous avez un seul interlocuteur et une seule facture, avec des engagements sur le coût, les délais et la qualité.",
-      "points": ["Étude du projet, sur votre cahier des charges ou avec des variantes", "Sélection des partenaires spécialisés", "Coût des travaux", "Assurances : responsabilité civile professionnelle et décennale", "Suivi du planning et de la qualité", "Réception des travaux"],
+      "points": [
+        "Étude du projet, sur votre cahier des charges ou avec des variantes",
+        "Sélection des partenaires spécialisés",
+        "Coût des travaux",
+        "Assurances : responsabilité civile professionnelle et décennale",
+        "Suivi du planning et de la qualité",
+        "Réception des travaux"
+      ],
       "photo": "https://images.unsplash.com/photo-1706074740295-d7a79c079562"
     }
   ],
   "etapes": [
-    { "titre": "Étude et conception", "points": ["Audit de votre besoin et du site", "Rédaction du cahier des charges", "Démarches administratives : demandes de permis, déclarations de travaux"] },
-    { "titre": "Réalisation et suivi", "points": ["Planning d'exécution défini et tenu", "Contrôle de la qualité et des délais, validation de chaque étape", "Suivi financier du chantier"] },
-    { "titre": "Réception", "points": ["Contrôle de l'achèvement des travaux et de leur conformité au contrat", "Garantie décennale et responsabilité civile professionnelle (SMA BTP)"] }
+    {
+      "titre": "Étude et conception",
+      "points": [
+        "Audit de votre besoin et du site",
+        "Rédaction du cahier des charges",
+        "Démarches administratives : demandes de permis, déclarations de travaux"
+      ]
+    },
+    {
+      "titre": "Réalisation et suivi",
+      "points": [
+        "Planning d'exécution défini et tenu",
+        "Contrôle de la qualité et des délais, validation de chaque étape",
+        "Suivi financier du chantier"
+      ]
+    },
+    {
+      "titre": "Réception",
+      "points": [
+        "Contrôle de l'achèvement des travaux et de leur conformité au contrat",
+        "Garantie décennale et responsabilité civile professionnelle (SMA BTP)"
+      ]
+    }
   ],
-  "lots": ["Démolition", "Ravalement", "Chape", "Isolation thermique par l'extérieur", "Isolation", "Plomberie", "Climatisation", "Électricité et éclairage", "Maçonnerie", "Sols", "Faux plafonds", "Cloisons : plaques de plâtre, coupe-feu, modulaires", "Peinture", "Stores"],
+  "lots": [
+    "Démolition",
+    "Ravalement",
+    "Chape",
+    "Isolation thermique par l'extérieur",
+    "Isolation",
+    "Plomberie",
+    "Climatisation",
+    "Électricité et éclairage",
+    "Maçonnerie",
+    "Sols",
+    "Faux plafonds",
+    "Cloisons : plaques de plâtre, coupe-feu, modulaires",
+    "Peinture",
+    "Stores"
+  ],
   "secteurs": [
-    { "id": "tertiaire", "nom": "Bureaux et locaux d'activité" },
-    { "id": "commerce", "nom": "Commerces et restauration" },
-    { "id": "liberal", "nom": "Professions libérales" },
-    { "id": "logement", "nom": "Logements" }
+    {
+      "id": "tertiaire",
+      "nom": "Bureaux et locaux d'activité"
+    },
+    {
+      "id": "commerce",
+      "nom": "Commerces et restauration"
+    },
+    {
+      "id": "liberal",
+      "nom": "Professions libérales"
+    },
+    {
+      "id": "logement",
+      "nom": "Logements"
+    }
   ],
   "realisations": [
     {
@@ -96,8 +176,13 @@
       "mission": "Travaux d'aménagement des nouveaux bureaux",
       "accroche": "De nouveaux bureaux pensés pour la collaboration.",
       "texte": "En 2024, pour accompagner sa croissance, Klee Group s'est installé dans 1 500 m² de nouveaux locaux du quartier de la gare, à EuroNantes. Opéria a réalisé les travaux d'aménagement de ces bureaux, conçus pour favoriser la collaboration, l'accessibilité, la flexibilité et le bien-être des équipes.",
-      "interventions": ["Aménagement de 1 500 m² de bureaux"],
-      "photos": ["https://images.unsplash.com/photo-1631193816258-28b44b21e78b", "https://images.unsplash.com/photo-1706074793638-da28b90ea8ae"],
+      "interventions": [
+        "Aménagement de 1 500 m² de bureaux"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1631193816258-28b44b21e78b",
+        "https://images.unsplash.com/photo-1706074793638-da28b90ea8ae"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -112,8 +197,16 @@
       "mission": "Curage et rénovation d'un parc tertiaire, aménagements pour ses occupants",
       "accroche": "La réhabilitation d'un parc tertiaire de 6 200 m².",
       "texte": "Dans le cadre de la réhabilitation et de la rénovation énergétique de son parc tertiaire du Perray, à Nantes Est, le groupe Pierreval a confié à Opéria l'ensemble des travaux de curage et de rénovation des bâtiments. Opéria a aussi réalisé les aménagements de plusieurs occupants du parc.",
-      "interventions": ["Curage des bâtiments", "Rénovation énergétique et esthétique", "Aménagements pour Suez Eaux", "Aménagements pour les écoles ESDM, CNPC et Isteli Aftral", "Aménagements pour Tessi, Cogep et Tri'N'Collect"],
-      "photos": ["https://images.unsplash.com/photo-1497366754035-f200968a6e72"],
+      "interventions": [
+        "Curage des bâtiments",
+        "Rénovation énergétique et esthétique",
+        "Aménagements pour Suez Eaux",
+        "Aménagements pour les écoles ESDM, CNPC et Isteli Aftral",
+        "Aménagements pour Tessi, Cogep et Tri'N'Collect"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1497366754035-f200968a6e72"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -128,8 +221,14 @@
       "mission": "Travaux d'aménagement du showroom",
       "accroche": "Le showroom d'une nouvelle concession.",
       "texte": "Opéria a réalisé l'ensemble des travaux d'aménagement du showroom de la nouvelle concession Cupra du groupe Jean Rouyer Automobile, à Saint-Nazaire. Le cahier des charges prévoyait un espace d'exposition de 260 m² pour six véhicules et quatre espaces dédiés à l'accompagnement commercial. Le groupe avait déjà confié à Opéria son showroom Alpine de Nantes en 2022.",
-      "interventions": ["Espace d'exposition de 260 m² pour six véhicules", "Quatre espaces d'accompagnement commercial", "Aménagement complet du showroom"],
-      "photos": ["https://images.unsplash.com/photo-1551649081-39f820bb2d3e"],
+      "interventions": [
+        "Espace d'exposition de 260 m² pour six véhicules",
+        "Quatre espaces d'accompagnement commercial",
+        "Aménagement complet du showroom"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1551649081-39f820bb2d3e"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -144,8 +243,16 @@
       "mission": "Offre clé en main, du cahier des charges aux travaux",
       "accroche": "Bureaux, salles de cours et ateliers pour une école en croissance.",
       "texte": "Opéria a accompagné CNPC Sport, groupement d'écoles de commerce dédiées au sport, dans sa croissance à Nantes : plus de 1 000 m² de bureaux, de salles de cours et d'ateliers ouverts, de la définition du cahier des charges à la réalisation des travaux de rénovation et d'aménagement.",
-      "interventions": ["Définition du cahier des charges", "Conception de l'aménagement", "Mise aux normes ERP du bâtiment", "Transformation d'un espace tertiaire en atelier", "Réalisation de l'ensemble des travaux"],
-      "photos": ["https://images.unsplash.com/photo-1656646424763-145e4956a416"],
+      "interventions": [
+        "Définition du cahier des charges",
+        "Conception de l'aménagement",
+        "Mise aux normes ERP du bâtiment",
+        "Transformation d'un espace tertiaire en atelier",
+        "Réalisation de l'ensemble des travaux"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1656646424763-145e4956a416"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -160,8 +267,15 @@
       "mission": "Cahier des charges, space planning et travaux d'agencement",
       "accroche": "Un restaurant où l'esthétique sert le service.",
       "texte": "Le restaurant Yummy sert des spécialités thaïlandaises et vietnamiennes dans le centre commercial Pôle Sud. Sur un peu plus de 100 m², Opéria a défini le cahier des charges, conçu l'aménagement avec plans et perspectives 3D, puis réalisé l'ensemble des travaux d'aménagement et d'agencement sur mesure, pour allier esthétique et fonctionnalité.",
-      "interventions": ["Définition du cahier des charges", "Space planning, plans et perspectives 3D", "Aménagement et agencement sur mesure"],
-      "photos": ["https://images.unsplash.com/photo-1636405189493-181ecf851006", "https://images.unsplash.com/photo-1682778418768-16081e4470a1"],
+      "interventions": [
+        "Définition du cahier des charges",
+        "Space planning, plans et perspectives 3D",
+        "Aménagement et agencement sur mesure"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1636405189493-181ecf851006",
+        "https://images.unsplash.com/photo-1682778418768-16081e4470a1"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -176,8 +290,12 @@
       "mission": "Offre clé en main, travaux d'aménagement",
       "accroche": "Des bureaux ouverts, collaboratifs et colorés.",
       "texte": "Pour accompagner sa croissance, Avoloi a confié à Opéria l'ensemble des travaux d'aménagement de ses bureaux nantais. L'entreprise voulait une offre clé en main et des espaces ouverts, collaboratifs et colorés pour ses équipes, sur plus de 450 m².",
-      "interventions": ["Aménagement de plus de 450 m² de bureaux"],
-      "photos": ["https://images.unsplash.com/photo-1700809888987-cf2b29ecbd2c"],
+      "interventions": [
+        "Aménagement de plus de 450 m² de bureaux"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1700809888987-cf2b29ecbd2c"
+      ],
       "a_la_une": true,
       "visible": true
     },
@@ -192,8 +310,13 @@
       "mission": "Rénovation et aménagement des locaux",
       "accroche": "600 m² livrés dans un calendrier très serré.",
       "texte": "Euridis Business School, du groupe Eureka Education, a confié à Opéria la rénovation et l'aménagement de 600 m² de ses locaux nantais, dans l'immeuble Manny, sur l'île de Nantes. Le principal enjeu était un calendrier très serré : il a été tenu.",
-      "interventions": ["Rénovation", "Aménagement de 600 m²"],
-      "photos": ["https://images.unsplash.com/photo-1579487785973-74d2ca7abdd5"],
+      "interventions": [
+        "Rénovation",
+        "Aménagement de 600 m²"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1579487785973-74d2ca7abdd5"
+      ],
       "a_la_une": false,
       "visible": true
     },
@@ -208,8 +331,12 @@
       "mission": "Ensemble des travaux d'aménagement",
       "accroche": "Trois mois pour repenser 320 m² de bureaux.",
       "texte": "Tikeasy, filiale du groupe La Poste, a confié à Opéria l'ensemble des travaux d'aménagement de ses nouveaux bureaux nantais de 320 m². Après trois mois de chantier, les équipes ont pris possession d'un espace de travail repensé.",
-      "interventions": ["Aménagement de 320 m² de bureaux"],
-      "photos": ["https://images.unsplash.com/photo-1497366412874-3415097a27e7"],
+      "interventions": [
+        "Aménagement de 320 m² de bureaux"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1497366412874-3415097a27e7"
+      ],
       "a_la_une": false,
       "visible": true
     },
@@ -224,8 +351,13 @@
       "mission": "Du cahier des charges à la livraison des travaux",
       "accroche": "Une agence en centre-ville, face à la cathédrale.",
       "texte": "Cocoonr, spécialiste de la location meublée de courte durée, a confié à Opéria la rénovation et l'aménagement de son nouveau local nantais, en centre-ville, face à la cathédrale. La mission a couvert tout le projet, de la rédaction du cahier des charges à la livraison des travaux.",
-      "interventions": ["Rédaction du cahier des charges", "Rénovation et aménagement de l'agence"],
-      "photos": ["https://images.unsplash.com/photo-1706074797611-a02f9ed06439"],
+      "interventions": [
+        "Rédaction du cahier des charges",
+        "Rénovation et aménagement de l'agence"
+      ],
+      "photos": [
+        "https://images.unsplash.com/photo-1706074797611-a02f9ed06439"
+      ],
       "a_la_une": false,
       "visible": true
     }
@@ -238,21 +370,131 @@
   "garanties": {
     "titre": "Nos engagements",
     "texte": "Nous maîtrisons les risques, avec des engagements sur la qualité, le coût et les délais.",
-    "points": ["Garantie décennale et responsabilité civile professionnelle (SMA BTP)", "Qualifications, assurances et délais de chaque entreprise vérifiés", "Un contrat unique et un prix global"]
+    "points": [
+      "Garantie décennale et responsabilité civile professionnelle (SMA BTP)",
+      "Qualifications, assurances et délais de chaque entreprise vérifiés",
+      "Un contrat unique et un prix global"
+    ]
   },
   "equipe": [
-    { "nom": "Benoît Muel", "role": "Président, responsable projets", "photo": "" },
-    { "nom": "Matthieu Muel", "role": "Chargé de projets", "photo": "" },
-    { "nom": "Véronique Legrier", "role": "Chargée de projets", "photo": "" },
-    { "nom": "Anne-Claire Meugniot", "role": "Office manager", "photo": "" }
+    {
+      "nom": "Benoît Muel",
+      "role": "Président, responsable projets",
+      "photo": ""
+    },
+    {
+      "nom": "Matthieu Muel",
+      "role": "Chargé de projets",
+      "photo": ""
+    },
+    {
+      "nom": "Véronique Legrier",
+      "role": "Chargée de projets",
+      "photo": ""
+    },
+    {
+      "nom": "Anne-Claire Meugniot",
+      "role": "Office manager",
+      "photo": ""
+    }
   ],
   "references": [
-    { "nom": "Air Liquide", "logo": "" }, { "nom": "Airbus", "logo": "" }, { "nom": "Allianz", "logo": "" }, { "nom": "Ares", "logo": "" },
-    { "nom": "Arthur Loyd", "logo": "" }, { "nom": "Banque Populaire", "logo": "" }, { "nom": "BNP Paribas", "logo": "" }, { "nom": "CBRE", "logo": "" },
-    { "nom": "Crédit Agricole", "logo": "" }, { "nom": "DB Schenker", "logo": "" }, { "nom": "E.Leclerc", "logo": "" }, { "nom": "Gras Savoye", "logo": "" },
-    { "nom": "Groupe Pierreval", "logo": "" }, { "nom": "Harmonie Mutuelle", "logo": "" }, { "nom": "Kone", "logo": "" }, { "nom": "MAIF", "logo": "" },
-    { "nom": "MMA", "logo": "" }, { "nom": "Nantes Métropole", "logo": "" }, { "nom": "Nexity", "logo": "" }, { "nom": "Perial", "logo": "" },
-    { "nom": "Savills", "logo": "" }, { "nom": "SII", "logo": "" }, { "nom": "Spirit", "logo": "" }, { "nom": "SQLI", "logo": "" }
+    {
+      "nom": "Air Liquide",
+      "logo": ""
+    },
+    {
+      "nom": "Airbus",
+      "logo": ""
+    },
+    {
+      "nom": "Allianz",
+      "logo": ""
+    },
+    {
+      "nom": "Ares",
+      "logo": ""
+    },
+    {
+      "nom": "Arthur Loyd",
+      "logo": ""
+    },
+    {
+      "nom": "Banque Populaire",
+      "logo": ""
+    },
+    {
+      "nom": "BNP Paribas",
+      "logo": ""
+    },
+    {
+      "nom": "CBRE",
+      "logo": ""
+    },
+    {
+      "nom": "Crédit Agricole",
+      "logo": ""
+    },
+    {
+      "nom": "DB Schenker",
+      "logo": ""
+    },
+    {
+      "nom": "E.Leclerc",
+      "logo": ""
+    },
+    {
+      "nom": "Gras Savoye",
+      "logo": ""
+    },
+    {
+      "nom": "Groupe Pierreval",
+      "logo": ""
+    },
+    {
+      "nom": "Harmonie Mutuelle",
+      "logo": ""
+    },
+    {
+      "nom": "Kone",
+      "logo": ""
+    },
+    {
+      "nom": "MAIF",
+      "logo": ""
+    },
+    {
+      "nom": "MMA",
+      "logo": ""
+    },
+    {
+      "nom": "Nantes Métropole",
+      "logo": ""
+    },
+    {
+      "nom": "Nexity",
+      "logo": ""
+    },
+    {
+      "nom": "Perial",
+      "logo": ""
+    },
+    {
+      "nom": "Savills",
+      "logo": ""
+    },
+    {
+      "nom": "SII",
+      "logo": ""
+    },
+    {
+      "nom": "Spirit",
+      "logo": ""
+    },
+    {
+      "nom": "SQLI",
+      "logo": ""
+    }
   ],
   "affichage": {
     "chiffres": true,
@@ -262,7 +504,14 @@
   "contact": {
     "actif": true,
     "delai_reponse": "",
-    "types": ["Bureaux", "Commerce ou restaurant", "Local d'activité", "Cabinet de profession libérale", "Logement", "Autre"],
+    "types": [
+      "Bureaux",
+      "Commerce ou restaurant",
+      "Local d'activité",
+      "Cabinet de profession libérale",
+      "Logement",
+      "Autre"
+    ],
     "cle_web3forms": "",
     "email": "",
     "confirmation": "Merci, votre demande est bien partie. Nous revenons vers vous pour en parler."

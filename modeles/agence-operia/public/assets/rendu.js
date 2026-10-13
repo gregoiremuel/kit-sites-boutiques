@@ -187,6 +187,9 @@ const etapesHtml = (D) => (D.etapes.length ? `<ol class="etapes">${D.etapes.map(
 const referencesHtml = (D) => `<ul class="refs">${D.references.map((r) => `<li>${src(r.logo, 400) ? `<img src="${esc(src(r.logo, 400))}" alt="${esc(r.nom)}" loading="lazy">` : `<span>${esc(r.nom)}</span>`}</li>`).join('')}</ul>`;
 const initiales = (n) => String(n || '').split(/[\s-]+/).filter(Boolean).map((m) => m[0]).slice(0, 2).join('').toUpperCase();
 
+/* Repères de confiance sous la grande photo (courts : trois ou quatre) */
+const garHero = (C) => (Array.isArray((C.accueil || {}).reperes) ? C.accueil.reperes : []).filter((x) => typeof x === 'string' && x.trim()).slice(0, 4);
+
 /* ---------- Pages ---------- */
 function accueil(C, D) {
   const A = C.accueil || {}, G = C.agence || {};
@@ -210,6 +213,7 @@ function accueil(C, D) {
         <a class="btn btn-or" href="/contact">Parler de votre projet</a>
         ${D.realisations.length ? '<a class="btn btn-ligne-clair" href="/realisations">Voir les réalisations</a>' : ''}
       </div>
+      ${garHero(C).length ? `<ul class="hero-gar">${garHero(C).map((g) => `<li>${esc(g)}</li>`).join('')}</ul>` : ''}
     </div>
   </section>
   ${A.intro_titre || A.intro_texte ? `

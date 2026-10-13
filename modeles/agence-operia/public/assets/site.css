@@ -46,7 +46,8 @@ svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke
 .btn:hover{background:var(--encre);border-color:var(--encre)}
 .btn:disabled{opacity:.55;cursor:default}
 .btn-petit{min-height:42px;padding:0 20px;font-size:.875rem}
-.nav .btn{color:#fff}
+.nav .btn{color:#fff;padding:0 22px}
+.nav .btn::after{display:none}
 .btn-or{background:var(--or);border-color:var(--or);color:var(--encre)}
 .btn-or:hover{background:#fff;border-color:#fff;color:var(--encre)}
 .btn-ligne{background:transparent;color:var(--marine)}
@@ -88,6 +89,9 @@ svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(13,15,36,.82) 0%,rgba(13,15,36,.55) 48%,rgba(13,15,36,.2) 100%),linear-gradient(0deg,rgba(13,15,36,.55) 0%,rgba(13,15,36,0) 45%)}
 .hero-txt{padding-top:120px;padding-bottom:clamp(48px,8vw,104px)}
 .hero h1{font-size:clamp(2.6rem,6vw,5rem);max-width:15ch;color:#fff}
+.hero-gar{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:40px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.875rem;color:rgba(255,255,255,.78);max-width:760px}
+.hero-gar li{display:flex;align-items:center;gap:10px}
+.hero-gar li::before{content:"";width:6px;height:6px;background:var(--or);transform:rotate(45deg);flex:none}
 .hero-chapo{margin-top:24px;max-width:52ch;font-size:clamp(1.0625rem,1.6vw,1.25rem);line-height:1.6;color:rgba(255,255,255,.88)}
 
 /* Accueil : présentation et chiffres */
