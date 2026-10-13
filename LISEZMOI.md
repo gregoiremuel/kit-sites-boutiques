@@ -1,6 +1,6 @@
 # Kit sites boutiques
 
-Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans repartir de zéro : la méthode, les prompts, les pitchs et les deux moteurs déjà testés. Il marche avec Claude, Claude Code, GLM, ou une autre personne.
+Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans repartir de zéro : la méthode, les prompts, les pitchs et les trois moteurs déjà testés. Il marche avec Claude, Claude Code, GLM, ou une autre personne.
 
 ## Ce qu'il y a dedans
 
