@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 6, 13 octobre 2026. Grégoire Muel.
+Version 7, 13 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -138,6 +138,7 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 | Le site du client ne se télécharge pas depuis l'espace cloud de Claude (photos, logo) | Seuls les registres de paquets et GitHub sont joignables | Greg joint le logo et les photos ; WebFetch lit les textes ; Unsplash : WebFetch d'une page de recherche donne les adresses des photos |
 | Logo reçu en JPEG sur fond blanc | Pas de fichier vectoriel | Détourage automatique (sharp) en PNG transparent + version blanche pour les fonds foncés ; demander un SVG pour la version finale |
 | Grille « à la une » avec une case vide | Nombre de projets qui ne remplit pas la grille | Le moteur agence prend 6 projets (un grand et cinq) ou 3 |
+| Dans la démo ou l'aperçu, un clic sur le menu (#produits, #horaires…) n'affiche pas la rubrique, le cadre recharge toute la démo | La page est affichée dans un cadre « srcdoc » : le navigateur comprend « #produits » comme une adresse de la page de démo | Les trois moteurs font défiler eux-mêmes jusqu'à la rubrique quand la page est dans un aperçu (`location.protocol === 'about:'`). Tester chaque lien du menu dans la démo, sur téléphone et ordinateur |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
 
 ---
