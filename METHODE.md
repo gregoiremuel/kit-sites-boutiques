@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 4, 13 octobre 2026. Grégoire Muel.
+Version 5, 13 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -88,6 +88,12 @@ Compte gratuit sur https://dash.cloudflare.com, puis dans le dossier de la bouti
 
 ### 2.7 Vidéo de fond sur l'accueil (les trois moteurs)
 Dans l'espace de modification : « Vidéo de fond » (fichier MP4 ou WebM de 20 Mo au plus, ou lien https .mp4) et la case « Vidéo en fond (sinon la photo) ». La photo reste l'image d'attente ; bouton pause intégré ; vidéo à l'arrêt pour les visiteurs qui demandent moins d'animations. Le serveur sert les vidéos par morceaux (indispensable pour Safari). Une vidéo d'iPhone (.mov) se convertit avant : `ffmpeg -i entree.mov -t 15 -vf "scale=-2:1080" -c:v libx264 -crf 26 -preset slow -an -movflags +faststart sortie.mp4`. Sans vidéo du client, un lent mouvement sur une de ses photos fait illusion (exemple : `modeles/maison-tcheskiss/public/assets/videos/`).
+
+### 2.8 Mise en ligne depuis GitHub, sans ordinateur (moteur agence)
+Cloudflare « Import a repository » sur le dépôt privé du client (nom du projet = `name` de `wrangler.jsonc`), le stockage KV se crée tout seul (binding sans id). Puis deux **Secrets** (pas « Variable ») : `ADMIN_HASH` et `SESSION_SECRET`, donnés par `npm run mot-de-passe`. Jamais d'identifiant écrit dans le dépôt. Chaque envoi sur GitHub remet le site en ligne.
+
+### 2.9 Typographie et mouvement (niveau « pro »)
+Titres de page autour de 56 px au plus sur ordinateur, titres de section 36 à 40 px, texte 16 à 17 px, petites lignes de rubrique à 13 px. Mouvements : apparitions douces au défilement (0,9 s, décalées de 70 ms), chiffres qui montent, en-tête qui s'affine au défilement, soulignés qui se dessinent au survol. Jamais dans l'aperçu de l'espace de modification, jamais pour les visiteurs qui demandent moins d'animations, et rien ne reste caché si le script ne tourne pas.
 
 ## 3. Règles d'or
 

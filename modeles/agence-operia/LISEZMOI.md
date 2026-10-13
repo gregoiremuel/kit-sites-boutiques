@@ -31,11 +31,23 @@ Une bonne vidéo de fond :
 - **iPhone** : la caméra enregistre en .mov, que tous les navigateurs ne lisent pas. Envoyez la vidéo à Grégoire (ou à Claude) : elle sera convertie en MP4 léger, ou utilisez une application de conversion.
 - On peut aussi coller un lien https vers un fichier .mp4 déjà en ligne.
 
+## Mettre en ligne depuis un téléphone (GitHub + Cloudflare)
+
+Le dépôt GitHub privé `site-operia` contient tout. Cloudflare peut le mettre en ligne lui-même, sans ordinateur :
+
+1. Sur https://dash.cloudflare.com (compte gratuit) : « Workers & Pages », « Create application », « Import a repository », « Get started ».
+2. Connecter GitHub et autoriser Cloudflare sur le dépôt `site-operia`, puis le choisir.
+3. Nom du projet : **site-operia** (exactement, sinon la mise en ligne échoue). Laisser les commandes proposées, puis « Save and Deploy ». Le stockage du contenu se crée tout seul.
+4. Dans le projet : « Settings », « Variables and Secrets », ajouter deux **Secrets** : `ADMIN_HASH` et `SESSION_SECRET` (valeurs données par Grégoire ou par `npm run mot-de-passe`). Relancer un déploiement.
+5. L'adresse est `site-operia.<ton-compte>.workers.dev`, l'espace de modification à la même adresse suivie de `/admin`. Chaque modification poussée sur GitHub se remet en ligne toute seule.
+
+Le site reste en mode proposition (MAQUETTE à « oui ») : bandeau, non indexé par Google, formulaire de contact en démonstration.
+
 ## Mettre en ligne (avec Claude Code)
 
 Compte gratuit sur https://dash.cloudflare.com, puis dans Claude Code, ouvert dans ce dossier :
 
-> Installe les dépendances (`npm install`). Lance `npm test` : tout doit être « ok ». Connecte-moi à Cloudflare (`npx wrangler login`). Crée le stockage KV « CONTENU » (`npx wrangler kv namespace create CONTENU`) et mets son id dans `wrangler.jsonc`. Lance `npm run mot-de-passe`, puis enregistre ADMIN_HASH et SESSION_SECRET avec `npx wrangler secret put`. Déploie avec `npm run deploy`. Donne-moi l'adresse du site et le mot de passe. Laisse MAQUETTE à « oui ».
+> Installe les dépendances (`npm install`). Lance `npm test` : tout doit être « ok ». Connecte-moi à Cloudflare (`npx wrangler login`). Le stockage KV « CONTENU » se crée tout seul au premier déploiement. Lance `npm run mot-de-passe`, puis enregistre ADMIN_HASH et SESSION_SECRET avec `npx wrangler secret put`. Déploie avec `npm run deploy`. Donne-moi l'adresse du site et le mot de passe. Laisse MAQUETTE à « oui ».
 
 Le site est alors en ligne en mode proposition (bandeau, non indexé par Google, demandes en démonstration), sur une adresse `site-operia.toncompte.workers.dev`, et l'espace de modification à la même adresse suivie de `/admin`.
 

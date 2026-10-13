@@ -94,7 +94,7 @@ function appel(C) {
   </section>`;
 }
 
-/* o = { maquette, urlPolice, css | cssHref, js | jsHref, lienAdmin, apiContact, apercu } */
+/* o = { maquette, urlPolice, css | cssHref, js | jsHref, lienAdmin, apiContact, apercu, calme (aperçu de l'espace de modification : sans animations) } */
 function document_(C, o, page) {
   const G = C.agence || {}, T = C.theme || {}, K = C.contact || {};
   const nom = G.nom || 'Agence';
@@ -130,7 +130,7 @@ ${page.image && src(page.image, 1200) ? `<meta property="og:image" content="${es
 <link rel="icon" href="${esc(favicon(C))}">
 ${style}
 </head>
-<body class="${page.classe || ''}">
+<body class="${page.classe || ''}${o.calme ? ' calme' : ''}">
 <a class="skip" href="#contenu">Aller au contenu</a>
 ${o.maquette ? `<div class="maquette" role="note">Proposition de site pour ${esc(nom)}, préparée par Grégoire Muel. Version de travail non publiée : textes et photos à valider.</div>` : ''}
 ${C.annonce && C.annonce.afficher && C.annonce.texte ? `<div class="annonce" role="status">${esc(C.annonce.texte)}</div>` : ''}

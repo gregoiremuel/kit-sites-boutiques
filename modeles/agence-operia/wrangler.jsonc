@@ -4,8 +4,8 @@
   "main": "src/worker.js",
   "compatibility_date": "2026-09-01",
   "assets": { "directory": "./public", "binding": "ASSETS" },
-  // Remplacer l'id par celui donné par : npx wrangler kv namespace create CONTENU
-  "kv_namespaces": [{ "binding": "CONTENU", "id": "A_REMPLACER" }],
+  // Stockage du contenu : créé tout seul au premier déploiement (wrangler 4.45 ou plus), puis toujours le même.
+  "kv_namespaces": [{ "binding": "CONTENU" }],
   // "oui" tant que le client n’a pas validé : bandeau de proposition, non indexé, demandes en démonstration.
   "vars": { "MAQUETTE": "oui" }
   // Après l'achat du domaine (zone ajoutée sur Cloudflare) :

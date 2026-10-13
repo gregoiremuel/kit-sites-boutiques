@@ -577,8 +577,8 @@ let cadres = [];
 function rendreApercu(enHaut) {
   assurerIds(E.C);
   const o = DEMO
-    ? optsDemo()
-    : { maquette: E.maquette, cssHref: '/assets/site.css', jsHref: '/assets/site.js', apiContact: '', apercu: true };
+    ? optsDemo({ calme: true })
+    : { maquette: E.maquette, cssHref: '/assets/site.css', jsHref: '/assets/site.js', apiContact: '', apercu: true, calme: true };
   const page = rendrePage(E.C, E.page || '/', o).html;
   cadres.forEach((f) => {
     let y = 0; try { y = enHaut ? 0 : f.contentWindow.scrollY; } catch (e) { /* rien */ }
