@@ -1,5 +1,5 @@
 /* Espace de modification. Fonctionne avec le serveur (mode normal) ou seul dans un fichier (mode démonstration). */
-import { rendrePage, slug, favicon } from './rendu.js';
+import { rendrePage, slug, favicon, LIBELLES, libelle, libellesDemande } from './rendu.js';
 import { cssPolices } from './polices.js';
 
 const DEMO = window.ESPACE_DEMO || null;
@@ -122,6 +122,15 @@ const demoApi = {
   async video(fichier) { return await new Promise((ok) => { const f = new FileReader(); f.onload = () => ok(f.result); f.readAsDataURL(fichier); }); },
   async demandes() {
     const ex = (id, h, statut, nom, lignes) => ({ id, recue: new Date(Date.now() - h * 3600e3).toISOString(), statut, nom, lignes });
+    const C0 = (DEMO && DEMO.contenu) || {};
+    if (C0.libelles) {
+      /* Site qui a ses propres libellés : exemples neutres, avec ses types de demande */
+      const Lb = libellesDemande(C0), ty = ((C0.contact || {}).types || []).filter(Boolean);
+      return memo.lire('demandes', [
+        ex('ex1', 3, 'nouvelle', 'Exemple : Claire Martin', [[Lb.societe, 'Exemple : Boulangerie Martin'], ['E-mail', 'exemple@exemple.fr'], ['Téléphone', '06 00 00 00 01'], [Lb.type, ty[0] || ''], [Lb.message, 'Exemple : voici comment une demande arrive ici, avec les coordonnées et le message du visiteur.']].filter(([, v]) => v)),
+        ex('ex2', 50, 'devis', 'Exemple : Paul Durand', [['E-mail', 'exemple@exemple.fr'], ['Téléphone', '06 00 00 00 02'], [Lb.type, ty[1] || ty[0] || ''], [Lb.message, 'Exemple : demande déjà traitée, classée « devis envoyé ».']].filter(([, v]) => v)),
+      ]);
+    }
     return memo.lire('demandes', [
       ex('ex1', 3, 'nouvelle', 'Exemple : Claire Martin', [['Société', 'Exemple SAS'], ['E-mail', 'exemple@exemple.fr'], ['Téléphone', '06 00 00 00 01'], ['Type de locaux', 'Bureaux'], ['Surface', '400 m²'], ['Ville du projet', 'Nantes'], ['Projet', 'Exemple : aménagement d’un plateau de bureaux avant notre emménagement.']]),
       ex('ex2', 50, 'devis', 'Exemple : Paul Durand', [['E-mail', 'exemple@exemple.fr'], ['Téléphone', '06 00 00 00 02'], ['Type de locaux', 'Commerce ou restaurant'], ['Ville du projet', 'Saint-Nazaire'], ['Projet', 'Exemple : rénovation d’une cellule commerciale.']]),
@@ -400,6 +409,24 @@ function listeCommandes() {
 
 /* ---------- Rubriques ---------- */
 const montrer = (chemin) => { if (E.page !== chemin) { E.page = chemin; rendreApercu(true); } };
+/* Libellés modifiables, rangés pour l'espace de modification */
+const LIBELLES_GROUPES = [
+  ['Menu et boutons', ['nav_expertises', 'nav_realisations', 'nav_agence', 'bouton_principal', 'bouton_realisations', 'bouton_appel', 'appel_titre', 'intro_lien']],
+  ['Titres de l’accueil', ['exp_sur', 'exp_titre', 'exp_lien', 'essai_sur', 'real_sur', 'real_titre', 'real_tout', 'methode_sur', 'methode_titre', 'refs_sur', 'refs_titre']],
+  ['Autres pages', ['page_exp_titre', 'page_exp_description', 'methode_titre_page', 'lots_sur', 'lots_titre', 'page_real_titre', 'garanties_sur', 'garanties_titre', 'equipe_sur', 'equipe_titre']],
+  ['Fiche d’une réalisation', ['fiche_client', 'fiche_lieu', 'fiche_surface', 'fiche_mission', 'fiche_annee', 'fiche_secteur', 'interventions']],
+  ['Page contact et formulaire', ['contact_titre', 'contact_chapo', 'form_societe', 'form_type', 'form_surface', 'form_surface_exemple', 'form_ville', 'form_message', 'form_message_exemple', 'form_envoyer']],
+  ['Pied de page et mentions', ['pied_trouver', 'pied_joindre', 'mentions_siege', 'mentions_immatriculation']],
+];
+const LIBELLES_NOMS = {
+  nav_expertises: 'Menu : 1re rubrique', nav_realisations: 'Menu : 2e rubrique', nav_agence: 'Menu : 3e rubrique', bouton_principal: 'Bouton de l’accueil', bouton_realisations: 'Second bouton de l’accueil', bouton_appel: 'Bouton du bandeau du bas', appel_titre: 'Titre du bandeau du bas (par défaut)', intro_lien: 'Lien sous la présentation',
+  exp_sur: 'Petite ligne : offres', exp_titre: 'Titre : offres', exp_lien: 'Lien « en détail »', essai_sur: 'Petite ligne : à essayer', real_sur: 'Petite ligne : réalisations', real_titre: 'Titre : réalisations', real_tout: 'Lien « toutes les réalisations »', methode_sur: 'Petite ligne : méthode', methode_titre: 'Titre : méthode (accueil)', refs_sur: 'Petite ligne : références', refs_titre: 'Titre : références',
+  page_exp_titre: 'Titre de la page des offres', page_exp_description: 'Description Google de cette page', methode_titre_page: 'Titre : méthode (page des offres)', lots_sur: 'Petite ligne : liste', lots_titre: 'Titre : liste', page_real_titre: 'Titre de la page des réalisations', garanties_sur: 'Petite ligne : engagements', garanties_titre: 'Titre : engagements (par défaut)', equipe_sur: 'Petite ligne : équipe', equipe_titre: 'Titre : équipe',
+  fiche_client: 'Client', fiche_lieu: 'Lieu', fiche_surface: 'Surface (ou autre)', fiche_mission: 'Mission', fiche_annee: 'Année', fiche_secteur: 'Secteur', interventions: 'Titre de la liste',
+  contact_titre: 'Titre de la page contact', contact_chapo: 'Phrase sous le titre', form_societe: 'Champ « société »', form_type: 'Champ « type »', form_surface: 'Champ « surface »', form_surface_exemple: 'Exemple dans ce champ', form_ville: 'Champ « ville »', form_message: 'Champ « message »', form_message_exemple: 'Exemple dans le message', form_envoyer: 'Bouton d’envoi',
+  pied_trouver: 'Pied : colonne adresse', pied_joindre: 'Pied : colonne contact', mentions_siege: 'Mentions : « Siège »', mentions_immatriculation: 'Mentions : « RCS »',
+};
+
 function panneaux() {
   const nomSecteur = (id) => ((E.C.secteurs || []).find((c) => c.id === id) || {}).nom || '';
   const groupe = (titre, sous, contenu, chemin) => {
@@ -436,12 +463,14 @@ function panneaux() {
             { k: 'photos', l: 'Photos', t: 'photos', max: 12 },
             { k: 'accroche', l: 'Phrase d’accroche' },
             { k: 'texte', l: 'Texte', t: 'zone', lignes: 6 },
-            { k: 'client', l: 'Client' },
-            { k: 'lieu', l: 'Lieu' },
-            { k: 'surface', l: 'Surface', ph: 'Ex. : 1 500 m²' },
-            { k: 'annee', l: 'Année', ex: 'facultatif' },
-            { k: 'mission', l: 'Mission' },
-            { k: 'interventions', l: 'Interventions', t: 'lignes' },
+            { k: 'client', l: libelle(E.C, 'fiche_client') },
+            { k: 'lieu', l: libelle(E.C, 'fiche_lieu') },
+            { k: 'surface', l: libelle(E.C, 'fiche_surface'), ph: libelle(E.C, 'fiche_surface') === 'Surface' ? 'Ex. : 1 500 m²' : '' },
+            { k: 'annee', l: libelle(E.C, 'fiche_annee'), ex: 'facultatif' },
+            { k: 'mission', l: libelle(E.C, 'fiche_mission') },
+            { k: 'interventions', l: libelle(E.C, 'interventions'), t: 'lignes' },
+            { k: 'lien', l: 'Lien à ouvrir', ex: 'facultatif : le site en ligne ou une démonstration', ph: 'https://… ou /demos/…' },
+            { k: 'lien_texte', l: 'Texte du bouton', ph: 'Ex. : Voir le site en ligne' },
             { k: 'a_la_une', l: 'À la une sur l’accueil', t: 'case' },
             { k: 'visible', l: 'Afficher sur le site', t: 'case' },
           ],
@@ -464,6 +493,10 @@ function panneaux() {
         groupe('Présentation', '', [
           champ(E.C, { k: 'accueil.intro_titre', l: 'Titre' }), champ(E.C, { k: 'accueil.intro_texte', l: 'Texte', t: 'zone', lignes: 6 }), champ(E.C, { k: 'accueil.photo_intro', l: 'Photo', t: 'photo' }),
         ], '/'),
+        groupe('Bloc « À essayer »', 'Les réalisations qui ont un lien', [
+          el('p', { class: 'aide', text: 'S’affiche sur l’accueil quand un titre est rempli et qu’au moins une réalisation a un lien.' }),
+          champ(E.C, { k: 'accueil.essai_titre', l: 'Titre' }), champ(E.C, { k: 'accueil.essai_texte', l: 'Texte', t: 'zone', lignes: 4 }),
+        ], '/'),
         groupe('Chiffres', 'Trois repères sous la présentation', [
           champ(E.C, { k: 'affichage.chiffres', l: 'Afficher les chiffres', t: 'case' }),
           editeurListe('chiffres', { titre: 'valeur', sansTitre: 'Nouveau chiffre', sous: (c) => c.libelle || '', vide: 'Aucun chiffre.', ajouter: 'Ajouter un chiffre', nouveau: { valeur: '', libelle: '' }, champs: [{ k: 'valeur', l: 'Chiffre', ph: 'Ex. : 6 200 m²' }, { k: 'libelle', l: 'Texte', ph: 'Ex. : rénovés au Parc du Perray' }] }),
@@ -478,8 +511,8 @@ function panneaux() {
       resume: () => (E.C.metiers || []).map((m) => m.nom).filter(Boolean).join(', '),
       corps: () => [
         groupe('Métiers', 'Space planning, maîtrise d’œuvre…', [
-          editeurListe('metiers', { titre: 'nom', sansTitre: 'Nouveau métier', photo: 'photo', vide: 'Aucun métier.', ajouter: 'Ajouter un métier', nouveau: { id: '', nom: '', accroche: '', texte: '', points: [], photo: '' }, apres: () => assurerIds(E.C),
-            champs: [{ k: 'nom', l: 'Nom' }, { k: 'accroche', l: 'Accroche' }, { k: 'texte', l: 'Texte', t: 'zone', lignes: 5 }, { k: 'points', l: 'Points clés', t: 'lignes' }, { k: 'photo', l: 'Photo', t: 'photo' }] }),
+          editeurListe('metiers', { titre: 'nom', sansTitre: 'Nouveau métier', photo: 'photo', vide: 'Aucun métier.', ajouter: 'Ajouter un métier', nouveau: { id: '', nom: '', accroche: '', prix: '', texte: '', points: [], photo: '' }, apres: () => assurerIds(E.C),
+            champs: [{ k: 'nom', l: 'Nom' }, { k: 'accroche', l: 'Accroche' }, { k: 'prix', l: 'Prix', ex: 'facultatif', ph: 'Ex. : À partir de 590 €' }, { k: 'texte', l: 'Texte', t: 'zone', lignes: 5 }, { k: 'points', l: 'Points clés', t: 'lignes' }, { k: 'photo', l: 'Photo', t: 'photo' }] }),
         ], '/expertises'),
         groupe('Méthode', 'Les étapes d’un projet', [
           editeurListe('etapes', { titre: 'titre', sansTitre: 'Nouvelle étape', vide: 'Aucune étape.', ajouter: 'Ajouter une étape', nouveau: { titre: '', points: [] }, champs: [{ k: 'titre', l: 'Titre' }, { k: 'points', l: 'Détails', t: 'lignes' }] }),
@@ -520,6 +553,14 @@ function panneaux() {
       ],
     },
     {
+      id: 'libelles', titre: 'Titres et libellés', page: '/', seulementSi: () => !!(E.C.libelles && typeof E.C.libelles === 'object'),
+      resume: () => { const n = Object.values(E.C.libelles || {}).filter((v) => typeof v === 'string').length; return n ? n + ' libellé(s) personnalisé(s)' : 'Libellés par défaut'; },
+      corps: () => [
+        el('p', { class: 'aide', text: 'Les mots du menu, des titres de rubrique et du formulaire. Laissez vide pour garder le texte grisé. Pour un champ du formulaire, effacez son nom pour le retirer.' }),
+        ...LIBELLES_GROUPES.map(([titre, cles]) => groupe(titre, '', el('div', { class: 'grille' }, cles.map((k) => champ(E.C, { k: 'libelles.' + k, l: LIBELLES_NOMS[k] || k, ph: LIBELLES[k] }))))),
+      ],
+    },
+    {
       id: 'infos', titre: 'Coordonnées, logo et mentions', page: '/contact',
       resume: () => [E.C.agence.email, E.C.agence.telephone, E.C.agence.ville].filter(Boolean).join(', '),
       corps: () => [
@@ -535,7 +576,7 @@ function panneaux() {
         champ(E.C, { k: 'agence.logo', l: 'Monogramme', ex: 'icône d’onglet', t: 'photo' }),
         champ(E.C, { k: 'agence.description_google', l: 'Description pour Google', t: 'zone' }),
         el('h3', { text: 'Mentions légales', style: 'font-size:1.125rem' }),
-        el('div', { class: 'grille' }, [{ k: 'mentions.raison_sociale', l: 'Raison sociale' }, { k: 'mentions.forme', l: 'Forme et capital' }, { k: 'mentions.rcs', l: 'RCS', ph: 'Ex. : 123 456 789 RCS Nantes' }, { k: 'mentions.adresse', l: 'Adresse du siège' }, { k: 'mentions.directeur_publication', l: 'Directeur de la publication' }, { k: 'mentions.email', l: 'E-mail de contact', type: 'email' }, { k: 'mentions.mediateur', l: 'Médiateur de la consommation', ex: 'si vous travaillez pour des particuliers' }].map((d) => champ(E.C, d))),
+        el('div', { class: 'grille' }, [{ k: 'mentions.raison_sociale', l: 'Raison sociale' }, { k: 'mentions.forme', l: 'Forme et capital' }, { k: 'mentions.rcs', l: 'Immatriculation', ph: 'Ex. : 123 456 789 RCS Nantes' }, { k: 'mentions.tva', l: 'TVA', ex: 'facultatif', ph: 'Ex. : TVA non applicable, art. 293 B du CGI' }, { k: 'mentions.adresse', l: 'Adresse du siège' }, { k: 'mentions.directeur_publication', l: 'Directeur de la publication' }, { k: 'mentions.email', l: 'E-mail de contact', type: 'email' }, { k: 'mentions.mediateur', l: 'Médiateur de la consommation', ex: 'si vous travaillez pour des particuliers' }].map((d) => champ(E.C, d))),
         champ(E.C, { k: 'credits_photos', l: 'Crédit des photos', ex: 'à mettre à jour quand les photos d’illustration sont remplacées', t: 'zone' }),
       ],
     },
@@ -644,7 +685,7 @@ function ecranPrincipal() {
   racine.replaceChildren();
   const nom = E.C.agence.nom || 'Votre site';
   document.title = nom + ' : espace de modification';
-  PANNEAUX = panneaux();
+  PANNEAUX = panneaux().filter((p) => !p.seulementSi || p.seulementSi());
   appliquerTheme(E.C);
   const plein = el('div', { class: 'apercu-plein', hidden: true },
     el('div', { class: 'barre' }, el('b', { text: 'Aperçu' }), el('button', { type: 'button', class: 'btn sec petit', text: 'Fermer l’aperçu', onclick: () => { plein.hidden = true; document.body.style.overflow = ''; } })),

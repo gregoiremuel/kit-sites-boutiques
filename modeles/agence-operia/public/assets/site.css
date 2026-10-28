@@ -122,6 +122,9 @@ video.hero-media{animation:none}
 .metiers h3{font-size:clamp(1.375rem,1.9vw,1.75rem)}
 .metiers p{color:rgba(255,255,255,.76);max-width:36ch}
 .metiers .lien{color:#fff;justify-self:start;margin-top:6px}
+.metier-prix{font-size:.9375rem;font-weight:600;letter-spacing:.01em;color:var(--marine)}
+.metiers .metier-prix{color:var(--or);margin-top:-2px}
+.metier-txt .metier-prix{margin:-8px 0 22px;padding-left:14px;border-left:2px solid var(--or)}
 @media (min-width:900px){
   .metiers{grid-template-columns:repeat(3,1fr);border-top:0}
   .metiers li{border-bottom:0;border-left:1px solid rgba(255,255,255,.16)}
@@ -195,6 +198,22 @@ video.hero-media{animation:none}
 .metier-img{width:100%;aspect-ratio:4/5;object-fit:cover}
 .metier-txt h2{font-size:clamp(1.875rem,3.2vw,2.625rem);margin:10px 0 16px}
 .metier-txt .chapo{margin-bottom:22px;color:var(--encre)}
+
+/* Bloc « À essayer » de l'accueil : liens vers des sites en ligne ou des démonstrations */
+.essai{border-bottom:1px solid var(--trait)}
+.essai-grille{display:grid;gap:clamp(32px,5vw,80px);align-items:start}
+.essai-txt .prose{margin-top:18px;color:var(--gris);max-width:46ch}
+.essai-liens{list-style:none;margin:0;padding:0;border-top:1px solid var(--trait)}
+.essai-liens li{border-bottom:1px solid var(--trait)}
+.essai-liens a{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;text-decoration:none;color:var(--encre)}
+.essai-liens b{display:block;font-family:var(--titres);font-weight:400;font-size:1.375rem;line-height:1.25}
+.essai-liens small{display:block;margin-top:4px;color:var(--gris);font-size:.9375rem;line-height:1.45}
+.essai-act{flex:none;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9375rem;color:var(--marine);white-space:nowrap}
+.essai-act svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .35s cubic-bezier(.2,.65,.2,1)}
+.essai-liens a:hover .essai-act svg{transform:translateX(4px)}
+.essai-liens a:hover b{color:var(--marine)}
+@media (min-width:900px){.essai-grille{grid-template-columns:5fr 7fr}}
+@media (max-width:520px){.essai-liens a{flex-direction:column;align-items:flex-start;gap:10px}}
 .metier-txt .prose{margin-bottom:26px}
 @media (min-width:900px){
   .metier-grille{grid-template-columns:1fr 1fr}
@@ -334,3 +353,13 @@ select.saisie{background-image:linear-gradient(45deg,transparent 50%,var(--gris)
 @keyframes fondu{from{opacity:0}to{opacity:1}}
 .calme .hero-media{animation:none}
 @media (prefers-reduced-motion:reduce){.anime .rev{opacity:1;transform:none}.volet,.volet li,.hero-txt>*{animation:none!important}}
+
+/* Téléphone : le texte de l'accueil couvre toute la largeur, le voile est plus uniforme pour qu'il reste lisible sur n'importe quelle photo */
+@media (max-width:700px){.hero::after{background:linear-gradient(0deg,rgba(13,15,36,.9) 0%,rgba(13,15,36,.7) 55%,rgba(13,15,36,.45) 100%)}}
+/* Voiles des photos teintés par la couleur foncée du thème (navigateurs récents ; sinon le bleu nuit d'origine ci-dessus) */
+@supports (color: color-mix(in srgb, red, blue)) {
+  :root{--nuit:color-mix(in srgb,var(--marine) 50%,#000)}
+  .hero::after{background:linear-gradient(90deg,color-mix(in srgb,var(--nuit) 82%,transparent) 0%,color-mix(in srgb,var(--nuit) 55%,transparent) 48%,color-mix(in srgb,var(--nuit) 20%,transparent) 100%),linear-gradient(0deg,color-mix(in srgb,var(--nuit) 55%,transparent) 0%,transparent 45%)}
+  .appel::after{background:color-mix(in srgb,var(--marine) 86%,transparent)}
+  @media (max-width:700px){.hero::after{background:linear-gradient(0deg,color-mix(in srgb,var(--nuit) 90%,transparent) 0%,color-mix(in srgb,var(--nuit) 70%,transparent) 55%,color-mix(in srgb,var(--nuit) 45%,transparent) 100%)}}
+}

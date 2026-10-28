@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 7, 13 octobre 2026. Grégoire Muel.
+Version 8, 28 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -68,6 +68,14 @@ Comme le catalogue : le contenu se prépare avec Claude, à partir du site actue
 > Pars de `modeles/agence-operia`. Copie-le dans un nouveau dossier au nom du client, puis réécris `contenu-initial.json` pour [client] avec ces éléments, en gardant exactement la même forme. Mets le logo (fond transparent) dans `public/assets/`. Lance `npm run verifier`, `npm test` et `npm run apercu`, puis donne-moi la démonstration.
 
 Les photos d'essai des réalisations portent automatiquement la mention « Photo d'illustration » : on ne fait jamais passer une photo de banque d'images pour un chantier du client.
+
+Le moteur agence sert à toute entreprise de services, pas seulement au bâtiment (exemple : le site d'Atelier Muel, dépôt `site-atelier-muel`). Champs facultatifs, absents d'Opéria :
+- `libelles` : les mots du menu, des titres de rubrique, de la fiche d'une réalisation et du formulaire (liste et valeurs par défaut dans `LIBELLES`, `rendu.js`). Un champ du formulaire au libellé vide disparaît. Le panneau « Titres et libellés » ne s'affiche dans l'espace de modification que si le contenu a des `libelles`.
+- `metiers[].prix` : « À partir de… » sous chaque offre.
+- `realisations[].lien` et `lien_texte` : bouton vers le site en ligne ou une démonstration. Avec `accueil.essai_titre` et `essai_texte`, l'accueil affiche un bloc « À essayer » qui liste ces liens.
+- `mentions.tva` : ligne TVA des mentions légales (« TVA non applicable, article 293 B du CGI » pour une micro-entreprise en franchise).
+
+Des démonstrations à essayer peuvent vivre dans `public/demos/` : contenus imaginaires dans `exemples/`, fabriqués avec les moteurs vitrine et catalogue, bandeau « Site d'exemple : commerce imaginaire… ». Visuels sans photo de banque d'images : de vraies captures des sites (parties sans photo) dans des cadres d'ordinateur et de téléphone.
 
 ### 2.5 La démonstration
 - `npm run apercu` fabrique `demonstration.html` : **un seul fichier**, sans serveur, qui s'ouvre sur le site puis « Essayer l'espace boutique » (n'importe quel mot de passe). On y modifie tout et le site de la démo change. Rien n'est publié.
@@ -139,6 +147,8 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 | Logo reçu en JPEG sur fond blanc | Pas de fichier vectoriel | Détourage automatique (sharp) en PNG transparent + version blanche pour les fonds foncés ; demander un SVG pour la version finale |
 | Grille « à la une » avec une case vide | Nombre de projets qui ne remplit pas la grille | Le moteur agence prend 6 projets (un grand et cinq) ou 3 |
 | Dans la démo ou l'aperçu, un clic sur le menu (#produits, #horaires…) n'affiche pas la rubrique, le cadre recharge toute la démo | La page est affichée dans un cadre « srcdoc » : le navigateur comprend « #produits » comme une adresse de la page de démo | Les trois moteurs font défiler eux-mêmes jusqu'à la rubrique quand la page est dans un aperçu (`location.protocol === 'about:'`). Tester chaque lien du menu dans la démo, sur téléphone et ordinateur |
+| Lien vers `/demos/x.html` : redirection 307 | Cloudflare sert les fichiers .html sans l'extension | Écrire `/demos/x` |
+| Dans l'aperçu, un lien vers une démonstration affiche « Page introuvable » | L'aperçu transforme tout lien commençant par « / » en page du site | Les liens de réalisation portent `data-ouvrir` et s'ouvrent dans un nouvel onglet (marche en ligne ; pas dans le fichier de démonstration seul) |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
 
 ---

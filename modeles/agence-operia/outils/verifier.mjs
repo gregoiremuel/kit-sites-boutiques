@@ -4,7 +4,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { rendrePage, routes } from '../public/assets/rendu.js';
+import { rendrePage, routes, LIBELLES } from '../public/assets/rendu.js';
 
 export const SCHEMA = 'agence v1';
 const FORME = {
@@ -29,6 +29,8 @@ const ELEMENTS = {
   equipe: ['nom', 'role', 'photo'],
   references: ['nom', 'logo'],
 };
+/* Clés facultatives (ajoutées au moteur après Opéria : un contenu sans elles reste valide) */
+const FACULTATIVES = { '': ['libelles'], accueil: ['essai_titre', 'essai_texte'], mentions: ['tva'], metiers: ['prix'], realisations: ['lien', 'lien_texte'] };
 const INTERDITS = [
   [/\bbienvenue\b/i, 'Bienvenue'], [/\bdécouvr(ez|ir)\b/i, 'Découvrez'], [/n['’]hésitez pas/i, 'N’hésitez pas'], [/au c(œ|oe)ur d/i, 'au cœur de'],
   [/\bvéritable/i, 'véritable'], [/\bincontournable/i, 'incontournable'], [/\bpassion/i, 'passion'], [/savoir-faire unique/i, 'savoir-faire unique'],
@@ -55,16 +57,21 @@ export function verifier(C) {
     const o = chemin ? lire(chemin) : C;
     if (!o || typeof o !== 'object' || Array.isArray(o)) { E(`« ${chemin || 'racine'} » doit être un objet.`); casse = true; continue; }
     cles.filter((k) => !(k in o)).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
-    Object.keys(o).filter((k) => !cles.includes(k)).forEach((k) => E(`Clé inconnue : ${chemin ? chemin + '.' : ''}${k}`));
+    Object.keys(o).filter((k) => !cles.includes(k) && !(FACULTATIVES[chemin] || []).includes(k)).forEach((k) => E(`Clé inconnue : ${chemin ? chemin + '.' : ''}${k}`));
   }
   for (const [liste, cles] of Object.entries(ELEMENTS)) {
     if (!Array.isArray(C[liste])) { E(`« ${liste} » doit être une liste.`); casse = true; continue; }
     C[liste].forEach((x, i) => {
       if (!x || typeof x !== 'object') { E(`${liste}[${i}] doit être un objet.`); casse = true; return; }
       cles.filter((k) => !(k in x)).forEach((k) => E(`Clé manquante : ${liste}[${i}].${k}`));
-      Object.keys(x).filter((k) => !cles.includes(k)).forEach((k) => E(`Clé inconnue : ${liste}[${i}].${k}`));
+      Object.keys(x).filter((k) => !cles.includes(k) && !(FACULTATIVES[liste] || []).includes(k)).forEach((k) => E(`Clé inconnue : ${liste}[${i}].${k}`));
     });
   }
+  if ('libelles' in C) {
+    if (!C.libelles || typeof C.libelles !== 'object' || Array.isArray(C.libelles)) E('« libelles » doit être un objet.');
+    else Object.entries(C.libelles).forEach(([k, v]) => { if (!(k in LIBELLES)) E(`Libellé inconnu : libelles.${k}`); else if (!estTexte(v)) E(`libelles.${k} doit être un texte.`); });
+  }
+  (Array.isArray(C.realisations) ? C.realisations : []).forEach((x, i) => { if (x && x.lien && !/^(\/[^\s<>"]*|https:\/\/[^\s<>"]+)$/.test(String(x.lien).trim())) E(`realisations[${i}].lien doit commencer par / ou https://`); });
   if (casse) return { erreurs, alertes, afaire };
   if (C._schema !== SCHEMA) E(`_schema doit valoir "${SCHEMA}".`);
 

@@ -6,7 +6,7 @@
   Secrets à définir : ADMIN_HASH (npm run mot-de-passe), SESSION_SECRET (texte aléatoire).
   Variable : MAQUETTE = "oui" tant que le site n'est pas validé (bandeau + formulaire en démonstration).
 */
-import { rendrePage, routes } from '../public/assets/rendu.js';
+import { rendrePage, routes, libellesDemande } from '../public/assets/rendu.js';
 import initial from '../contenu-initial.json';
 
 const COOKIE = 'boutique_session';
@@ -140,7 +140,8 @@ export default {
         const corps = await req.json().catch(() => null);
         const t2 = (v, n) => String(v == null ? '' : v).trim().slice(0, n);
         if (!corps || !t2(corps.nom, 120) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t2(corps.email, 200)) || String(corps.telephone || '').replace(/\D/g, '').length < 6) return json({ ok: false, erreur: 'Demande incomplète.' }, 400);
-        const lignes = [['Société', t2(corps.societe, 160)], ['E-mail', t2(corps.email, 200)], ['Téléphone', t2(corps.telephone, 40)], ['Type de locaux', t2(corps.type, 80)], ['Surface', t2(corps.surface, 60)], ['Ville du projet', t2(corps.ville, 120)], ['Projet', t2(corps.message, 3000)]].filter(([, v]) => v);
+        const Lb = libellesDemande(Cc);
+        const lignes = [[Lb.societe, t2(corps.societe, 160)], ['E-mail', t2(corps.email, 200)], ['Téléphone', t2(corps.telephone, 40)], [Lb.type, t2(corps.type, 80)], [Lb.surface, t2(corps.surface, 60)], [Lb.ville, t2(corps.ville, 120)], [Lb.message, t2(corps.message, 3000)]].filter(([, v]) => v);
         const id = (9999999999999 - Date.now()).toString(36) + '-' + Math.random().toString(36).slice(2, 8);
         const dem = { id, recue: new Date().toISOString(), statut: 'nouvelle', nom: t2(corps.nom, 120), societe: t2(corps.societe, 160), telephone: t2(corps.telephone, 40), email: t2(corps.email, 200), lignes };
         await env.CONTENU.put('demande:' + id, JSON.stringify(dem), { expirationTtl: 180 * 24 * 3600 });

@@ -29,6 +29,7 @@
       var a = e.target.closest && e.target.closest('a[href]');
       if (!a) return;
       var h = a.getAttribute('href');
+      if (h && (a.hasAttribute('data-ouvrir') || /^\/[^?#]*\.[a-z0-9]+$/i.test(h))) { e.preventDefault(); try { window.open(new URL(h, parent.location.href).href, '_blank', 'noopener'); } catch (x) { /* rien */ } return; }
       if (h && h.charAt(0) === '/') { e.preventDefault(); try { parent.postMessage({ agence: 'aller', chemin: h }, '*'); } catch (x) { /* rien */ } }
     }, true);
   }
@@ -44,7 +45,7 @@
     }
     if (calme) return;
     document.documentElement.classList.add('anime');
-    var CIBLES = ['.sec-tete', '.intro-txt', '.intro-fig', '.chiffres li', '.metiers li', '.cartes .carte', '.etapes > li', '.refs li', '.metier-fig', '.metier-txt', '.lots li', '.fiche', '.real-txt', '.galerie li', '.equipe li', '.engagements > *', '.coord', '.demande', '.appel-in > *', '.tete-page > *', '.prose-grande', '.suite a'];
+    var CIBLES = ['.sec-tete', '.intro-txt', '.intro-fig', '.chiffres li', '.metiers li', '.cartes .carte', '.etapes > li', '.refs li', '.metier-fig', '.metier-txt', '.lots li', '.fiche', '.real-txt', '.galerie li', '.equipe li', '.engagements > *', '.coord', '.demande', '.appel-in > *', '.tete-page > *', '.prose-grande', '.suite a', '.essai-txt', '.essai-liens li'];
     var els = [];
     CIBLES.forEach(function (sel) {
       Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
@@ -134,7 +135,8 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) manque.push('une adresse e-mail valide');
     if (d.telephone.replace(/\D/g, '').length < 6) manque.push('un numéro de téléphone');
     if (manque.length) { montrer('Il manque ' + manque.join(', ') + '.'); return; }
-    var recap = [['Nom', d.nom], ['Société', d.societe], ['E-mail', d.email], ['Téléphone', d.telephone], ['Type de locaux', d.type], ['Surface', d.surface], ['Ville du projet', d.ville], ['Projet', d.message]].filter(function (l) { return l[1]; });
+    var Lb = A.lib || {};
+    var recap = [['Nom', d.nom], [Lb.societe || 'Société', d.societe], ['E-mail', d.email], ['Téléphone', d.telephone], [Lb.type || 'Type de locaux', d.type], [Lb.surface || 'Surface', d.surface], [Lb.ville || 'Ville du projet', d.ville], [Lb.message || 'Projet', d.message]].filter(function (l) { return l[1]; });
     var sujet = 'Demande de projet' + (d.type ? ' : ' + d.type : '') + (d.societe ? ' (' + d.societe + ')' : '');
     var fini = function (titre, texte) {
       okBox.innerHTML = '<h2>' + esc(titre) + '</h2><p>' + esc(texte) + '</p><dl>' + recap.map(function (l) { return '<dt>' + esc(l[0]) + '</dt><dd>' + esc(l[1]) + '</dd>'; }).join('') + '</dl>';
