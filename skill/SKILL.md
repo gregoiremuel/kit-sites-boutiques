@@ -19,8 +19,8 @@ Lire `METHODE.md` en entier avant de commencer. Ce skill en est le résumé ; en
 ## 2. Choisir le moteur
 
 - **Vitrine** (`modeles/fromagerie-la-fontaine`) : commerce de quartier, une page (horaires, produits, offres, demande en ligne, presse, accès). Contenu fait par le prompt `prompts/1-site-et-espace-boutique.md` (Claude ou GLM), puis `npm run nouvelle-boutique -- ../contenu.json`.
-- **Agence** (`modeles/agence-operia`) : entreprise de services ou du bâtiment, haut de gamme, plusieurs pages (expertises, méthode, réalisations avec page et galerie, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts). Copier le dossier et réécrire `contenu-initial.json` ; les photos d'essai des réalisations portent d'office « Photo d'illustration ».
-- **Catalogue** (`modeles/maison-tcheskiss`) : maison qui vend des pièces (collections, catalogue filtré, page par pièce, panier qui envoie une **demande de commande**, sans paiement en ligne). Copier le dossier et réécrire `contenu-initial.json` en gardant exactement la même forme.
+- **Agence** (`modeles/agence-operia`) : entreprise de services ou du bâtiment, ou activité de création (deux gabarits : `theme.gabarit` « classique » ou « studio » ; bloc facultatif `abonnements`), plusieurs pages (expertises, méthode, réalisations avec page et galerie, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts). Copier le dossier et réécrire `contenu-initial.json` ; les photos d'essai des réalisations portent d'office « Photo d'illustration ».
+- **Catalogue** (`modeles/maison-tcheskiss`) : maison qui vend des pièces (champs de bijouterie : métal, pierres, tailles, gravure ; ne pas le proposer tel quel hors joaillerie) (collections, catalogue filtré, page par pièce, panier qui envoie une **demande de commande**, sans paiement en ligne). Copier le dossier et réécrire `contenu-initial.json` en gardant exactement la même forme.
 
 ## 3. Le déroulé d'une maquette
 
@@ -44,6 +44,9 @@ Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et c
 - **Mots « site IA » interdits** (le vérificateur les refuse) : Bienvenue, Découvrez, N'hésitez pas, au cœur de, véritable, incontournable, passion, savoir-faire unique, sublimer, écrin, expérience, univers, authentique, de qualité, d'exception, excellence, intemporel, En savoir plus… Ni violet, ni crème et terracotta, ni dégradés.
 - **Pas de Wix ni de constructeur** quand Greg veut un vrai site indépendant.
 
+- **Un site, une identité** : chaque site a sa couleur, ses polices, sa mise en page et ses formes, différentes de tous les sites déjà faits (registre des styles dans `METHODE.md`, partie 3), et une interface cohérente avec le métier (bouche : empattements chaleureux ; artisan : empattements carrés, teintes de matière, angles droits ; service moderne : famille nette ; bâtiment haut de gamme : sombre et sobre ; création : grotesque, papier clair). Test : deux captures côte à côte réduites ; si elles se confondent, on recommence. Un look qui manque au moteur s'ajoute au moteur.
+- **Prix** : toujours des propositions que Greg valide ; repères du marché dans `METHODE.md`, partie 9, à rechercher de nouveau avant de les citer.
+
 ## 5. Pièges connus (et la parade, déjà dans les moteurs)
 
 - Aperçu de l'app Claude : formulaires et mémoire du navigateur bloqués. Boutons « type=button » avec un clic, mémoire de secours, jamais de `<form>` envoyé.
@@ -53,7 +56,8 @@ Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et c
 - Photo verticale : hauteur plafonnée sur ordinateur (`max-height`) pour les bandes photo et texte.
 - Réunion des scripts pour la démo : deux noms identiques au premier niveau la cassent (`apercu` le signale).
 - Dans l'espace cloud de Claude : Unsplash et Cloudflare sont bloqués. Utiliser des photos de remplacement pour les captures, et faire la mise en ligne depuis l'ordinateur de Greg avec Claude Code (texte prêt dans le `LISEZMOI.md` du projet).
-- Captures « page entière » : images blanches possibles. Capturer en faisant défiler l'écran.
+- Captures « page entière » : images blanches possibles. Capturer en faisant défiler l'écran ; pour une démo dans son cadre, capturer la fenêtre et faire défiler le cadre.
+- Texte du bandeau d'une démo remplacé par expression régulière : s'arrêter au prochain `<`, sinon la balise fermante disparaît et toute la page se décale.
 - Le Chromium des tests ne lit pas le H.264 : tester la lecture vidéo avec un WebM.
 - Site d'un client à refaire : l'espace cloud ne télécharge pas ses photos ni son logo ; WebFetch lit les textes, Greg joint le logo (détourage en PNG transparent avec sharp).
 
