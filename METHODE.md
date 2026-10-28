@@ -69,7 +69,7 @@ Comme le catalogue : le contenu se prépare avec Claude, à partir du site actue
 
 Les photos d'essai des réalisations portent automatiquement la mention « Photo d'illustration » : on ne fait jamais passer une photo de banque d'images pour un chantier du client.
 
-Le moteur agence sert à toute entreprise de services, pas seulement au bâtiment (exemple : le site d'Atelier Muel, dépôt `site-atelier-muel`). Champs facultatifs, absents d'Opéria :
+Le moteur agence sert à toute entreprise de services, pas seulement au bâtiment (exemple : le site de Grégoire Muel, sites internet, dépôt `site-atelier-muel`). Champs facultatifs, absents d'Opéria :
 - `libelles` : les mots du menu, des titres de rubrique, de la fiche d'une réalisation et du formulaire (liste et valeurs par défaut dans `LIBELLES`, `rendu.js`). Un champ du formulaire au libellé vide disparaît. Le panneau « Titres et libellés » ne s'affiche dans l'espace de modification que si le contenu a des `libelles`.
 - `metiers[].prix` : « À partir de… » sous chaque offre.
 - `realisations[].lien` et `lien_texte` : bouton vers le site en ligne ou une démonstration. Avec `accueil.essai_titre` et `essai_texte`, l'accueil affiche un bloc « À essayer » qui liste ces liens.
