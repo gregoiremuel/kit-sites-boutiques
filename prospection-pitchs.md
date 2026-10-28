@@ -1,9 +1,9 @@
 # Pitchs et messages de prospection
 
-Repris du document « Prospection sites vitrines — Auteuil » (12 octobre 2026). Les crochets [ ] sont à remplir. Prix : recommandations de départ (590 €, 29 € par mois), pas des tarifs du marché.
+Repris du document « Prospection sites vitrines — Auteuil » (12 octobre 2026). Les crochets [ ] sont à remplir. Prix mis à jour le 28/10/2026 : site vitrine 590 € une fois, sans abonnement obligatoire ; Sérénité 19 € par mois, Croissance 49 €, Visibilité Google 39 € (propositions à valider). Version à jour des pitchs et du mini-diagnostic gratuit : `docs/modeles/06-script-visite-et-diagnostic.md` du dépôt `site-atelier-muel`. Les anciens « 29 € par mois » ont été remplacés.
 
 
-Passe en personne de 18h15 à 19h ou le samedi, quand le commerce est calme, avec la démo de l'espace boutique ouverte sur ton téléphone. Ton offre : une maquette gratuite à leur nom en 48 h, puis 590 € photos comprises et 29 € par mois pour l'hébergement et les mises à jour.
+Passe en personne de 18h15 à 19h ou le samedi, quand le commerce est calme, avec la démo de l'espace boutique ouverte sur ton téléphone. Ton offre : une maquette gratuite à leur nom en 48 h, puis 590 € photos comprises, une fois (abonnement facultatif : voir ci-dessus).
 
 ### 1. En boutique, commerce sans site (30 secondes)
 
@@ -65,7 +65,7 @@ Bonjour,
 
 Je suis Grégoire Muel, j'habite rue Chardon-Lagache et je crée les sites des commerces du quartier. [Nom] a [60] avis sur Google, notés [4,8] sur 5, mais aucun site où trouver vos [tarifs / horaires / services]. J'ai préparé une maquette : vous la trouverez en pièce jointe, version ordinateur et version téléphone.
 
-Le site complet comprend vos tarifs, vos horaires, un bouton d'appel, l'itinéraire et des photos de la boutique, que je prends moi-même. 590 €, puis 29 € par mois pour l'hébergement et les mises à jour.
+Le site complet comprend vos tarifs, vos horaires, un bouton d'appel, l'itinéraire et des photos de la boutique, que je prends moi-même. 590 € une fois ; si vous voulez que je m’en occupe, 19 € par mois (Sérénité), sans engagement.
 
 Je peux passer vous la montrer en dix minutes, quand ça vous arrange. Si ce n'est pas le moment, répondez « non merci » et je ne vous relancerai pas.
 

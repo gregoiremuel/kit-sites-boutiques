@@ -47,8 +47,16 @@ async function limite(env, cle, max, secondes) {
 }
 
 /* ---------- Mot de passe et session ---------- */
+/* L'empreinte choisie depuis la page de modification (KV) l'emporte sur le Secret ADMIN_HASH */
+async function empreinteActive(env) { return (await env.CONTENU.get('admin:hash')) || String(env.ADMIN_HASH || ''); }
+async function fabriquerEmpreinte(mdp) {
+  const sel = crypto.getRandomValues(new Uint8Array(16)), iter = 10000; // limite de calcul de l'offre gratuite Cloudflare
+  const cle = await crypto.subtle.importKey('raw', enc.encode(mdp), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: sel, iterations: iter }, cle, 256);
+  return `pbkdf2$${iter}$${btoa(String.fromCharCode(...sel))}$${btoa(String.fromCharCode(...new Uint8Array(bits)))}`;
+}
 async function verifierMotDePasse(env, mdp) {
-  const parts = String(env.ADMIN_HASH || '').split('$');
+  const parts = (await empreinteActive(env)).split('$');
   if (parts.length !== 4 || parts[0] !== 'pbkdf2') return null;
   const iter = parseInt(parts[1], 10);
   const cle = await crypto.subtle.importKey('raw', enc.encode(mdp), 'PBKDF2', false, ['deriveBits']);
@@ -153,7 +161,7 @@ export default {
 
       /* Espace maison : connexion */
       if (methode === 'POST' && p === '/api/connexion') {
-        if (!env.ADMIN_HASH || !env.SESSION_SECRET) return json({ ok: false, erreur: 'Espace maison pas encore configuré : demandez à Grégoire.' }, 503);
+        if (!(await empreinteActive(env)) || !env.SESSION_SECRET) return json({ ok: false, erreur: 'Espace maison pas encore configuré : demandez à Grégoire.' }, 503);
         const n = await essais(env, 'cnx:' + ip(req));
         if (n >= 8) return json({ ok: false, erreur: 'Trop d’essais. Réessayez dans un quart d’heure.' }, 429);
         const corps = await req.json().catch(() => ({}));
@@ -174,6 +182,19 @@ export default {
       /* Tout le reste de /api demande d'être connecté */
       if (p.startsWith('/api/')) {
         if (!(await connecte(req, env))) return json({ ok: false, erreur: 'Session expirée : reconnectez-vous.' }, 401);
+
+        if (methode === 'POST' && p === '/api/mot-de-passe') {
+          const n = await essais(env, 'mdp:' + ip(req));
+          if (n >= 8) return json({ ok: false, erreur: 'Trop d’essais. Réessayez dans un quart d’heure.' }, 429);
+          const corps = await req.json().catch(() => ({}));
+          const actuel = String(corps.actuel || ''), nouveau = String(corps.nouveau || '');
+          if (!(await verifierMotDePasse(env, actuel))) { await compter(env, 'mdp:' + ip(req), n, 900); return json({ ok: false, erreur: 'Le mot de passe actuel est incorrect.' }, 403); }
+          if (nouveau.length < 12) return json({ ok: false, erreur: 'Le nouveau mot de passe doit faire 12 caractères au moins.' }, 400);
+          if (nouveau.length > 200) return json({ ok: false, erreur: 'Le nouveau mot de passe est trop long.' }, 400);
+          if (nouveau === actuel) return json({ ok: false, erreur: 'Choisissez un mot de passe différent de l’actuel.' }, 400);
+          await env.CONTENU.put('admin:hash', await fabriquerEmpreinte(nouveau));
+          return json({ ok: true });
+        }
 
         if (methode === 'GET' && p === '/api/contenu') {
           return json({ ok: true, contenu: await lireContenu(env, true), maquette: estMaquette(env) });

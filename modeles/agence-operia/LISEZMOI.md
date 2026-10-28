@@ -20,6 +20,12 @@ Un site indépendant, hébergé gratuitement chez Cloudflare, avec son espace de
 - **Les textes** reprennent uniquement les faits de leur site actuel (réalisations, méthode, garanties, équipe), réécrits. Une surface ou un lieu douteux est indiqué dans la liste « à valider » donnée à Greg.
 - `npm run verifier` liste tout ce qui reste à faire.
 
+## Sauvegarde et visites (moteur du 28/10/2026)
+
+- **Sauvegarde nocturne** : chaque nuit, le serveur garde une copie du contenu pendant 7 nuits (cron du Worker). Une copie externe (R2) est possible en ajoutant la ligne commentée de `wrangler.jsonc`. Restauration et détails : `METHODE.md` du kit, partie 2.4 bis.
+- **Visites** : une fois le site ouvert (`MAQUETTE` à « non »), le serveur compte les pages vues par jour, sans cookie ni adresse IP ; panneau « Visites du site » de l'espace de modification. La page de confidentialité le dit.
+- **Pages par métier et comparaison** : deux blocs facultatifs du contenu, absents d'ici (voir `METHODE.md`, partie 2.4 bis).
+
 ## Vidéo de fond (accueil)
 
 Dans l'espace de modification, rubrique « Accueil » : « Vidéo de fond », puis la case « Vidéo en fond (sinon la photo) ». Case décochée, le site garde la photo, comme avant ; la vidéo reste enregistrée pour plus tard. La photo sert aussi d'image d'attente pendant le chargement, et un petit bouton pause s'affiche en bas à droite (obligatoire pour l'accessibilité). Les visiteurs qui ont demandé moins d'animations voient la vidéo à l'arrêt.
@@ -89,3 +95,10 @@ Le site est alors en ligne en mode proposition (bandeau, non indexé par Google,
 | `public/admin/`, `public/assets/admin.*` | L'espace de modification |
 | `public/assets/operia-*.png` | Logo : nom, nom en blanc, monogramme, logo complet |
 | `outils/` | Vérificateur, tests, démonstration, mot de passe |
+
+## Ajouts du moteur (octobre 2026)
+
+- **Page Engagements** (`/engagements`) : clé facultative `engagements`, une liste de blocs `{ titre, texte, points }` (hébergement, données, sauvegardes, délais…). Sans bloc, ni page ni lien de menu. Modifiable dans la rubrique « Engagements » de la page de modification.
+- **Étiquette sur une vignette** : `realisations[].etiquette` (ex. « Démonstration »). L'accueil montre 6, 4 ou 3 réalisations selon leur nombre.
+- **Cartes** : le nom de la réalisation est au-dessus de l'image.
+- **Accessibilité** : `npm run accessibilite` (axe-core, WCAG 2.2 AA, bureau, mobile, « moins d'animations », parcours au clavier ; demande Playwright). Anneau de focus à deux tons, bandeaux de version et d'annonce repérés comme zones de la page.

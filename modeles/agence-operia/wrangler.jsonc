@@ -7,7 +7,11 @@
   // Stockage du contenu : créé tout seul au premier déploiement (wrangler 4.45 ou plus), puis toujours le même.
   "kv_namespaces": [{ "binding": "CONTENU" }],
   // "oui" tant que le client n’a pas validé : bandeau de proposition, non indexé, demandes en démonstration.
-  "vars": { "MAQUETTE": "oui" }
+  "vars": { "MAQUETTE": "oui" },
+  // Copie de sauvegarde du contenu chaque nuit (vers 3 h 17, heure de Paris en hiver).
+  "triggers": { "crons": ["17 2 * * *"] }
+  // Copie externe facultative (contenu, photos et vidéos) : créer le stockage R2 (jurisdiction UE possible), puis ajouter
+  // "r2_buckets": [{ "binding": "SAUVEGARDE", "bucket_name": "sauvegarde-" + le nom du site }]
   // Après l'achat du domaine (zone ajoutée sur Cloudflare) :
   // "routes": [{ "pattern": "nomdedomaine.fr", "custom_domain": true }]
 }

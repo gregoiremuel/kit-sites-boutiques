@@ -70,6 +70,16 @@ async function tests() {
   }
   const polices = (await import('../public/assets/polices.js')).POLICES[C.theme.polices];
   for (const [, , f] of polices.fichiers) { r = await req('/fonts/' + f); verif(r.status === 200, 'Police ' + f); }
+  /* Chaque gabarit se rend sans erreur, avec sa classe, son menu, ses horaires et sans mot « undefined » */
+  const { rendreSite, GABARITS } = await import('../public/assets/rendu.js');
+  const { POLICES: TOUTES } = await import('../public/assets/polices.js');
+  for (const g of GABARITS) {
+    const page = rendreSite({ ...C, theme: { ...C.theme, gabarit: g } }, { maquette: false });
+    verif(page.includes(`class="g-${g} `) && page.includes('id="horaires"') && page.includes('id="menu-btn"') && !/undefined|NaN|\[object Object\]/.test(page.replace(/<script[\s\S]*?<\/script>/g, '')), `Gabarit « ${g} » : page complète`);
+  }
+  for (const [nom, jeu] of Object.entries(TOUTES)) {
+    for (const [, , f] of jeu.fichiers) { r = await req('/fonts/' + f); if (r.status !== 200) verif(false, `Police ${nom} : ${f} manquante`); }
+  }
   r = await req('/photos/nexistepas'); verif(r.status === 404, 'Photo inconnue : 404');
 
   /* Espace boutique */
@@ -151,6 +161,17 @@ async function tests() {
       r = await req('/api/commandes/' + cmd.id, { method: 'PATCH', ...corpsJson({ statut: 'nimportequoi' }) }); verif(r.status === 400, 'Statut inconnu refusé');
     }
   } else console.log('  (pas de formulaire de demande pour cette boutique : tests des demandes sautés)');
+
+  /* Changer le mot de passe depuis la page de modification */
+  const NOUVEAU = 'nouvelle-phrase-secrete-42';
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: 'faux-mot-de-passe', nouveau: NOUVEAU }) }); verif(r.status === 403, 'Changement de mot de passe refusé si le mot de passe actuel est faux');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: 'court' }) }); verif(r.status === 400, 'Nouveau mot de passe de moins de 12 caractères refusé');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: MDP }) }); verif(r.status === 400, 'Nouveau mot de passe identique à l’ancien refusé');
+  r = await req('/api/mot-de-passe', { method: 'POST', cookie: false, ...corpsJson({ actuel: MDP, nouveau: NOUVEAU }) }); verif(r.status === 401, 'Changement de mot de passe refusé sans connexion');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: NOUVEAU }) }); verif(r.status === 200, 'Mot de passe changé');
+  r = await req('/api/connexion', { method: 'POST', cookie: false, ...corpsJson({ motdepasse: NOUVEAU }) }); verif(r.status === 200, 'Connexion avec le nouveau mot de passe');
+  r = await req('/api/connexion', { method: 'POST', cookie: false, ...corpsJson({ motdepasse: MDP }) }); verif(r.status === 401, 'L’ancien mot de passe ne marche plus');
+  r = await req('/api/contenu'); verif(r.status === 200, 'La session en cours reste ouverte après le changement');
 
   /* Retour en arrière, déconnexion */
   r = await req('/api/annuler', { method: 'POST' }); j = await r.json();

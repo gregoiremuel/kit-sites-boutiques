@@ -5,7 +5,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { rendreSite, rendreMentions, horaires, voc, STYLES, ORDRE_PARTIES } from '../public/assets/rendu.js';
+import { rendreSite, rendreMentions, horaires, voc, STYLES, ORDRE_PARTIES, GABARITS } from '../public/assets/rendu.js';
 import { POLICES } from '../public/assets/polices.js';
 
 export const SCHEMA = 'site-boutique v2';
@@ -13,7 +13,7 @@ const JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dim
 export const TYPES_SCHEMA = ['LocalBusiness', 'Store', 'Bakery', 'CafeOrCoffeeShop', 'Restaurant', 'BarOrPub', 'IceCreamShop', 'Winery',
   'Florist', 'BookStore', 'ClothingStore', 'ShoeStore', 'JewelryStore', 'LiquorStore', 'GroceryStore', 'HardwareStore', 'HomeGoodsStore',
   'FurnitureStore', 'GardenStore', 'PetStore', 'ToyStore', 'BikeStore', 'HobbyShop', 'MusicStore', 'SportingGoodsStore',
-  'BeautySalon', 'HairSalon', 'NailSalon', 'DaySpa', 'TattooParlor', 'HealthClub', 'AutoRepair', 'Optician', 'ProfessionalService'];
+  'BeautySalon', 'HairSalon', 'NailSalon', 'DaySpa', 'TattooParlor', 'HealthClub', 'AutoRepair', 'Plumber', 'Electrician', 'Locksmith', 'HomeAndConstructionBusiness', 'Optician', 'ProfessionalService'];
 
 /* Forme exacte attendue : chaque objet doit avoir ces clés, et aucune autre */
 const FORME = {
@@ -23,7 +23,7 @@ const FORME = {
   'metier.offres': ['nav', 'rubrique', 'singulier', 'pluriel', 'feminin', 'bouton'],
   'metier.demande': ['type', 'nav', 'rubrique', 'quantite', 'unite', 'par_unite', 'date', 'precisions', 'exemple', 'lien', 'lien_texte'],
   theme: ['couleur', 'couleur_foncee', 'couleur_pale', 'accent', 'polices', 'accueil', 'titres', 'angles', 'offres_fond', 'ordre'],
-  boutique: ['nom', 'telephone', 'adresse', 'ville', 'quartier', 'acces', 'email', 'instagram'],
+  boutique: ['nom', 'telephone', 'adresse', 'ville', 'quartier', 'acces', 'email', 'instagram', 'logo'],
   annonce: ['afficher', 'texte'],
   horaires: JOURS,
   sections: ['boutique', 'produits', 'offres', 'presse', 'questions'],
@@ -42,7 +42,7 @@ const ELEMENTS = {
 
 /* Mots et tics qui font « site IA » (voir le prompt) */
 /* Clés acceptées sans être obligatoires (ajoutées après le prompt) */
-const FACULTATIVES = { textes: ['video_accueil', 'fond_video'] };
+const FACULTATIVES = { textes: ['video_accueil', 'fond_video'], theme: ['gabarit'], 'metier.demande': ['qui', 'etape_jour', 'jour_phrase', 'sujet', 'sans_prix'], reglages: ['bandeau', 'illustration'] };
 const INTERDITS = [
   [/\bbienvenue\b/i, 'Bienvenue'], [/\bdécouvr(ez|ir)\b/i, 'Découvrez'], [/n['’]hésitez pas/i, 'N’hésitez pas'], [/au c(œ|oe)ur d/i, 'au cœur de'],
   [/\bvéritable/i, 'véritable'], [/\bincontournable/i, 'incontournable'], [/\bpassion/i, 'passion'], [/savoir-faire unique/i, 'savoir-faire unique'],
@@ -90,7 +90,7 @@ export function verifier(C) {
     const o = chemin ? lire(chemin) : C;
     const nom = chemin || 'racine';
     if (!o || typeof o !== 'object' || Array.isArray(o)) { E(`« ${nom} » doit être un objet { … }.`); casse = true; continue; }
-    cles.filter((k) => !(k in o)).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
+    cles.filter((k) => !(k in o) && !(chemin === 'boutique' && k === 'logo')).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
     Object.keys(o).filter((k) => !cles.includes(k) && !(FACULTATIVES[chemin] || []).includes(k)).forEach((k) => E(`Clé inconnue (faute de frappe ?) : ${chemin ? chemin + '.' : ''}${k}`));
   }
   for (const [liste, cles] of Object.entries(ELEMENTS)) {
@@ -163,14 +163,16 @@ export function verifier(C) {
   const T = C.theme;
   ['couleur', 'couleur_foncee', 'couleur_pale', 'accent'].forEach((k) => { if (!HEX.test(T[k] || '')) E(`theme.${k} doit être une couleur #rrggbb (6 chiffres hexadécimaux).`); });
   if (!POLICES[T.polices]) E(`theme.polices doit valoir ${Object.keys(POLICES).map((k) => '"' + k + '"').join(', ')}.`);
+  if ('gabarit' in T && !GABARITS.includes(T.gabarit)) E(`theme.gabarit doit valoir ${GABARITS.map((x) => '"' + x + '"').join(', ')}.`);
+  const gabarit = GABARITS.includes(T.gabarit) ? T.gabarit : 'standard';
   Object.entries(STYLES).forEach(([k, valeurs]) => { if (!valeurs.includes(T[k])) E(`theme.${k} doit valoir ${valeurs.map((x) => '"' + x + '"').join(' ou ')}.`); });
   if (!Array.isArray(T.ordre) || T.ordre.length !== ORDRE_PARTIES.length || !ORDRE_PARTIES.every((k) => T.ordre.includes(k))) E(`theme.ordre doit contenir une fois chacune de ces parties, dans l'ordre voulu : ${ORDRE_PARTIES.map((x) => '"' + x + '"').join(', ')}.`);
   const sansPhoto = (v) => !String(v || '').trim();
   const TX = C.textes || {};
   if (TX.video_accueil && !/^(https:\/\/\S+\.(mp4|webm)(\?\S*)?|\/videos\/[a-z0-9-]+|\/assets\/\S+\.(mp4|webm)|data:video\/(mp4|webm);base64,\S+)$/i.test(TX.video_accueil)) E('textes.video_accueil : un fichier envoyé, ou un lien https se terminant par .mp4 ou .webm.');
   if ('fond_video' in TX && typeof TX.fond_video !== 'boolean') E('textes.fond_video doit valoir true ou false.');
-  if (['photo', 'partage'].includes(T.accueil) && sansPhoto((C.textes || {}).photo_accueil)) A(`theme.accueil vaut "${T.accueil}" mais textes.photo_accueil est vide : prenez "sobre" tant qu'il n'y a pas de photo.`);
-  if (T.offres_fond === 'photo' && sansPhoto((C.textes || {}).offres_photo) && (C.offres || []).length) A('theme.offres_fond vaut "photo" mais textes.offres_photo est vide : prenez "clair".');
+  if (gabarit === 'standard' && ['photo', 'partage'].includes(T.accueil) && sansPhoto((C.textes || {}).photo_accueil)) A(`theme.accueil vaut "${T.accueil}" mais textes.photo_accueil est vide : prenez "sobre" tant qu'il n'y a pas de photo.`);
+  if (gabarit === 'standard' && T.offres_fond === 'photo' && sansPhoto((C.textes || {}).offres_photo) && (C.offres || []).length) A('theme.offres_fond vaut "photo" mais textes.offres_photo est vide : prenez "clair".');
   if (['couleur', 'couleur_foncee', 'couleur_pale', 'accent'].every((k) => HEX.test(T[k] || ''))) {
     const r = (a, b) => Math.round(contraste(a, b) * 100) / 100;
     const regle = (a, b, min, quoi) => { const x = r(a, b); if (x < min) E(`Contraste trop faible (${String(x).replace('.', ',')} pour ${String(min).replace('.', ',')} minimum) : ${quoi}.`); };
@@ -178,7 +180,7 @@ export function verifier(C) {
     regle('#ffffff', T.couleur_foncee, 4.5, 'texte blanc sur theme.couleur_foncee');
     regle(T.couleur_foncee, T.couleur_pale, 4.5, 'theme.couleur_foncee sur theme.couleur_pale (fonds clairs)');
     regle('#dfe7ed', T.couleur_foncee, 4.5, 'texte clair du pied de page sur theme.couleur_foncee : assombrissez couleur_foncee');
-    regle('#1f2328', T.accent, 4.5, 'texte noir sur theme.accent (message en haut du site) : éclaircissez accent');
+    regle(r('#1f2328', T.accent) >= r('#ffffff', T.accent) ? '#1f2328' : '#ffffff', T.accent, 4.5, 'texte sur theme.accent (message en haut du site, bandeau d’appel) : éclaircissez ou assombrissez accent');
     regle('#1f2328', T.couleur_pale, 7, 'texte sur theme.couleur_pale');
     if (lum(T.couleur_foncee) >= lum(T.couleur)) E('theme.couleur_foncee doit être plus foncée que theme.couleur.');
     if (lum(T.couleur_pale) < 0.75) E('theme.couleur_pale doit être très claire (fond des parties alternées).');
@@ -297,6 +299,9 @@ export function verifier(C) {
   if (!Array.isArray(R.geo) || (R.geo.length && (R.geo.length !== 2 || !R.geo.every((n) => typeof n === 'number')))) E('reglages.geo doit être [latitude, longitude], deux nombres sans guillemets, ou [] si inconnu.');
   else if (R.geo.length && (R.geo[0] < 41 || R.geo[0] > 51.2 || R.geo[1] < -5.3 || R.geo[1] > 9.7)) A('reglages.geo est hors de France métropolitaine : latitude et longitude inversées ?');
   if (R.url && !URL_HTTPS.test(R.url)) E('reglages.url doit être vide ou une adresse https://');
+  if ('illustration' in R && typeof R.illustration !== 'boolean') E('reglages.illustration doit valoir true ou false.');
+  if ('bandeau' in R && typeof R.bandeau !== 'string') E('reglages.bandeau doit être un texte (ou absent).');
+  if (R.illustration === true && !String(C.credits_photos || '').trim()) A('reglages.illustration vaut true : créditez les photos dans credits_photos.');
 
   /* 11. Style des textes écrits pour le site (pas les noms propres ni les titres d'articles) */
   const visibles = [];
@@ -356,7 +361,7 @@ export function verifier(C) {
   if (C.annonce.afficher) avalider.push('Message en haut du site : ' + C.annonce.texte);
   if (K.actif && D.type !== 'lien') avalider.push(`Demandes en ligne : ${D.type === 'devis' ? 'devis' : 'commande à retirer'}, délai ${K.delai_heures} h${D.quantite ? `, ${K.quantite_min} à ${K.quantite_max} ${D.unite}` : ''}`);
   if (!C.mentions.raison_sociale || !C.mentions.siret || !C.mentions.directeur_publication) avalider.push('Mentions légales à compléter avant la mise en ligne définitive : raison sociale, SIRET, directeur de la publication.');
-  const style = `accueil ${T.accueil}, titres ${T.titres}, angles ${T.angles}, offres ${T.offres_fond}, polices ${T.polices}, couleur ${T.couleur}, ordre : ${(Array.isArray(T.ordre) ? T.ordre : []).join(' > ')}`;
+  const style = `gabarit ${T.gabarit || 'standard'}, accueil ${T.accueil}, titres ${T.titres}, angles ${T.angles}, offres ${T.offres_fond}, polices ${T.polices}, couleur ${T.couleur}, ordre : ${(Array.isArray(T.ordre) ? T.ordre : []).join(' > ')}`;
   return { erreurs, alertes, avalider, style };
 }
 

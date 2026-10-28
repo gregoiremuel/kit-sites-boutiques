@@ -11,9 +11,11 @@
     "test": "node outils/tester.mjs",
     "apercu": "node outils/apercu.mjs",
     "mot-de-passe": "node outils/mot-de-passe.mjs",
-    "nouvelle-boutique": "node outils/nouvelle-boutique.mjs"
+    "nouvelle-boutique": "node outils/nouvelle-boutique.mjs",
+    "accessibilite": "node outils/accessibilite.mjs"
   },
   "devDependencies": {
-    "wrangler": "^4.20.0"
+    "wrangler": "^4.20.0",
+    "axe-core": "^4.14.0"
   }
 }

@@ -34,6 +34,11 @@ const vraiApi = {
     if (!j.ok) throw new Error(j.erreur || 'Connexion impossible.');
   },
   async deconnexion() { await fetch('/api/deconnexion', { method: 'POST' }); },
+  async motDePasse(actuel, nouveau) {
+    const r = await fetch('/api/mot-de-passe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ actuel, nouveau }) });
+    const j = await r.json().catch(() => ({}));
+    if (!j.ok) throw new Error(j.erreur || 'Changement impossible.');
+  },
   async enregistrer(C) {
     const r = await fetch('/api/contenu', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(C) });
     const j = await r.json().catch(() => ({}));
@@ -110,6 +115,7 @@ const demoApi = {
   async charger() { return memo.lire('connecte', false) ? { contenu: memo.lire('contenu', copie(DEMO.contenu)), maquette: true } : null; },
   async connexion() { memo.ecrire('connecte', true); },
   async deconnexion() { memo.ecrire('connecte', false); },
+  async motDePasse() { throw new Error('Indisponible dans la démonstration : le vrai site a son propre mot de passe.'); },
   async enregistrer(C) {
     const avant = memo.lire('contenu', copie(DEMO.contenu));
     if (!memo.ecrire('contenu', C)) throw new Error('Mémoire du téléphone pleine : retirez une photo.');
@@ -397,6 +403,27 @@ function listeCommandes() {
     boite);
 }
 
+/* ---------- Mot de passe : changé ici, gardé par le serveur (empreinte, jamais le mot de passe) ---------- */
+function blocMotDePasse() {
+  const champMdp = (id, libelle, auto) => { const i = el('input', { id, type: 'password', autocomplete: auto, class: 'saisie' }); return [i, el('div', { class: 'champ' }, el('label', { for: id, text: libelle }), i)]; };
+  const [a, ba] = champMdp('mdp-actuel', 'Mot de passe actuel', 'current-password');
+  const [n, bn] = champMdp('mdp-nouveau', 'Nouveau mot de passe (12 caractères au moins)', 'new-password');
+  const [c, bc] = champMdp('mdp-confirme', 'Nouveau mot de passe, une seconde fois', 'new-password');
+  const msg = el('p', { class: 'aide', role: 'status', 'aria-live': 'polite' });
+  const dire = (texte, erreur) => { msg.textContent = texte; msg.className = erreur ? 'erreur' : 'aide'; msg.setAttribute('role', erreur ? 'alert' : 'status'); };
+  const bouton = el('button', { type: 'button', class: 'btn', text: 'Changer le mot de passe', onclick: async () => {
+    if (n.value.length < 12) return dire('Le nouveau mot de passe doit faire 12 caractères au moins (une phrase, par exemple).', true);
+    if (n.value !== c.value) return dire('Les deux nouveaux mots de passe ne sont pas identiques.', true);
+    bouton.disabled = true; dire('Changement en cours…');
+    try { await api.motDePasse(a.value, n.value); a.value = n.value = c.value = ''; dire('Mot de passe changé. Gardez-le dans un gestionnaire de mots de passe : il ne peut pas être relu.'); }
+    catch (x) { dire(x.message, true); }
+    bouton.disabled = false;
+  } });
+  return el('div', { class: 'pan-corps', style: 'padding:0' },
+    el('p', { class: 'aide', text: 'Choisissez une phrase longue et unique, que vous n’utilisez nulle part ailleurs. Vous restez connecté ; les autres appareils devront utiliser le nouveau mot de passe à leur prochaine connexion. Si vous l’oubliez, Grégoire peut le réinitialiser.' }),
+    ba, bn, bc, el('div', { class: 'actions' }, bouton), msg);
+}
+
 /* ---------- Rubriques ---------- */
 const montrer = (chemin) => { if (E.page !== chemin) { E.page = chemin; rendreApercu(); } };
 function panneaux() {
@@ -510,6 +537,11 @@ function panneaux() {
             champ(E.C, { k: 'commandes.cle_web3forms', l: 'Clé Web3Forms', ex: 'pour recevoir les demandes par e-mail' }),
             champ(E.C, { k: 'commandes.email', l: 'E-mail de secours', ex: 'utilisé si la clé est vide', type: 'email' }))),
       ],
+    },
+    {
+      id: 'motdepasse', titre: 'Mot de passe',
+      resume: () => 'Changer le mot de passe de cette page',
+      corps: () => [blocMotDePasse()],
     },
     {
       id: 'infos', titre: 'Coordonnées, logo et mentions', page: '/mentions-legales',

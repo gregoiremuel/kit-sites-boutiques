@@ -33,6 +33,11 @@ const vraiApi = {
     if (!j.ok) throw new Error(j.erreur || 'Connexion impossible.');
   },
   async deconnexion() { await fetch('/api/deconnexion', { method: 'POST' }); },
+  async motDePasse(actuel, nouveau) {
+    const r = await fetch('/api/mot-de-passe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ actuel, nouveau }) });
+    const j = await r.json().catch(() => ({}));
+    if (!j.ok) throw new Error(j.erreur || 'Changement impossible.');
+  },
   async enregistrer(C) {
     const r = await fetch('/api/contenu', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(C) });
     const j = await r.json().catch(() => ({}));
@@ -109,6 +114,7 @@ const demoApi = {
   async charger() { return memo.lire('connecte', false) ? { contenu: memo.lire('contenu', copie(DEMO.contenu)), maquette: true } : null; },
   async connexion() { memo.ecrire('connecte', true); },
   async deconnexion() { memo.ecrire('connecte', false); },
+  async motDePasse() { throw new Error('Indisponible dans la démonstration : le vrai site a son propre mot de passe.'); },
   async enregistrer(C) {
     const avant = memo.lire('contenu', copie(DEMO.contenu));
     if (!memo.ecrire('contenu', C)) throw new Error('Mémoire du téléphone pleine : retirez une photo.');
@@ -169,7 +175,7 @@ function ecranConnexion(message) {
     onsubmit: seConnecter,
   },
   el('h1', { text: nom }),
-  el('p', { class: 'sous', text: 'Espace boutique' }),
+  el('p', { class: 'sous', text: 'Page de modification' }),
   DEMO ? el('p', { class: 'aide', text: 'Démonstration : aucun mot de passe n’est demandé, vos essais restent sur ce téléphone.' }) : null,
   el('div', { class: 'champ' }, el('label', { for: 'mdp', text: 'Mot de passe' }), el('div', { class: 'mdp' }, input, voir)),
   err, bouton,
@@ -367,6 +373,27 @@ function listeCommandes() {
     boite);
 }
 
+/* ---------- Mot de passe : changé ici, gardé par le serveur (empreinte, jamais le mot de passe) ---------- */
+function blocMotDePasse() {
+  const champMdp = (id, libelle, auto) => { const i = el('input', { id, type: 'password', autocomplete: auto, class: 'saisie' }); return [i, el('div', { class: 'champ' }, el('label', { for: id, text: libelle }), i)]; };
+  const [a, ba] = champMdp('mdp-actuel', 'Mot de passe actuel', 'current-password');
+  const [n, bn] = champMdp('mdp-nouveau', 'Nouveau mot de passe (12 caractères au moins)', 'new-password');
+  const [c, bc] = champMdp('mdp-confirme', 'Nouveau mot de passe, une seconde fois', 'new-password');
+  const msg = el('p', { class: 'aide', role: 'status', 'aria-live': 'polite' });
+  const dire = (texte, erreur) => { msg.textContent = texte; msg.className = erreur ? 'erreur' : 'aide'; msg.setAttribute('role', erreur ? 'alert' : 'status'); };
+  const bouton = el('button', { type: 'button', class: 'btn', text: 'Changer le mot de passe', onclick: async () => {
+    if (n.value.length < 12) return dire('Le nouveau mot de passe doit faire 12 caractères au moins (une phrase, par exemple).', true);
+    if (n.value !== c.value) return dire('Les deux nouveaux mots de passe ne sont pas identiques.', true);
+    bouton.disabled = true; dire('Changement en cours…');
+    try { await api.motDePasse(a.value, n.value); a.value = n.value = c.value = ''; dire('Mot de passe changé. Gardez-le dans un gestionnaire de mots de passe : il ne peut pas être relu.'); }
+    catch (x) { dire(x.message, true); }
+    bouton.disabled = false;
+  } });
+  return el('div', { class: 'pan-corps', style: 'padding:0' },
+    el('p', { class: 'aide', text: 'Choisissez une phrase longue et unique, que vous n’utilisez nulle part ailleurs. Vous restez connecté ; les autres appareils devront utiliser le nouveau mot de passe à leur prochaine connexion. Si vous l’oubliez, Grégoire peut le réinitialiser.' }),
+    ba, bn, bc, el('div', { class: 'actions' }, bouton), msg);
+}
+
 /* ---------- Rubriques (construites avec le vocabulaire du métier) ---------- */
 const nb = (n, sing, plur, e) => n + ' ' + (n > 1 ? plur : sing) + ' affiché' + (e || '') + (n > 1 ? 's' : '');
 const masque = (k) => E.C.sections && E.C.sections[k] === false;
@@ -477,6 +504,11 @@ function panneaux() {
       ],
     },
     {
+      id: 'motdepasse', titre: 'Mot de passe',
+      resume: () => 'Changer le mot de passe de cette page',
+      corps: () => [blocMotDePasse()],
+    },
+    {
       id: 'infos', titre: 'Coordonnées et mentions légales',
       resume: () => [E.C.boutique.telephone, E.C.boutique.adresse].filter(Boolean).join(', '),
       corps: () => [
@@ -484,7 +516,7 @@ function panneaux() {
           { k: 'boutique.nom', l: 'Nom de la boutique' }, { k: 'boutique.telephone', l: 'Téléphone', type: 'tel' },
           { k: 'boutique.adresse', l: 'Adresse' }, { k: 'boutique.ville', l: 'Code postal et ville' },
           { k: 'boutique.quartier', l: 'Quartier' }, { k: 'boutique.acces', l: 'Accès', ex: 'métro, bus ou parking' },
-          { k: 'boutique.email', l: 'E-mail', ex: 'facultatif', type: 'email' }, { k: 'boutique.instagram', l: 'Lien Instagram', ex: 'facultatif', type: 'url' },
+          { k: 'boutique.email', l: 'E-mail', ex: 'facultatif', type: 'email' }, { k: 'boutique.instagram', l: 'Lien Instagram', ex: 'facultatif', type: 'url' }, { k: 'boutique.logo', l: 'Logo', ex: 'facultatif', t: 'photo' },
         ].map((d) => champ(E.C, d))),
         el('h3', { text: 'Mentions légales', style: 'font-size:1.125rem' }),
         el('div', { class: 'grille' }, [{ k: 'mentions.raison_sociale', l: 'Raison sociale' }, { k: 'mentions.siret', l: 'SIRET', mode: 'numeric' }, { k: 'mentions.directeur_publication', l: 'Directeur de la publication' }, { k: 'mentions.email_contact', l: 'E-mail de contact', type: 'email' }].map((d) => champ(E.C, d))),
@@ -499,9 +531,9 @@ let PANNEAUX = [];
 function vueSiteDemo() {
   let v = document.getElementById('demo-site');
   if (!v) {
-    v = el('div', { id: 'demo-site', class: 'apercu-plein' },
+    v = el('div', { id: 'demo-site', class: 'apercu-plein', role: 'region', 'aria-label': 'Aperçu du site' },
       el('div', { class: 'barre' }, el('b', { text: 'Le site' }),
-        el('button', { type: 'button', class: 'btn petit', text: 'Essayer l’espace boutique', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
+        el('button', { type: 'button', class: 'btn petit', text: 'Essayer la page de modification', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
       el('iframe', { title: 'Le site' }));
     document.body.append(v);
   }
@@ -580,7 +612,7 @@ function dessinerEditeur() {
 function ecranPrincipal() {
   racine.replaceChildren();
   const nom = E.C.boutique.nom || 'Votre boutique';
-  document.title = nom + ' : espace boutique';
+  document.title = nom + ' : page de modification';
   PANNEAUX = panneaux();
   appliquerTheme(E.C);
   const plein = el('div', { class: 'apercu-plein', hidden: true },
@@ -594,18 +626,18 @@ function ecranPrincipal() {
   etatBarre = el('span', { class: 'etat' });
   bEnr = el('button', { type: 'button', class: 'btn', text: 'Enregistrer', onclick: enregistrer });
   bAnn = el('button', { type: 'button', class: 'btn danger', onclick: annuler });
-  barre = el('div', { class: 'barre-enr' }, el('div', { class: 'in' }, etatBarre,
+  barre = el('div', { class: 'barre-enr', role: 'region', 'aria-label': 'Enregistrement' }, el('div', { class: 'in' }, etatBarre,
     el('button', { type: 'button', class: 'btn sec btn-apercu', text: 'Aperçu', onclick: () => { plein.hidden = false; document.body.style.overflow = 'hidden'; rendreApercu(); } }),
     bAnn, bEnr));
 
   racine.append(
     el('header', { class: 'haut' }, el('div', { class: 'haut-in' },
-      el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Espace boutique' })),
+      el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Page de modification' })),
       el('a', { class: 'btn', href: DEMO ? '#' : '/', target: DEMO ? null : '_blank', rel: 'noopener', text: 'Voir le site', onclick: DEMO ? (e) => { e.preventDefault(); plein.hidden = false; rendreApercu(); } : null }),
       el('button', { type: 'button', class: 'btn', text: 'Se déconnecter', onclick: async () => { if (modifie() && !confirm2()) return; await api.deconnexion(); ecranConnexion(); } }))),
-    DEMO ? el('p', { class: 'bandeau', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
-      : (E.maquette ? el('p', { class: 'bandeau', text: 'Le site est encore en mode proposition : les commandes ne sont pas envoyées.' }) : null),
-    el('div', { class: 'cadre' }, editeur, colonne), barre, plein);
+    DEMO ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
+      : (E.maquette ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Le site est encore en mode proposition : les commandes ne sont pas envoyées.' }) : null),
+    el('main', { class: 'cadre' }, editeur, colonne), barre, plein);
   dessinerEditeur(); majBarre(); rendreApercu();
   api.commandes().then((L) => { E.nouvelles = L.filter((c) => c.statut === 'nouvelle').length; majResumes(); }).catch(() => {});
 }
@@ -634,7 +666,7 @@ async function demarrer() {
     if (brouillon && !DEMO) { E.C = normaliser(brouillon); memo.ecrire('brouillon', null); toast('Vos modifications non enregistrées ont été récupérées.'); }
     ecranPrincipal();
   } catch (x) {
-    racine.replaceChildren(el('main', { class: 'connexion' }, el('div', { class: 'erreur', text: 'Impossible de charger l’espace boutique : ' + x.message + ' Vérifiez la connexion internet et rechargez la page.' })));
+    racine.replaceChildren(el('main', { class: 'connexion' }, el('div', { class: 'erreur', text: 'Impossible de charger la page de modification : ' + x.message + ' Vérifiez la connexion internet et rechargez la page.' })));
   } finally {
     /* démonstration : on montre d'abord le site, une seule fois */
     if (DEMO && DEMO.siteDabord && !siteMontre) { siteMontre = true; vueSiteDemo(); }
