@@ -23,7 +23,7 @@ const FORME = {
   'metier.offres': ['nav', 'rubrique', 'singulier', 'pluriel', 'feminin', 'bouton'],
   'metier.demande': ['type', 'nav', 'rubrique', 'quantite', 'unite', 'par_unite', 'date', 'precisions', 'exemple', 'lien', 'lien_texte'],
   theme: ['couleur', 'couleur_foncee', 'couleur_pale', 'accent', 'polices', 'accueil', 'titres', 'angles', 'offres_fond', 'ordre'],
-  boutique: ['nom', 'telephone', 'adresse', 'ville', 'quartier', 'acces', 'email', 'instagram'],
+  boutique: ['nom', 'telephone', 'adresse', 'ville', 'quartier', 'acces', 'email', 'instagram', 'logo'],
   annonce: ['afficher', 'texte'],
   horaires: JOURS,
   sections: ['boutique', 'produits', 'offres', 'presse', 'questions'],
@@ -90,7 +90,7 @@ export function verifier(C) {
     const o = chemin ? lire(chemin) : C;
     const nom = chemin || 'racine';
     if (!o || typeof o !== 'object' || Array.isArray(o)) { E(`« ${nom} » doit être un objet { … }.`); casse = true; continue; }
-    cles.filter((k) => !(k in o)).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
+    cles.filter((k) => !(k in o) && !(chemin === 'boutique' && k === 'logo')).forEach((k) => E(`Clé manquante : ${chemin ? chemin + '.' : ''}${k}`));
     Object.keys(o).filter((k) => !cles.includes(k) && !(FACULTATIVES[chemin] || []).includes(k)).forEach((k) => E(`Clé inconnue (faute de frappe ?) : ${chemin ? chemin + '.' : ''}${k}`));
   }
   for (const [liste, cles] of Object.entries(ELEMENTS)) {
@@ -180,7 +180,7 @@ export function verifier(C) {
     regle('#ffffff', T.couleur_foncee, 4.5, 'texte blanc sur theme.couleur_foncee');
     regle(T.couleur_foncee, T.couleur_pale, 4.5, 'theme.couleur_foncee sur theme.couleur_pale (fonds clairs)');
     regle('#dfe7ed', T.couleur_foncee, 4.5, 'texte clair du pied de page sur theme.couleur_foncee : assombrissez couleur_foncee');
-    regle('#1f2328', T.accent, 4.5, 'texte noir sur theme.accent (message en haut du site) : éclaircissez accent');
+    regle(r('#1f2328', T.accent) >= r('#ffffff', T.accent) ? '#1f2328' : '#ffffff', T.accent, 4.5, 'texte sur theme.accent (message en haut du site, bandeau d’appel) : éclaircissez ou assombrissez accent');
     regle('#1f2328', T.couleur_pale, 7, 'texte sur theme.couleur_pale');
     if (lum(T.couleur_foncee) >= lum(T.couleur)) E('theme.couleur_foncee doit être plus foncée que theme.couleur.');
     if (lum(T.couleur_pale) < 0.75) E('theme.couleur_pale doit être très claire (fond des parties alternées).');

@@ -123,9 +123,12 @@ function img(p, largeur, cls, prio) {
 }
 
 /* Couleurs et polices de la boutique (variables CSS de site.css et admin.css) */
+const luminance = (h) => { const v = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+const texteSur = (h) => (1.05 / (luminance(h) + 0.05) >= (luminance(h) + 0.05) / 0.06 ? '#ffffff' : '#1f2328');
 export function cssTheme(C, url) {
   const T = C.theme || {};
-  return `${cssPolices(T.polices, url)}\n:root{--bleu:${couleur(T.couleur, '#46667f')};--bleu-fonce:${couleur(T.couleur_foncee, '#2f4b61')};--bleu-pale:${couleur(T.couleur_pale, '#edf2f5')};--paille:${couleur(T.accent, '#efd58b')}}`;
+  const acc = couleur(T.accent, '#efd58b');
+  return `${cssPolices(T.polices, url)}\n:root{--bleu:${couleur(T.couleur, '#46667f')};--bleu-fonce:${couleur(T.couleur_foncee, '#2f4b61')};--bleu-pale:${couleur(T.couleur_pale, '#edf2f5')};--paille:${acc};--sur-accent:${texteSur(acc)}}`;
 }
 export const favicon = (C) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="5" fill="${couleur((C.theme || {}).couleur, '#46667f')}"/><text x="16" y="23" font-family="Georgia,serif" font-weight="700" font-size="20" fill="#ffffff" text-anchor="middle">${esc(cap(((C.boutique || {}).nom || 'B').replace(/^(la |le |les |l')/i, '')).charAt(0))}</text></svg>`);
 
@@ -162,6 +165,8 @@ export function rendreSite(C, o = {}) {
   const { H, TXT } = horaires(C);
 
   const nom = B.nom || 'Boutique';
+  const logoSrc = src(B.logo, 200);
+  const nomHtml = logoSrc ? `<img class="g-logo" src="${esc(logoSrc)}" alt="" width="44" height="44"><span>${esc(nom)}</span>` : esc(nom);
   const adresseComplete = `${B.adresse || ''}, ${B.ville || ''}`;
   const destination = encodeURIComponent(`${nom}, ${adresseComplete}`);
   const itineraire = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
@@ -318,7 +323,7 @@ export function rendreSite(C, o = {}) {
   const accueil = () => {
     const sobre = ST.accueil === 'sobre';
     const haut = `<div class="top"><div class="wrap">
-    <a class="nom" href="#contenu">${esc(nom)}</a>
+    <a class="nom" href="#contenu">${nomHtml}</a>
     <nav class="nav" aria-label="Menu principal">${liensNav}</nav>
     <a class="tel" href="${tel}">${esc(B.telephone)}</a>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -431,7 +436,7 @@ export function rendreSite(C, o = {}) {
   const lienAppel = (cls) => `<a class="btn ${cls || 'btn-contour'}" href="${tel}">Appeler</a>`;
   const liensNavGab = liensNav.replace(/<a href="#demande">[^<]*<\/a>/, '');
   const entete = (cls) => `<div class="g-tete ${cls}"><div class="wrap">
-    <a class="g-nom" href="#contenu">${esc(nom)}</a>
+    <a class="g-nom" href="#contenu">${nomHtml}</a>
     <nav class="g-nav" aria-label="Menu principal">${liensNavGab}</nav>
     <a class="g-cta" href="${esc(cta[0])}"${cta[2]}>${esc(cta[1])}</a>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -486,7 +491,7 @@ export function rendreSite(C, o = {}) {
     carte: () => `<header class="hero c-hero">
   <div class="g-tete c-tete"><div class="wrap c-barre">
     <a class="c-tel" href="${tel}">${esc(B.telephone)}</a>
-    <a class="g-nom" href="#contenu">${esc(nom)}</a>
+    <a class="g-nom" href="#contenu">${nomHtml}</a>
     <a class="g-cta" href="${esc(cta[0])}"${cta[2]}>${esc(cta[1])}</a>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
@@ -502,7 +507,7 @@ export function rendreSite(C, o = {}) {
 </header>`,
     marche: () => `<header class="hero m-hero">
   <div class="m-tete"><div class="wrap m-barre">
-    <a class="g-nom" href="#contenu">${esc(nom)}</a>
+    <a class="g-nom" href="#contenu">${nomHtml}</a>
     <nav class="g-nav" aria-label="Menu principal">${liensNavGab}</nav>
     <a class="g-cta" href="${esc(cta[0])}"${cta[2]}>${esc(cta[1])}</a>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -699,7 +704,7 @@ ${suite.map(partie).join('\n')}
 
 <footer class="foot">
   <div class="wrap">
-    <a class="nom" href="#contenu">${esc(nom)}</a>
+    <a class="nom" href="#contenu">${nomHtml}</a>
     <div class="foot-grid">
       <div><h3>Adresse</h3><p>${esc(B.adresse)}<br>${esc(B.ville)}${B.quartier ? '<br>' + esc(B.quartier) : ''}</p></div>
       <div><h3>Horaires</h3><ul>${resumeHoraires(TXT)}</ul></div>

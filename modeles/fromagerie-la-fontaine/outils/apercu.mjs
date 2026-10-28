@@ -18,7 +18,7 @@ const { erreurs } = verifier(C);
 if (erreurs.length) { console.error(`Le contenu a ${erreurs.length} erreur(s) : lancez « npm run verifier » pour les voir. Aucun fichier fabriqué.`); process.exit(1); }
 /* Photos du contenu écrites « /photos/nom » : si un fichier photos/nom.jpg (ou .jpeg, .png, .webp) existe à côté du fichier de contenu,
    il est intégré à la démonstration (elle s'ouvre alors sans internet, photos comprises). */
-const TYPES_PHOTO = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+const TYPES_PHOTO = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', svg: 'image/svg+xml' };
 const integrerPhotos = (o) => {
   if (Array.isArray(o)) return o.map(integrerPhotos);
   if (o && typeof o === 'object') { for (const k of Object.keys(o)) o[k] = integrerPhotos(o[k]); return o; }

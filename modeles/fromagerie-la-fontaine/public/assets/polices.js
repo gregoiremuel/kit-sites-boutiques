@@ -42,6 +42,12 @@ export const POLICES = {
     texte: '"Nunito Sans","Helvetica Neue",Arial,sans-serif',
     fichiers: [['Fraunces', 500, 'fraunces-latin-500-normal.woff2'], ['Fraunces', 600, 'fraunces-latin-600-normal.woff2'], ['Nunito Sans', 400, 'nunito-sans-latin-400-normal.woff2'], ['Nunito Sans', 600, 'nunito-sans-latin-600-normal.woff2']],
   },
+  jardin: {
+    description: 'Titres à empattements fins, élégants (Cormorant Garamond), texte rond (Nunito Sans). Fleuriste, créateur, boutique de décoration.',
+    titres: '"Cormorant Garamond",Georgia,serif',
+    texte: '"Nunito Sans","Helvetica Neue",Arial,sans-serif',
+    fichiers: [['Cormorant Garamond', 500, 'cormorant-garamond-latin-500-normal.woff2'], ['Cormorant Garamond', 600, 'cormorant-garamond-latin-600-normal.woff2'], ['Nunito Sans', 400, 'nunito-sans-latin-400-normal.woff2'], ['Nunito Sans', 600, 'nunito-sans-latin-600-normal.woff2']],
+  },
 };
 
 /* CSS des polices : url(f) donne l'adresse d'un fichier ("/fonts/x.woff2" ou "data:…"). */

@@ -484,7 +484,7 @@ function panneaux() {
           { k: 'boutique.nom', l: 'Nom de la boutique' }, { k: 'boutique.telephone', l: 'Téléphone', type: 'tel' },
           { k: 'boutique.adresse', l: 'Adresse' }, { k: 'boutique.ville', l: 'Code postal et ville' },
           { k: 'boutique.quartier', l: 'Quartier' }, { k: 'boutique.acces', l: 'Accès', ex: 'métro, bus ou parking' },
-          { k: 'boutique.email', l: 'E-mail', ex: 'facultatif', type: 'email' }, { k: 'boutique.instagram', l: 'Lien Instagram', ex: 'facultatif', type: 'url' },
+          { k: 'boutique.email', l: 'E-mail', ex: 'facultatif', type: 'email' }, { k: 'boutique.instagram', l: 'Lien Instagram', ex: 'facultatif', type: 'url' }, { k: 'boutique.logo', l: 'Logo', ex: 'facultatif', t: 'photo' },
         ].map((d) => champ(E.C, d))),
         el('h3', { text: 'Mentions légales', style: 'font-size:1.125rem' }),
         el('div', { class: 'grille' }, [{ k: 'mentions.raison_sociale', l: 'Raison sociale' }, { k: 'mentions.siret', l: 'SIRET', mode: 'numeric' }, { k: 'mentions.directeur_publication', l: 'Directeur de la publication' }, { k: 'mentions.email_contact', l: 'E-mail de contact', type: 'email' }].map((d) => champ(E.C, d))),
