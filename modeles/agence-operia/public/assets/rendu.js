@@ -337,6 +337,16 @@ const initiales = (n) => String(n || '').split(/[\s-]+/).filter(Boolean).map((m)
 /* Repères de confiance sous la grande photo (courts : trois ou quatre) */
 const garHero = (C) => (Array.isArray((C.accueil || {}).reperes) ? C.accueil.reperes : []).filter((x) => typeof x === 'string' && x.trim()).slice(0, 4);
 
+/* Composition de l'accueil sans grande photo : trois aperçus de sites d'exemple décalés, sur une trame de points et un aplat, avec un sceau « exemples ». Aucun faux client. */
+const compoHero = (essais) => {
+  const vues = essais.map((x) => x.apercu || (x.photos || [])[0]).filter(Boolean).slice(0, 3);
+  if (vues.length < 2) return '';
+  return `<div class="hero-compo" role="group" aria-label="Aperçus de sites d’exemple">
+      <span class="compo-trame" aria-hidden="true"></span><span class="compo-aplat" aria-hidden="true"></span>
+      ${vues.map((v, i) => `<span class="compo-vue compo-v${i + 1}">${img(v, 700, 'compo-img', i === 0, '')}</span>`).join('')}
+    </div>`;
+};
+
 /* ---------- Pages ---------- */
 function accueil(C, D) {
   const A = C.accueil || {}, G = C.agence || {};
@@ -352,7 +362,7 @@ function accueil(C, D) {
       areaServed: G.zone || undefined, ...((C.reglages || {}).url ? { url: C.reglages.url } : {}), sameAs: ['linkedin', 'instagram'].map((k) => G[k]).filter((u) => /^https:\/\//.test(u || '')) },
     corps: `
   <section class="hero">
-    ${video ? videoFond(video, src(A.photo, 2200), 'hero-media') : img(A.photo, 2400, 'hero-media', true, '')}
+    ${video ? videoFond(video, src(A.photo, 2200), 'hero-media') : src(A.photo, 2400) ? img(A.photo, 2400, 'hero-media', true, '') : compoHero(essais)}
     <div class="hero-txt wrap">
       ${A.sur_titre ? `<p class="sur sur-clair">${esc(A.sur_titre)}</p>` : ''}
       <h1>${esc(A.titre || G.nom)}</h1>
