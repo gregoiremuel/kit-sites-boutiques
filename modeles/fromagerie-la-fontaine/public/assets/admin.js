@@ -313,9 +313,25 @@ function editeurListe(cle, cfg) {
 
 /* ---------- Horaires ---------- */
 const ORDRE = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+/* Contrôle des horaires : chaque plage ouvre avant de fermer, et les plages d'un même jour ne se chevauchent pas */
+function erreurHoraires() {
+  const H = E.C.horaires || {};
+  for (const j of ORDRE) {
+    const plages = Array.isArray(H[j]) ? H[j] : [];
+    for (let i = 0; i < plages.length; i++) {
+      const [a, b] = plages[i];
+      if (!a || !b) return `${j} : renseignez l’heure d’ouverture et de fermeture.`;
+      if (a >= b) return `${j} : la fermeture (${b}) doit être après l’ouverture (${a}).`;
+      if (i > 0 && a < plages[i - 1][1]) return `${j} : les plages se chevauchent.`;
+    }
+  }
+  return '';
+}
 function editeurHoraires() {
   const H = E.C.horaires = E.C.horaires || {};
   const boite = el('div', { class: 'jours' });
+  const alerte = el('p', { class: 'aide', role: 'alert', hidden: true, style: 'color:#9a1b1b;font-weight:600' });
+  const verifier = () => { const m = erreurHoraires(); alerte.textContent = m; alerte.hidden = !m; };
   const dessiner = () => {
     boite.replaceChildren();
     ORDRE.forEach((j) => {
@@ -325,8 +341,8 @@ function editeurHoraires() {
       const droite = el('div', { class: 'plages' },
         el('label', { class: 'interrupteur', for: id }, ouvert, el('span', { class: 'rail', 'aria-hidden': 'true' }), plages.length ? 'Ouvert' : 'Fermé'));
       plages.forEach((p, i) => {
-        const a = el('input', { class: 'saisie', type: 'time', step: 900, value: p[0], 'aria-label': `${j}, ouverture`, onchange: (e) => { p[0] = e.target.value; changement(); } });
-        const b = el('input', { class: 'saisie', type: 'time', step: 900, value: p[1], 'aria-label': `${j}, fermeture`, onchange: (e) => { p[1] = e.target.value; changement(); } });
+        const a = el('input', { class: 'saisie', type: 'time', step: 900, value: p[0], 'aria-label': `${j}, ouverture`, onchange: (e) => { p[0] = e.target.value; changement(); verifier(); } });
+        const b = el('input', { class: 'saisie', type: 'time', step: 900, value: p[1], 'aria-label': `${j}, fermeture`, onchange: (e) => { p[1] = e.target.value; changement(); verifier(); } });
         droite.append(el('div', { class: 'plage' }, a, el('span', { text: 'à' }), b,
           plages.length > 1 ? el('button', { type: 'button', class: 'btn discret petit', text: 'Retirer', onclick: () => { plages.splice(i, 1); changement(); dessiner(); } }) : null));
       });
@@ -334,8 +350,8 @@ function editeurHoraires() {
       boite.append(el('div', { class: 'jour' }, el('span', { class: 'nomj', text: j }), droite));
     });
   };
-  dessiner();
-  return el('div', { class: 'pan-corps', style: 'padding:0' }, boite,
+  dessiner(); verifier();
+  return el('div', { class: 'pan-corps', style: 'padding:0' }, boite, alerte,
     champ(E.C, { k: 'horaires_note', l: 'Précision sous les horaires', ex: 'facultatif', ph: 'Ex. : horaires élargis pendant les fêtes' }));
 }
 
@@ -572,6 +588,7 @@ function majBarre() {
   bEnr.disabled = !m; bAnn.textContent = m ? 'Annuler' : 'Revenir en arrière'; bAnn.title = m ? 'Annuler les modifications non enregistrées' : 'Rétablir la version enregistrée juste avant';
 }
 async function enregistrer() {
+  const eh = erreurHoraires(); if (eh) { toast('Horaires à corriger : ' + eh); return; }
   bEnr.disabled = true; bEnr.textContent = 'Enregistrement…';
   try {
     await api.enregistrer(E.C);
@@ -635,7 +652,7 @@ function ecranPrincipal() {
       el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Page de modification' })),
       el('a', { class: 'btn', href: DEMO ? '#' : '/', target: DEMO ? null : '_blank', rel: 'noopener', text: 'Voir le site', onclick: DEMO ? (e) => { e.preventDefault(); plein.hidden = false; rendreApercu(); } : null }),
       el('button', { type: 'button', class: 'btn', text: 'Se déconnecter', onclick: async () => { if (modifie() && !confirm2()) return; await api.deconnexion(); ecranConnexion(); } }))),
-    DEMO ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
+    DEMO ? el('aside', { class: 'bandeau', 'aria-label': 'Information' }, 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié. ', el('button', { type: 'button', text: 'Tout remettre à zéro', onclick: () => { remettreAZero(); ecranConnexion(); toast('Démonstration remise à zéro : le site est revenu à sa version d’origine.'); } }))
       : (E.maquette ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Le site est encore en mode proposition : les commandes ne sont pas envoyées.' }) : null),
     el('main', { class: 'cadre' }, editeur, colonne), barre, plein);
   dessinerEditeur(); majBarre(); rendreApercu();
