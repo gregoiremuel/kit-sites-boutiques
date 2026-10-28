@@ -162,6 +162,17 @@ async function tests() {
     }
   } else console.log('  (pas de formulaire de demande pour cette boutique : tests des demandes sautés)');
 
+  /* Changer le mot de passe depuis la page de modification */
+  const NOUVEAU = 'nouvelle-phrase-secrete-42';
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: 'faux-mot-de-passe', nouveau: NOUVEAU }) }); verif(r.status === 403, 'Changement de mot de passe refusé si le mot de passe actuel est faux');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: 'court' }) }); verif(r.status === 400, 'Nouveau mot de passe de moins de 12 caractères refusé');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: MDP }) }); verif(r.status === 400, 'Nouveau mot de passe identique à l’ancien refusé');
+  r = await req('/api/mot-de-passe', { method: 'POST', cookie: false, ...corpsJson({ actuel: MDP, nouveau: NOUVEAU }) }); verif(r.status === 401, 'Changement de mot de passe refusé sans connexion');
+  r = await req('/api/mot-de-passe', { method: 'POST', ...corpsJson({ actuel: MDP, nouveau: NOUVEAU }) }); verif(r.status === 200, 'Mot de passe changé');
+  r = await req('/api/connexion', { method: 'POST', cookie: false, ...corpsJson({ motdepasse: NOUVEAU }) }); verif(r.status === 200, 'Connexion avec le nouveau mot de passe');
+  r = await req('/api/connexion', { method: 'POST', cookie: false, ...corpsJson({ motdepasse: MDP }) }); verif(r.status === 401, 'L’ancien mot de passe ne marche plus');
+  r = await req('/api/contenu'); verif(r.status === 200, 'La session en cours reste ouverte après le changement');
+
   /* Retour en arrière, déconnexion */
   r = await req('/api/annuler', { method: 'POST' }); j = await r.json();
   verif(j.ok && j.contenu.sections.boutique === false, 'Revenir en arrière rétablit la version précédente');
