@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 9, 28 octobre 2026. Grégoire Muel.
+Version 10, 28 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -8,13 +8,13 @@ Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir le
 
 ## 0. En une minute
 
-- **L'offre** : un site rapide, à leur nom, avec un **espace boutique**, une page privée où le commerçant change lui-même ses horaires, prix, photos et textes, affiche ou masque chaque partie, et reçoit les demandes de ses clients. Maquette gratuite en 48 h, puis le site à partir de 590 € (photos comprises), **sans abonnement obligatoire** ; en option, un abonnement mensuel (Sérénité 19 €, Croissance 49 €). Ces prix sont des propositions de départ ; repères du marché en partie 9.
+- **L'offre** : un site rapide, à leur nom, avec une **page de modification**, une page privée où le commerçant change lui-même ses horaires, prix, photos et textes, affiche ou masque chaque partie, et reçoit les demandes de ses clients. Maquette gratuite en 48 h, puis le site à partir de 590 € (photos comprises), **sans abonnement obligatoire** ; en option, un abonnement mensuel (Sérénité 19 €, Croissance 49 €). Ces prix sont des propositions de départ ; repères du marché en partie 9.
 - **Trois moteurs, déjà testés**, dans `modeles/` :
-  - **Vitrine** (`modeles/fromagerie-la-fontaine`) : une page pour un commerce de quartier (accueil, la boutique, produits, offres, demande en ligne, presse et note Google, questions, horaires, accès). Des variantes combinables (accueil sur grande photo, partagé ou sobre ; titres ; angles ; offres ; ordre des parties) et trois jeux de polices, pour que deux boutiques voisines ne se ressemblent pas.
+  - **Vitrine** (`modeles/fromagerie-la-fontaine`) : une page pour un commerce de quartier, un artisan ou un restaurant (accueil, la boutique, produits ou carte, offres, demande en ligne, presse et note Google, questions, horaires, accès). Cinq **gabarits** (`theme.gabarit`) qui changent la structure de la page, pas seulement les couleurs : `standard` (accueil sur grande photo, partagé ou sobre ; titres ; angles ; offres), `atelier` (artisan : index numéroté, tiroirs), `depannage` (urgence : appel et « Dépannage ou devis » en tête, tuiles), `carte` (restaurant : carte à deux colonnes, réservation), `marche` (fleurs, produits frais : mosaïque, saisons en cartes). Sept jeux de polices, pour que deux boutiques voisines ne se ressemblent pas.
   - **Agence** (`modeles/agence-operia`) : un site de plusieurs pages, haut de gamme, pour une entreprise de services ou du bâtiment (expertises, méthode, réalisations avec une page et une galerie par projet, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts : Nouvelle, Rappelé, Devis envoyé, Signée, Classée).
   - **Catalogue** (`modeles/maison-tcheskiss`) : un site de plusieurs pages pour une maison qui vend des pièces (accueil, collections, catalogue avec filtres, une page par pièce, panier, pages d'information, mentions légales). Le panier envoie une **demande de commande**, sans paiement en ligne : la maison rappelle, encaisse et expédie. Stripe pourra s'ajouter plus tard.
-- **L'IA n'écrit jamais de code** pour un nouveau site. Elle remplit un seul fichier de contenu (`contenu.json`) à partir d'un squelette fixe. Le moteur, l'espace boutique et le serveur restent les mêmes partout.
-- **Hébergement** : Cloudflare Workers, offre gratuite (le site, l'espace boutique et le stockage). Seul le nom de domaine se paie, au nom du client.
+- **L'IA n'écrit jamais de code** pour un nouveau site. Elle remplit un seul fichier de contenu (`contenu.json`) à partir d'un squelette fixe. Le moteur, la page de modification et le serveur restent les mêmes partout.
+- **Hébergement** : Cloudflare Workers, offre gratuite (le site, la page de modification et la mémoire du site). Seul le nom de domaine se paie, au nom du client.
 
 ---
 
@@ -31,7 +31,7 @@ Ton premier site peut être signé en deux semaines si tu visites 5 commerces la
 7. **Récupérer le contenu** : logo, prix, horaires, textes validés, SIRET pour les mentions légales. Shooting photo de 30 minutes.
 8. **Nom de domaine** au nom du client, qui en reste propriétaire. DNS confiés à Cloudflare (gratuit). Garder les accès techniques pour la maintenance.
 9. **Construire la version finale** avec les infos validées, puis la vérifier sur téléphone (liste « Avant la mise en ligne », partie 5).
-10. **Mettre en ligne** (partie 2.6), donner le mot de passe de l'espace boutique, prise en main de 15 minutes, lien du site ajouté sur la fiche Google.
+10. **Mettre en ligne** (partie 2.6), donner le mot de passe de la page de modification, prise en main de 15 minutes, lien du site ajouté sur la fiche Google.
 11. **Facturer le solde**. En micro-entreprise sans TVA : mention « TVA non applicable, art. 293 B du CGI ». Lancer l'abonnement mensuel. Déclarer le chiffre d'affaires à l'URSSAF.
 12. **Demander** un avis Google et une recommandation à deux commerçants voisins.
 
@@ -69,43 +69,57 @@ Comme le catalogue : le contenu se prépare avec Claude, à partir du site actue
 
 Les photos d'essai des réalisations portent automatiquement la mention « Photo d'illustration » : on ne fait jamais passer une photo de banque d'images pour un chantier du client.
 
-Le moteur agence sert à toute entreprise de services, pas seulement au bâtiment (exemple : le site de Grégoire Muel, sites internet, dépôt `site-atelier-muel`). Champs facultatifs, absents d'Opéria :
-- `libelles` : les mots du menu, des titres de rubrique, de la fiche d'une réalisation et du formulaire (liste et valeurs par défaut dans `LIBELLES`, `rendu.js`). Un champ du formulaire au libellé vide disparaît. Le panneau « Titres et libellés » ne s'affiche dans l'espace de modification que si le contenu a des `libelles`.
+Le moteur agence sert à toute entreprise de services, pas seulement au bâtiment (exemple : le site de Grégoire Muel, sites internet, dépôt `site-atelier-muel`). Les cartes de réalisation montrent le **nom au-dessus de l'image**. Champs facultatifs, absents d'Opéria :
+- `libelles` : les mots du menu, des titres de rubrique, de la fiche d'une réalisation et du formulaire (liste et valeurs par défaut dans `LIBELLES`, `rendu.js`). Un champ du formulaire au libellé vide disparaît. Le panneau « Titres et libellés » ne s'affiche dans la page de modification que si le contenu a des `libelles`.
 - `metiers[].prix` : « À partir de… » sous chaque offre.
 - `realisations[].lien` et `lien_texte` : bouton vers le site en ligne ou une démonstration. Avec `accueil.essai_titre` et `essai_texte`, l'accueil affiche un bloc « À essayer » qui liste ces liens.
-- `abonnements` : bloc « Abonnement facultatif » de la page des offres (`titre`, `intro`, `note`, `formules[]` avec `nom`, `prix`, `periode`, `description`, `points`, `recommande`). Panneau « Abonnement mensuel » dans l'espace de modification, seulement si le bloc existe.
+- `abonnements` : bloc « Abonnement facultatif » de la page des offres (`titre`, `intro`, `note`, `formules[]` avec `nom`, `prix`, `periode`, `description`, `points`, `recommande`). Panneau « Abonnement mensuel » dans la page de modification, seulement si le bloc existe.
 - `theme.gabarit` : `classique` (par défaut : bandes foncées, photo plein cadre, Playfair + Manrope) ou `studio` (papier clair, accueil en deux colonnes, Bricolage Grotesque + DM Sans, pastilles, bandes arrondies). Voir la règle « Un site, une identité » (partie 3).
 - `mentions.tva` : ligne TVA des mentions légales (« TVA non applicable, article 293 B du CGI » pour une micro-entreprise en franchise).
+- `realisations[].etiquette` : étiquette sur la vignette et sur la fiche (« Démonstration » pour un site imaginaire ; vide pour un vrai client). L'accueil montre 6 réalisations (une grande et cinq), 4 (deux par deux) ou 3.
+- `engagements` : liste de blocs `{ titre, texte, points }` qui forme la page `/engagements` (hébergement, données personnelles, sauvegardes, délai de réponse, arrêt de l'abonnement, accès aux données). La page et son lien de menu n'existent que s'il y a au moins un bloc ; textes dans `libelles` (`nav_engagements`, `page_eng_titre`…). Ce sont des engagements que le professionnel doit pouvoir tenir : les faire valider, et relire par un juriste.
 
-Des démonstrations à essayer peuvent vivre dans `public/demos/` : contenus imaginaires dans `exemples/`, fabriqués avec le moteur vitrine (un atelier d'artisan avec demande de devis, une fleuriste avec commande à retirer), bandeau « Site d'exemple : commerce imaginaire… ». Visuels sans photo de banque d'images : de vraies captures des sites (parties sans photo) dans des cadres d'ordinateur et de téléphone.
+Des démonstrations à essayer vivent dans `public/demos/` : contenus imaginaires dans `exemples/`, fabriqués avec le moteur vitrine, **un gabarit différent par métier** (atelier d'ébéniste avec devis, fleuriste avec commande à retirer, plombier avec téléphone cliquable et « Dépannage ou devis » en haut, restaurant avec carte, réservation et horaires). Chacune porte le bandeau « Démonstration : … imaginaire » (`reglages.bandeau`), des photos libres étiquetées « Photo d'illustration » (`reglages.illustration`) et créditées dans `credits_photos`, et aucun prix de carte ou de tarif qui n'ait été validé. Dans le site de l'agence, leurs vignettes sont de vraies captures d'écran, sans cadre de téléphone ni d'ordinateur, avec l'étiquette « Démonstration ».
 
 ### 2.5 La démonstration
-- `npm run apercu` fabrique `demonstration.html` : **un seul fichier**, sans serveur, qui s'ouvre sur le site puis « Essayer l'espace boutique » (n'importe quel mot de passe). On y modifie tout et le site de la démo change. Rien n'est publié.
+- `npm run apercu` fabrique `demonstration.html` : **un seul fichier**, sans serveur, qui s'ouvre sur le site puis « Essayer la page de modification » (n'importe quel mot de passe). On y modifie tout et le site de la démo change. Rien n'est publié.
 - **Ordinateur et Android** : le fichier s'ouvre directement (Chrome). **Un iPhone n'ouvre pas un fichier HTML** : il faut un lien. `npm run apercu` prépare aussi `demo-en-ligne/` : le zipper et le déposer sur Cloudflare Pages (« Workers & Pages », « Create application », « Pages », « Drag and drop your files », faisable depuis l'iPhone). Ce lien est public pour qui l'a : uniquement pour une boutique fictive ou un client qui a signé.
-- Dans la démo, chaque testeur garde ses changements dans son navigateur (une vingtaine de photos ajoutées au plus) ; une demande envoyée depuis le site n'arrive pas dans l'espace boutique (deux exemples tout faits). Pour tester à plusieurs avec une vraie sauvegarde : le vrai site en ligne en mode proposition.
+- Dans la démo, chaque testeur garde ses changements dans son navigateur (une vingtaine de photos ajoutées au plus) ; une demande envoyée depuis le site n'arrive pas dans la page de modification (deux exemples tout faits). Pour tester à plusieurs avec une vraie sauvegarde : le vrai site en ligne en mode proposition.
 
 ### 2.6 Mettre en ligne : Claude Code, sur l'ordinateur de Greg
 Compte gratuit sur https://dash.cloudflare.com, puis dans le dossier de la boutique :
-> Installe les dépendances (`npm install`). Lance `npm test` : tout doit être « ok ». Connecte-moi à Cloudflare (`npx wrangler login`). Crée le stockage KV « CONTENU » (`npx wrangler kv namespace create CONTENU`) et mets son id dans `wrangler.jsonc`. Lance `npm run mot-de-passe`, puis enregistre ADMIN_HASH et SESSION_SECRET avec `npx wrangler secret put`. Déploie avec `npm run deploy`. Donne-moi l'adresse du site et le mot de passe. Laisse MAQUETTE à « oui ».
+> Installe les dépendances (`npm install`). Lance `npm test` : tout doit être « ok ». Connecte-moi à Cloudflare (`npx wrangler login`). Crée la mémoire du site (KV « CONTENU ») (`npx wrangler kv namespace create CONTENU`) et mets son id dans `wrangler.jsonc`. Lance `npm run mot-de-passe`, puis enregistre ADMIN_HASH et SESSION_SECRET avec `npx wrangler secret put`. Déploie avec `npm run deploy`. Donne-moi l'adresse du site et le mot de passe. Laisse MAQUETTE à « oui ».
 
 - Avec MAQUETTE à « oui » : bandeau « proposition », non indexé par Google, demandes en démonstration. Bon pour faire tester à plusieurs.
 - Après signature, nom de domaine acheté et ajouté dans Cloudflare :
 > Dans `wrangler.jsonc`, passe MAQUETTE à « non », ajoute la route `{ "pattern": "nomdedomaine.fr", "custom_domain": true }`, puis redéploie.
-- Les demandes par e-mail : clé gratuite sur https://web3forms.com (avec l'e-mail du commerçant), à coller dans l'espace boutique. Sans clé, les demandes arrivent quand même dans l'espace boutique.
+- Les demandes par e-mail : clé gratuite sur https://web3forms.com (avec l'e-mail du commerçant), à coller dans la page de modification. Sans clé, les demandes arrivent quand même dans la page de modification.
 - L'espace de travail cloud de Claude ne peut pas joindre Cloudflare : la mise en ligne se fait depuis l'ordinateur de Greg.
 
 ---
 
 ### 2.7 Vidéo de fond sur l'accueil (les trois moteurs)
-Dans l'espace de modification : « Vidéo de fond » (fichier MP4 ou WebM de 20 Mo au plus, ou lien https .mp4) et la case « Vidéo en fond (sinon la photo) ». La photo reste l'image d'attente ; bouton pause intégré ; vidéo à l'arrêt pour les visiteurs qui demandent moins d'animations. Le serveur sert les vidéos par morceaux (indispensable pour Safari). Une vidéo d'iPhone (.mov) se convertit avant : `ffmpeg -i entree.mov -t 15 -vf "scale=-2:1080" -c:v libx264 -crf 26 -preset slow -an -movflags +faststart sortie.mp4`. Sans vidéo du client, un lent mouvement sur une de ses photos fait illusion (exemple : `modeles/maison-tcheskiss/public/assets/videos/`).
+Dans la page de modification : « Vidéo de fond » (fichier MP4 ou WebM de 20 Mo au plus, ou lien https .mp4) et la case « Vidéo en fond (sinon la photo) ». La photo reste l'image d'attente ; bouton pause intégré ; vidéo à l'arrêt pour les visiteurs qui demandent moins d'animations. Le serveur sert les vidéos par morceaux (indispensable pour Safari). Une vidéo d'iPhone (.mov) se convertit avant : `ffmpeg -i entree.mov -t 15 -vf "scale=-2:1080" -c:v libx264 -crf 26 -preset slow -an -movflags +faststart sortie.mp4`. Sans vidéo du client, un lent mouvement sur une de ses photos fait illusion (exemple : `modeles/maison-tcheskiss/public/assets/videos/`).
 
 ### 2.8 Mise en ligne depuis GitHub, sans ordinateur (moteur agence)
-Cloudflare « Import a repository » sur le dépôt privé du client (nom du projet = `name` de `wrangler.jsonc`), le stockage KV se crée tout seul (binding sans id). Puis deux **Secrets** (pas « Variable ») : `ADMIN_HASH` et `SESSION_SECRET`, donnés par `npm run mot-de-passe`. Jamais d'identifiant écrit dans le dépôt. Chaque envoi sur GitHub remet le site en ligne.
+Cloudflare « Import a repository » sur le dépôt privé du client (nom du projet = `name` de `wrangler.jsonc`), la mémoire du site (KV) se crée toute seule (binding sans id). Puis deux **Secrets** (pas « Variable ») : `ADMIN_HASH` et `SESSION_SECRET`, donnés par `npm run mot-de-passe`. Jamais d'identifiant écrit dans le dépôt. Chaque envoi sur GitHub remet le site en ligne.
+
+### 2.8 bis Photos libres : choisir, vérifier, réduire
+1. **Tester d'abord l'accès** : `images.unsplash.com` et `images.pexels.com` (une vraie photo, pas la page d'accueil). Les pages de recherche (`unsplash.com`, `pexels.com`) sont, elles, bloquées par une protection anti-robot. Si un hôte d'images est bloqué, **s'arrêter et le dire à Greg, sans contourner** (pas de proxy, pas de miroir).
+2. Les identifiants de photos se trouvent par la recherche web ou WebFetch sur les pages Unsplash (la page d'une photo donne `images.unsplash.com/photo-…`, le photographe et la licence). Écarter les photos « Unsplash+ » (payantes).
+3. **Regarder chaque photo téléchargée** avant de la garder (un résultat de recherche peut montrer autre chose que sa description : un salon de narguilé pour un « restaurant », par exemple) et noter photographe et identifiant dans un fichier de sources.
+4. Réduire à 1200 px de large, JPEG qualité 78, sans métadonnées (`convert … -strip -resize '1200x>' -quality 78`), vérifier l'absence de GPS. Étiqueter « Photo d'illustration », créditer dans `credits_photos`, ne jamais présenter la photo comme celle d'un vrai client.
+
+### 2.8 ter Audit d'accessibilité (avant de montrer un site)
+`npm run accessibilite` (axe-core par Playwright, WCAG 2.2 AA) : chaque page en bureau (1280 px), en mobile (390 px) et avec « moins d'animations », puis un parcours au clavier qui vérifie qu'un anneau de focus épais s'affiche sur chaque élément. Corriger tout ce qui est signalé (contrastes, focus, zones sans repère de page, défilement horizontal, éléments restés cachés quand le visiteur demande moins d'animations). Un audit automatique ne remplace pas un essai au lecteur d'écran et au clavier sur téléphone.
+
+### 2.8 quater Avis de cinq testeurs (sous-agents Haiku, très économes)
+Avant de livrer une refonte ou un nouveau style : cinq sous-agents Haiku, **chacun avec un profil différent** (par exemple une fleuriste de 62 ans peu à l'aise avec le web, un plombier pressé, une gérante de restaurant, un artisan d'art exigeant, un dirigeant de PME méfiant). Chacun reçoit quelques captures réduites (page d'accueil, une démonstration de son métier, la page qui le concerne) et une seule question : *qu'est-ce qui me ferait aimer ce site et acheter, qu'est-ce qui me freine ?* Réponse limitée à 120 mots, au même format (J'aime / Ça me freine / Il me faudrait / note sur 10). On fait la synthèse : un point cité par plusieurs profils se corrige ; un point qui ne dépend pas de nous (vrais clients à montrer, prix à valider) va dans « à valider ». Ce sont des avis simulés : ils orientent, ils ne remplacent pas un vrai client.
 
 ### 2.9 Typographie et mouvement (niveau « pro »)
-Titres de page autour de 56 px au plus sur ordinateur, titres de section 36 à 40 px, texte 16 à 17 px, petites lignes de rubrique à 13 px. Mouvements : apparitions douces au défilement (0,9 s, décalées de 70 ms), chiffres qui montent, en-tête qui s'affine au défilement, soulignés qui se dessinent au survol. Jamais dans l'aperçu de l'espace de modification, jamais pour les visiteurs qui demandent moins d'animations, et rien ne reste caché si le script ne tourne pas.
+Titres de page autour de 56 px au plus sur ordinateur, titres de section 36 à 40 px, texte 16 à 17 px, petites lignes de rubrique à 13 px. Mouvements : apparitions douces au défilement (0,9 s, décalées de 70 ms), chiffres qui montent, en-tête qui s'affine au défilement, soulignés qui se dessinent au survol. Jamais dans l'aperçu de la page de modification, jamais pour les visiteurs qui demandent moins d'animations, et rien ne reste caché si le script ne tourne pas.
 
-Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joaillerie) et la vitrine (commerce de quartier) n'en gardent que l'essentiel, pour ne pas paraître chargés : texte de l'accueil qui arrive, apparitions plus courtes (16 px, 1 s, trois décalages au plus), ombre légère sous l'en-tête au défilement (catalogue), menu du téléphone en fondu. Pas de chiffres animés, pas de zoom sur les photos, pas d'en-tête qui change de taille (sur un en-tête collant, le contenu sauterait). Titres : accueil autour de 52 à 58 px sur ordinateur, sections 32 à 34 px, texte 16 à 17 px ; titres de la vitrine en graisse 500 plutôt que 600. Le même interrupteur partout : option `calme` dans l'aperçu de l'espace de modification (classe `calme` sur body), et rien pour les visiteurs qui demandent moins d'animations.
+Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joaillerie) et la vitrine (commerce de quartier) n'en gardent que l'essentiel, pour ne pas paraître chargés : texte de l'accueil qui arrive, apparitions plus courtes (16 px, 1 s, trois décalages au plus), ombre légère sous l'en-tête au défilement (catalogue), menu du téléphone en fondu. Pas de chiffres animés, pas de zoom sur les photos, pas d'en-tête qui change de taille (sur un en-tête collant, le contenu sauterait). Titres : accueil autour de 52 à 58 px sur ordinateur, sections 32 à 34 px, texte 16 à 17 px ; titres de la vitrine en graisse 500 plutôt que 600. Le même interrupteur partout : option `calme` dans l'aperçu de la page de modification (classe `calme` sur body), et rien pour les visiteurs qui demandent moins d'animations.
 
 ## 3. Règles d'or
 
@@ -119,9 +133,10 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 
 - **Un site, une identité** : deux sites montrés ou livrés ne se ressemblent pas. Couleur, polices, mise en page (accueil, ordre des parties), formes (angles, boutons) et ton changent d'un site à l'autre. Test : deux captures côte à côte, réduites ; si l'on hésite sur laquelle est laquelle, on recommence. Avant de créer, relire le registre ci-dessous et la ligne « Style » du vérificateur, puis choisir un autre jeu.
 - **L'interface suit le métier** : le style traduit ce que fait l'entreprise et à qui elle parle. Commerce de bouche : empattements chaleureux, couleur de la devanture. Artisan : empattements carrés, teintes de matière (bois, cuir), angles droits. Commerce de service moderne : une seule famille nette. Bâtiment, haut de gamme : sombre, didone, sobre. Création, conseil, numérique : grotesque, papier clair, une couleur vive. Un style choisi parce qu'il est déjà fait ne passe pas.
-- **Registre des styles** (à compléter à chaque site) : Fromagerie La Fontaine = vitrine, bleu ardoise, Vollkorn, angles doux, accueil photo · Maison Tcheskiss = catalogue, noir et blanc cassé, Bodoni + Hanken · Opéria = agence classique, marine #262a59 et jaune #f8c151, Playfair + Manrope · Grégoire Muel = agence studio, encre #12181a et vermillon #ff5a36 sur papier gris froid, Bricolage + DM Sans · démo Atelier du Merrain = vitrine, brun bois, Bitter, angles droits, titres à filet, accueil sobre · démo Le Pétale Sauvage = vitrine, vert bouteille, Libre Franklin, angles doux, accueil sobre. Un nouveau look qui manque au moteur (troisième gabarit agence, par exemple) s'ajoute au moteur, jamais par un contenu bricolé.
+- **Registre des styles** (à compléter à chaque site) : Fromagerie La Fontaine = vitrine standard, bleu ardoise, Vollkorn, angles doux, accueil photo · Maison Tcheskiss = catalogue, noir et blanc cassé, Bodoni + Hanken · Opéria = agence classique, marine #262a59 et jaune #f8c151, Playfair + Manrope · Grégoire Muel = agence studio, encre #12181a et vermillon #ff5a36 sur papier gris froid, Bricolage + DM Sans · démo Atelier du Merrain = vitrine gabarit atelier, brun noyer #6b4a2e sur gris pierre, Zilla Slab + Work Sans, angles droits, index numéroté · démo Le Pétale Sauvage = vitrine gabarit marche, vert #2f5d50, Fraunces + Nunito Sans, mosaïque en arche, saisons en cartes · démo Plomberie Delorme = vitrine gabarit depannage, vert d'eau profond #0b6b7a et jaune #ffcf33, Barlow Condensed + Barlow, appel et devis en tête · démo La Cuillère Haute = vitrine gabarit carte, bordeaux #7a1f2b, Young Serif + Figtree, en-tête centré et carte à deux colonnes. Un nouveau look qui manque au moteur (troisième gabarit agence, par exemple) s'ajoute au moteur, jamais par un contenu bricolé.
 
 ### Jamais
+- **Jamais de jargon technique dans les textes que lit le client** : les mots « espace de modification », « espace boutique », « stockage » et « KV » se disent « page de modification » et « mémoire du site ».
 - **Jamais de lien public au nom d'un commerce qui n'a pas signé** : montrer les fichiers sur le téléphone, ou deux captures par e-mail.
 - **Jamais les photos ou le texte des avis Google** : la note s'affiche en chiffres, avec un lien vers la fiche.
 - **Jamais une photo de banque d'images présentée comme une pièce ou un produit du commerce** (ex. un bijou d'Unsplash sur la fiche d'une bague de la maison). Pour patienter : des photos d'ambiance (pierres, matières, paysages), créditées.
@@ -144,7 +159,7 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 | Sur ordinateur, une photo verticale rend un bloc deux fois trop haut | L'image impose sa hauteur | Hauteur plafonnée (`max-height: min(85vh, 760px)`) |
 | Le titre de l'accueil passe sur le sujet de la photo | La photo est centrée, le titre est en bas à gauche | Recadrer la photo pour mettre le sujet dans le tiers haut |
 | Photos de téléphone avec position GPS | Métadonnées EXIF | Réenregistrer avec sharp (sans `withMetadata`) |
-| Photos Unsplash absentes sur les captures faites par Claude | L'espace cloud de Claude bloque Unsplash | Photos de remplacement pour les captures ; le vrai site les charge |
+| Photos Unsplash absentes sur les captures faites par Claude, ou téléchargement impossible | Selon la session, l'espace cloud de Claude bloque `images.unsplash.com` ou `images.pexels.com` (les pages de recherche, elles, sont bloquées par une protection anti-robot) | **Tester les deux hôtes d'images avant tout** (partie 2.8 bis). S'ils répondent : choisir par recherche web, télécharger, regarder, réduire. S'ils sont bloqués : s'arrêter et le dire à Greg, sans contourner |
 | La démo casse après réunion des scripts | Deux noms identiques au premier niveau dans deux fichiers | Noms distincts ; `apercu` refuse en nommant le doublon |
 | Le vérificateur cachait des erreurs | Il s'arrêtait trop tôt | Il ne s'arrête que si la forme est cassée ; sinon il liste tout |
 | Captures « page entière » avec des images blanches | Chromium ne peint pas les images décodées en asynchrone hors écran | Capturer en faisant défiler l'écran |
@@ -159,6 +174,10 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 | Capture « page entière » d'une démo : bloc étroit et texte centré | La démo affiche le site dans un cadre ; la page entière est faussée par le cadre | Capturer la fenêtre, et faire défiler le cadre (`frame.evaluate(scrollTo)`) |
 | Le moteur catalogue ne convient pas à une boutique de fleurs ou de meubles | Ses champs sont ceux d'un bijou : métal, pierres, poids, tailles, gravure, page entretien | Ne pas le proposer tel quel hors joaillerie ; pour un autre commerce, le moteur vitrine (commande ou devis), ou adapter d'abord le moteur catalogue. Pas de démo catalogue non bijoutière : la démo viendra du site de la joaillerie de Greg |
 | Deux sites du même moteur se ressemblent (même structure, mêmes polices, couleurs voisines) | Le contenu change mais pas le gabarit | Règle « Un site, une identité » (partie 3) : choisir un autre gabarit, jeu de polices et palette ; `theme.gabarit` pour le moteur agence ; ligne « Style » du vérificateur pour le moteur vitrine |
+| Une démonstration qui ressemble à un « site IA » : même structure, mêmes cartes, pas de photo | Un seul gabarit pour plusieurs métiers, et des photos absentes | Un gabarit par métier (`theme.gabarit`), de vraies photos libres étiquetées « Photo d'illustration », avis des cinq testeurs (partie 2.8 quater) avant de livrer |
+| Les cinq testeurs trouvent que le bandeau « Version de travail non publiée » fait brouillon | C'est le bandeau de la maquette, laissé à `MAQUETTE = oui` | Normal tant que le site n'est pas ouvert ; pour une démonstration, `reglages.bandeau` écrit « Démonstration : … imaginaire » |
+| axe-core signale des contrastes insuffisants qui disparaissent avec « moins d'animations » | La mesure se fait pendant une apparition en fondu | Forcer l'état final (classe `vu`) et attendre la fin des transitions avant de mesurer (`npm run accessibilite` le fait) |
+| Anneau de focus invisible | Un trait de la couleur d'accent sur fond clair (2,8 : 1) ou de la couleur du thème sur fond sombre | Anneau foncé avec liseré blanc sur fond clair, blanc sur fond sombre ou sur photo, foncé sur une boîte claire posée dans une partie sombre |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
 
 ---
@@ -168,7 +187,9 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 ### Avant de montrer une maquette
 - [ ] `npm run verifier` : aucune erreur ; la liste « à valider » est prête pour le rendez-vous.
 - [ ] `npm test` : tout « ok ».
-- [ ] Démo ouverte sur téléphone : accueil, appel, itinéraire, une demande d'essai, l'espace boutique (changer un prix, enregistrer, revoir le site).
+- [ ] `npm run accessibilite` : aucun point (partie 2.8 ter).
+- [ ] Avis des cinq testeurs faits et synthétisés (partie 2.8 quater).
+- [ ] Démo ouverte sur téléphone : accueil, appel, itinéraire, une demande d'essai, la page de modification (changer un prix, enregistrer, revoir le site).
 - [ ] Bandeau « Proposition », rien en ligne au nom du commerce.
 - [ ] Photos d'essai créditées ; aucune photo Google ; aucun bijou ou produit d'une banque d'images présenté comme le sien.
 
@@ -179,11 +200,11 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 - [ ] CGV relues (idéalement par un juriste).
 - [ ] Clé Web3Forms et demande d'essai reçue par e-mail.
 - [ ] Nom de domaine au nom du client, MAQUETTE à « non », route ajoutée, redéployé.
-- [ ] Testé sur téléphone en vrai : appel, itinéraire, espace boutique, interrupteurs, demande.
+- [ ] Testé sur téléphone en vrai : appel, itinéraire, page de modification, interrupteurs, demande.
 - [ ] Site ajouté sur la fiche Google ; Google Search Console (le plan du site `/sitemap.xml` se crée tout seul).
 
 ### Prise en main avec le commerçant (15 minutes, sur son téléphone)
-Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produit avec photo, masquer puis réafficher une partie, regarder les demandes. Ajouter l'espace boutique à l'écran d'accueil (« Ajouter à l'écran d'accueil »).
+Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produit avec photo, masquer puis réafficher une partie, regarder les demandes. Ajouter la page de modification à l'écran d'accueil (« Ajouter à l'écran d'accueil »).
 
 ### Entretien
 - Sauvegarde du contenu : `npx wrangler kv key get contenu --binding CONTENU --remote > sauvegarde.json`.
@@ -202,7 +223,8 @@ Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produi
 | `npm test` | Lance le vrai serveur sur l'ordinateur et le teste de bout en bout (pages, images, connexion, enregistrement, photo, demande d'un client, statuts, retour en arrière, sécurité). |
 | `npm run apercu` | Fabrique `demonstration.html` et `demo-en-ligne/`. |
 | `npm run nouvelle-boutique -- contenu.json [nom]` | (Vitrine) Crée le dossier d'une nouvelle boutique à côté du modèle. |
-| `npm run mot-de-passe` | Crée le mot de passe de l'espace boutique et son empreinte. |
+| `npm run accessibilite` | Audit axe-core (WCAG 2.2 AA) en bureau, mobile et « moins d'animations », et parcours au clavier. Demande Playwright. |
+| `npm run mot-de-passe` | Crée le mot de passe de la page de modification et son empreinte. |
 | `npm run deploy` | Vérifie le contenu puis met en ligne. |
 | `npm run dev` | Le site sur l'ordinateur, pour essayer en vrai (adresse locale). |
 

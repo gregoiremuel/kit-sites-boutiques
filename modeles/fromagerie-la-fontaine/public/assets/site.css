@@ -31,6 +31,8 @@ p{margin:0}
 .skip{position:absolute;left:-9999px;top:0}
 .skip:focus{left:12px;top:12px;z-index:100;background:#fff;color:var(--encre);padding:10px 14px}
 :focus-visible{outline:2px solid var(--bleu);outline-offset:3px}
+/* Sur fond sombre ou sur photo, l'anneau de focus est blanc */
+.g-standard .hero:not(.hero-sobre) :focus-visible,.g-standard .plateaux :focus-visible,.foot :focus-visible,.sheet :focus-visible{outline-color:#fff}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border:2px solid var(--bleu);border-radius:var(--r);background:var(--bleu);color:#fff;font:600 1.0625rem/1 var(--texte);text-decoration:none;transition:background-color .15s,border-color .15s,color .15s;white-space:nowrap}
 .btn:hover{background:var(--bleu-fonce);border-color:var(--bleu-fonce)}
@@ -309,3 +311,314 @@ textarea.saisie{min-height:96px;resize:vertical;line-height:1.45}
 @keyframes fondu{from{opacity:0}to{opacity:1}}
 .sheet:not([hidden]){animation:fondu .3s ease both}
 @media (prefers-reduced-motion:reduce){.anime .rev{opacity:1;transform:none}.hero-body>*,.hero-photo,.sheet{animation:none!important}}
+
+/* ---------- Gabarits (theme.gabarit) : atelier, depannage, carte, marche ----------
+   Chaque gabarit a sa propre structure (voir rendu.js) ; ici sa mise en page.
+   Les couleurs viennent toujours du thème : --bleu (couleur), --bleu-fonce, --bleu-pale, --paille (accent). */
+.illus{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(255,255,255,.94);color:#1f2328;font:600 .75rem/1 var(--texte);padding:6px 9px;border-radius:2px}
+.g-atelier figure,.g-depannage figure,.g-carte figure,.g-marche figure{position:relative;margin:0}
+.g-tete .wrap{display:flex;align-items:center;gap:24px}
+.g-nom{font:600 1.375rem/1.1 var(--titres);color:inherit;text-decoration:none;margin-right:auto;padding:10px 0}
+.g-nav{display:none;gap:26px}
+.g-nav a{color:inherit;text-decoration:none;font-weight:600;padding:6px 0;border-bottom:2px solid transparent}
+.g-nav a:hover{border-bottom-color:currentColor}
+.g-cta{display:none;align-items:center;justify-content:center;min-height:44px;padding:0 20px;text-decoration:none;font-weight:600;white-space:nowrap}
+.g-tete .menu-btn{color:inherit;border-color:currentColor}
+@media (min-width:961px){.g-nav{display:flex}.g-cta{display:inline-flex}}
+.a-hero,.d-hero,.c-hero,.m-hero{display:block;min-height:0;isolation:auto;color:var(--encre);background:none}
+.a-hero::after,.d-hero::after,.c-hero::after,.m-hero::after{display:none}
+.hero .statut{font-weight:600}
+.g-horaires-grille{display:grid;gap:40px}
+.g-horaires-i{display:grid;gap:22px;align-content:start}
+.g-horaires-i h3{font:600 1rem/1.3 var(--texte);margin-bottom:4px;color:var(--gris)}
+.g-horaires-i .gros{font:500 1.3125rem/1.3 var(--titres);color:var(--encre);text-decoration:none}
+.g-horaires .hours{margin-top:22px}
+.g-horaires .statut{margin-top:14px;font-weight:600}
+@media (min-width:900px){.g-horaires-grille{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:72px}}
+
+/* ===== Atelier : artisan (index numéroté, tiroirs, photo qui déborde) ===== */
+.g-atelier{background:var(--bleu-pale);--r:0px}
+.g-atelier h1,.g-atelier h2,.g-atelier h3{font-weight:700}
+.a-tete{border-bottom:3px solid var(--encre)}
+.a-tete .wrap{min-height:76px}
+.a-tete .g-nom{font:700 1.5rem/1 var(--titres);color:var(--bleu-fonce)}
+.a-tete .g-nav a{color:var(--encre)}
+.a-tete .g-cta{background:var(--bleu-fonce);color:#fff}
+.a-tete .g-cta:hover{background:var(--encre)}
+.a-tete .menu-btn{color:var(--bleu-fonce)}
+.a-hero-grille{display:grid;gap:32px;padding-top:clamp(28px,6vw,72px);padding-bottom:clamp(36px,6vw,72px)}
+.a-genre{display:inline-block;font:600 1rem/1.2 var(--texte);color:var(--bleu-fonce);border-top:3px solid var(--bleu-fonce);padding-top:10px;margin-bottom:22px}
+.a-hero h1{color:var(--encre);font:700 clamp(2.5rem,7vw,5.25rem)/.98 var(--titres);letter-spacing:-.01em;max-width:11ch}
+.a-hero-txt>p:not(.a-genre):not(.statut){max-width:44ch;margin-top:22px;font-size:1.1875rem}
+.a-hero .statut{margin-top:18px;color:var(--bleu-fonce)}
+.a-hero-fig img{width:100%;aspect-ratio:4/5;max-height:640px;object-fit:cover;background:var(--trait)}
+.a-hero-grille.sans-photo{max-width:860px}
+.g-atelier .actions .btn-contour{color:var(--bleu-fonce);border-color:var(--bleu-fonce)}
+.g-atelier .actions .btn-contour:hover{background:#fff}
+.g-atelier main>.sec:first-child{padding-top:clamp(64px,9vw,112px)}
+@media (min-width:900px){
+  .a-hero-grille{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:end;padding-bottom:0}
+  .a-hero-txt{padding-bottom:clamp(48px,6vw,80px)}
+  .a-hero-fig{position:relative;z-index:2;margin-bottom:-96px}
+  .g-atelier main>.sec:first-child{padding-top:calc(clamp(64px,9vw,112px) + 96px)}
+}
+.g-atelier #boutique .about{display:grid;gap:36px}
+.g-atelier #boutique .txt{order:-1}
+.g-atelier #boutique .txt p{font-size:1.25rem;line-height:1.6;max-width:36ch}
+.g-atelier #boutique .ph-main{aspect-ratio:3/4}
+.g-atelier #boutique h2{font:700 clamp(2rem,4vw,3rem)/1.05 var(--titres)}
+.g-atelier #boutique h2::before{content:"";display:block;width:56px;height:6px;background:var(--bleu);margin-bottom:20px}
+.a-index{background:#fff}
+.a-index-tete{display:grid;gap:24px;margin-bottom:36px;align-content:start}
+.a-index h2,.a-travaux h2{font-size:clamp(2rem,4.2vw,3rem);line-height:1.05}
+.a-index-fig img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.a-index-liste{list-style:none;margin:0;padding:0;border-top:4px solid var(--encre)}
+.a-index-liste li{display:grid;grid-template-columns:3rem minmax(0,1fr);gap:2px 14px;padding:22px 0;border-bottom:1px solid var(--trait);align-items:baseline}
+.a-num{font:500 1.25rem/1 var(--titres);color:var(--bleu-fonce);grid-row:span 3}
+.a-titre{font:700 1.5rem/1.2 var(--titres);color:var(--encre)}
+.a-detail,.a-delai{grid-column:2;color:var(--gris)}
+.a-delai{font-weight:600;color:var(--bleu-fonce)}
+.a-delai:empty,.a-detail:empty{display:none}
+@media (min-width:900px){
+  .a-index .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:72px;align-items:start}
+  .a-index-tete{position:sticky;top:28px;margin-bottom:0}
+  .a-index-liste li{grid-template-columns:3.5rem minmax(0,1.2fr) minmax(0,1fr);gap:4px 24px}
+  .a-num{grid-row:span 2}
+  .a-detail{grid-column:3;grid-row:1}
+  .a-delai{grid-column:3;grid-row:2}
+  .g-atelier #boutique .about{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:72px}
+}
+.a-travaux{background:var(--bleu-fonce);color:#fff}
+.a-travaux h2{color:#fff}
+.a-travaux .intro{color:rgba(255,255,255,.92)}
+.a-tiroirs{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:16px}
+.a-tiroirs li{display:grid;gap:10px;align-content:start;border-top:8px solid var(--paille);background:rgba(255,255,255,.08);padding:24px 24px 28px}
+.a-tiroirs b{font:700 1.5rem/1.15 var(--titres)}
+.a-tiroirs span{color:rgba(255,255,255,.92)}
+.a-tiroirs em{font-style:normal;font-weight:600;color:var(--paille)}
+.a-tiroirs em:empty{display:none}
+.a-travaux .actions .btn{background:#fff;border-color:#fff;color:var(--bleu-fonce)}
+.a-travaux .actions .btn:hover{background:var(--bleu-pale)}
+.a-travaux .actions .btn-contour{background:transparent;color:#fff;border-color:rgba(255,255,255,.85)}
+.a-travaux .actions .btn-contour:hover{background:rgba(255,255,255,.14)}
+.a-travaux :focus-visible,.g-atelier .foot :focus-visible{outline-color:#fff}
+.a-travaux-fig img{width:100%;aspect-ratio:21/9;object-fit:cover;margin-top:40px}
+@media (min-width:900px){.a-tiroirs{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.a-tiroirs li:nth-child(2){margin-top:28px}.a-tiroirs li:nth-child(3){margin-top:56px}}
+.g-atelier #demande{background:#fff}
+.g-atelier #questions .faq{max-width:none}
+.g-atelier .g-horaires{background:var(--bleu-pale)}
+.g-atelier .g-horaires-grille{border-top:4px solid var(--encre);padding-top:36px}
+.g-atelier .g-horaires h2{font:700 clamp(2rem,4vw,3rem)/1.05 var(--titres)}
+.g-atelier .carte-box{background:#fff}
+.g-atelier .foot{background:var(--encre)}
+
+/* ===== Dépannage : urgence (appel et devis en tête, tuiles, voies A B C) ===== */
+.g-depannage{--r:2px}
+.g-depannage h1,.g-depannage h2,.g-depannage h3{font-weight:700;letter-spacing:0}
+.g-depannage .sec h2{font-size:clamp(2rem,4.4vw,3.25rem);line-height:1}
+.d-urgence{background:var(--paille);color:var(--encre)}
+.d-urgence .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px}
+.d-urgence p{font:700 1.25rem/1 var(--titres)}
+.d-urgence a{font:700 1.5rem/1 var(--titres);color:var(--encre);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;padding:10px 0}
+.d-hero{background:var(--bleu-fonce);color:#fff}
+.d-tete{border-bottom:1px solid rgba(255,255,255,.22)}
+.d-tete .wrap{min-height:68px}
+.d-tete .g-nom{font:700 1.5rem/1 var(--titres);color:#fff}
+.d-tete .g-nav a{color:#fff}
+.d-tete .g-cta{background:#fff;color:var(--bleu-fonce)}
+.d-tete .g-cta:hover{background:var(--bleu-pale)}
+.d-tete .menu-btn,.d-hero :focus-visible,.d-horaires-clair :focus-visible,.g-depannage .g-horaires :focus-visible,.g-depannage .foot :focus-visible{color:#fff;outline-color:#fff}
+.d-hero-grille{display:grid;gap:32px;padding-top:clamp(28px,5vw,56px);padding-bottom:clamp(36px,6vw,72px)}
+.d-hero h1{color:#fff;font:700 clamp(2.75rem,8vw,5.5rem)/.94 var(--titres);max-width:12ch}
+.d-hero-txt>p{max-width:44ch;margin-top:20px;font-size:1.1875rem;color:rgba(255,255,255,.95)}
+.d-hero .statut{margin-top:16px;color:#fff}
+.d-choix{display:grid;gap:12px;margin-top:28px}
+.d-choix a{display:grid;gap:4px;padding:18px 20px;text-decoration:none;border:3px solid #fff;min-height:44px}
+.d-choix b{font:700 2rem/1 var(--titres)}
+.d-choix span{font-size:1rem}
+.d-choix strong{font:700 1.5rem/1.1 var(--titres);margin-top:6px}
+.d-choix-a{background:var(--paille);color:var(--encre);border-color:var(--paille)!important}
+.d-choix-a:hover{background:#fff}
+.d-choix-b{background:transparent;color:#fff}
+.d-choix-b:hover{background:rgba(255,255,255,.14)}
+.d-hero-fig img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--bleu)}
+.d-hero-grille.sans-photo{max-width:860px}
+@media (min-width:900px){
+  .d-hero-grille{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center}
+  .d-choix{grid-template-columns:1fr 1fr}
+  .d-hero-fig img{aspect-ratio:4/5;max-height:620px}
+}
+.d-tete-liste{max-width:60ch;margin-bottom:36px}
+.d-prestations{background:#fff}
+.d-tuiles{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.d-tuiles li{display:grid;gap:6px;align-content:start;padding:20px 22px;border:2px solid var(--encre);border-left:12px solid var(--bleu);background:#fff}
+.d-tuiles b{font:700 1.625rem/1.1 var(--titres);color:var(--encre)}
+.d-tuiles span{color:var(--gris)}
+.d-tuiles em{font-style:normal;font-weight:600;color:var(--bleu-fonce)}
+.g-prix{font-weight:600}
+.d-bandeau img{width:100%;aspect-ratio:21/9;object-fit:cover;margin-top:36px}
+@media (min-width:720px){.d-tuiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1000px){.d-tuiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.d-voies{background:var(--bleu-pale)}
+.d-voies-liste{list-style:none;margin:0;padding:0;display:grid;gap:14px;max-width:880px}
+.d-voies-liste li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;background:#fff;border:2px solid var(--encre);padding:18px}
+.d-lettre{display:grid;place-items:center;width:56px;height:56px;background:var(--bleu-fonce);color:#fff;font:700 2rem/1 var(--titres)}
+.d-voies-liste div{display:grid;gap:4px}
+.d-voies-liste b{font:700 1.5rem/1.15 var(--titres)}
+.d-voies-liste span{color:var(--gris)}
+.d-voies-liste em{font-style:normal;font-weight:600;color:var(--bleu-fonce)}
+.g-depannage #demande{background:#fff}
+.g-depannage #questions{background:var(--bleu-pale)}
+.g-depannage .g-horaires{background:var(--bleu-fonce);color:#fff}
+.g-depannage .g-horaires h2{color:#fff}
+.g-depannage .g-horaires-i h3{color:rgba(255,255,255,.85)}
+.g-depannage .g-horaires-i .gros{color:#fff}
+.g-depannage .g-horaires .hours div{border-color:rgba(255,255,255,.3)}
+.g-depannage .g-horaires .statut,.g-depannage .g-horaires .hnote{color:#fff}
+.g-depannage .g-horaires .btn{background:var(--paille);border-color:var(--paille);color:var(--encre)}
+.g-depannage .carte-box{background:#fff;border-color:#fff}
+.g-depannage .foot{background:var(--encre)}
+
+/* ===== Carte : restaurant (en-tête centré, bandeau photo, carte à deux colonnes) ===== */
+.g-carte{--r:2px}
+.g-carte h1,.g-carte h2,.g-carte h3{font-weight:400}
+.c-tete{background:#fff;border-bottom:1px solid var(--encre)}
+.c-barre{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;min-height:76px}
+.c-tel{color:var(--encre);font-weight:600;text-decoration:none;padding:12px 0}
+.c-barre .g-nom{justify-self:center;margin:0;text-align:center;font:400 clamp(1.5rem,3.4vw,2.375rem)/1 var(--titres);color:var(--bleu-fonce)}
+.c-barre .g-cta{justify-self:end;background:var(--bleu);color:#fff}
+.c-barre .g-cta:hover{background:var(--bleu-fonce)}
+.c-barre .menu-btn{color:var(--bleu-fonce)}
+.c-nav{display:none;justify-content:center;gap:40px;padding:12px var(--gut);border-top:1px solid var(--trait)}
+.c-nav a{color:var(--encre)}
+@media (min-width:961px){.c-nav{display:flex}.c-barre{grid-template-columns:1fr auto 1fr}.c-tel{justify-self:start}}
+@media (max-width:600px){.c-tel{display:none}.c-barre{grid-template-columns:minmax(0,1fr) auto}.c-barre .g-nom{justify-self:start;text-align:left}}
+.c-bandeau img{width:100%;height:clamp(220px,50vh,540px);object-fit:cover;background:var(--bleu-fonce)}
+.c-intro{max-width:760px;text-align:center;padding-top:clamp(36px,6vw,64px);padding-bottom:clamp(40px,7vw,80px)}
+.c-genre{font:600 1rem/1.2 var(--texte);color:var(--bleu)}
+.c-intro h1{color:var(--encre);font:400 clamp(2.125rem,5.4vw,3.75rem)/1.08 var(--titres);margin:16px auto 20px;max-width:17ch}
+.c-intro>p:not(.c-genre):not(.statut){font-size:1.125rem;max-width:52ch;margin-inline:auto}
+.c-intro .statut{margin-top:16px;color:var(--bleu-fonce)}
+.c-intro .actions{justify-content:center}
+.g-carte .actions .btn-contour{color:var(--bleu-fonce);border-color:var(--bleu-fonce)}
+.g-carte .actions .btn-contour:hover{background:var(--bleu-pale)}
+.c-carte{background:#fff}
+.c-carte-tete{text-align:center;max-width:640px;margin:0 auto 48px}
+.g-carte .sec h2{font-size:clamp(2rem,4.2vw,3rem)}
+.c-carte-tete h2::after{content:"";display:block;width:56px;height:2px;background:var(--bleu);margin:22px auto 0}
+.c-carte-tete .intro{margin-inline:auto}
+.c-familles{max-width:1040px;margin:0 auto;display:grid;gap:44px}
+.c-famille{break-inside:avoid}
+.c-famille h3{font:400 1.625rem/1.2 var(--titres);color:var(--bleu);text-align:center;border-bottom:1px solid var(--encre);padding-bottom:12px;margin-bottom:6px}
+.c-plats{list-style:none;margin:0;padding:0}
+.c-plats li{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:14px 0}
+.c-nom{font:600 1.1875rem/1.3 var(--texte)}
+.c-fil{flex:1;min-width:20px;border-bottom:2px dotted var(--gris);transform:translateY(-4px)}
+.c-prix{font-weight:600;font-variant-numeric:tabular-nums}
+.c-desc{flex-basis:100%;color:var(--gris)}
+.c-carte-fig img{width:100%;aspect-ratio:21/9;object-fit:cover;margin-top:48px}
+@media (min-width:900px){.c-familles{display:block;column-count:2;column-gap:88px}.c-famille{margin-bottom:44px}}
+.c-formules{background:var(--bleu-pale)}
+.c-formules-liste{list-style:none;margin:0 auto;padding:0;display:grid;gap:16px;max-width:1040px}
+.c-formules-liste li{display:grid;gap:10px;align-content:start;justify-items:center;text-align:center;background:#fff;border:1px solid var(--encre);padding:32px 24px}
+.c-formules-liste b{font:400 1.625rem/1.2 var(--titres);color:var(--bleu-fonce)}
+.c-formules-liste span{color:var(--gris)}
+.c-formules-liste em{font-style:normal;font-weight:600}
+.c-centre{justify-content:center}
+@media (min-width:900px){.c-formules-liste{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}}
+.g-carte #boutique .about{display:block;max-width:760px;margin:0 auto;text-align:center}
+.g-carte #boutique .ph-main{aspect-ratio:16/9;margin-bottom:32px}
+.g-carte #boutique .txt p{margin-inline:auto}
+.g-carte #boutique .ph-small{width:100%;aspect-ratio:16/9;margin:32px 0 0}
+.g-carte #demande{background:var(--bleu-pale)}
+.g-carte .g-horaires{background:var(--bleu-fonce);color:#fff;text-align:center}
+.g-carte .g-horaires h2{color:#fff}
+.g-carte .g-horaires-grille{max-width:640px;margin:0 auto;gap:48px}
+.g-carte .g-horaires-i{justify-items:center}
+.g-carte .g-horaires-i h3{color:rgba(255,255,255,.85)}
+.g-carte .g-horaires-i .gros{color:#fff}
+.g-carte .g-horaires .hours div{border-color:rgba(255,255,255,.3)}
+.g-carte .g-horaires .hours{text-align:left}
+.g-carte .g-horaires .statut,.g-carte .g-horaires .hnote{color:#fff}
+.g-carte .g-horaires .btn{background:#fff;border-color:#fff;color:var(--bleu-fonce)}
+.g-carte .g-horaires :focus-visible,.g-carte .foot :focus-visible{outline-color:#fff}
+.g-carte .carte-box{background:#fff;border-color:#fff;max-width:880px;margin-inline:auto}
+.g-carte .foot{background:var(--encre);text-align:center}
+.g-carte .foot-grid{text-align:center}
+
+/* ===== Marché : fleurs et produits frais (mosaïque, saisons en cartes, arrondis) ===== */
+.g-marche{--r:24px;background:#fff}
+.g-marche h1,.g-marche h2,.g-marche h3{font-weight:600}
+.m-tete{padding:14px 0 0}
+.m-pilule{display:flex;align-items:center;gap:22px;background:var(--bleu-pale);border-radius:999px;padding:8px 10px 8px 28px;color:var(--bleu-fonce)}
+.m-pilule .g-nom{font:600 1.375rem/1 var(--titres);color:var(--bleu-fonce)}
+.m-pilule .g-cta{background:var(--bleu);color:#fff;border-radius:999px;padding:0 24px;min-height:48px}
+.m-pilule .g-cta:hover{background:var(--bleu-fonce)}
+.m-pilule .menu-btn{border-radius:999px;color:var(--bleu-fonce);border-color:var(--bleu-fonce)}
+.m-grille{display:grid;gap:36px;padding-top:clamp(28px,5vw,56px);padding-bottom:clamp(48px,7vw,96px)}
+.m-txt h1{font:600 clamp(2.5rem,6.4vw,4.75rem)/1.02 var(--titres);color:var(--bleu-fonce);max-width:11ch;letter-spacing:-.01em}
+.m-txt>p{max-width:44ch;margin-top:20px;font-size:1.1875rem}
+.m-hero .statut{margin-top:16px;color:var(--bleu-fonce)}
+.g-marche .btn{border-radius:999px}
+.g-marche .actions .btn-contour{color:var(--bleu-fonce);border-color:var(--bleu-fonce)}
+.g-marche .actions .btn-contour:hover{background:var(--bleu-pale)}
+.m-mosaique{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px;align-items:end}
+.m-arche{grid-row:1 / span 2}
+.m-arche img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:999px 999px 28px 28px;background:var(--bleu-pale)}
+.m-rond img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;background:var(--bleu-pale)}
+.m-carre img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:28px;background:var(--bleu-pale)}
+.m-arche .illus{left:50%;transform:translateX(-50%);bottom:18px;white-space:nowrap}
+.m-rond .illus{left:50%;transform:translateX(-50%);bottom:18%;white-space:nowrap}
+.m-carre .illus{bottom:12px}
+@media (max-width:480px){.m-rond .illus,.m-carre .illus{font-size:.6875rem;padding:5px 7px;white-space:normal;text-align:center;width:max-content;max-width:90%}}
+@media (min-width:900px){.m-grille{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}}
+.g-marche .sec h2{font-size:clamp(1.875rem,4vw,2.75rem)}
+.m-tete-sec{max-width:56ch;margin-bottom:36px}
+.m-saisons{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.m-saison{border-radius:28px;padding:28px 26px}
+.m-saison h3{font:600 1.5rem/1.2 var(--titres);margin-bottom:12px}
+.m-saison ul{list-style:none;margin:0;padding:0}
+.m-saison li{display:grid;gap:0;padding:10px 0;border-top:1px dashed currentColor}
+.m-saison b{font-weight:600;font-size:1.0625rem}
+.m-saison span{font-size:1rem;opacity:.92}
+.m-saison-0{background:var(--bleu-pale);color:var(--bleu-fonce)}
+.m-saison-1{background:color-mix(in srgb,var(--paille) 38%,#fff);color:var(--encre)}
+.m-saison-2{background:color-mix(in srgb,var(--bleu) 16%,#fff);color:var(--bleu-fonce)}
+.m-saison-3{background:var(--bleu-fonce);color:#fff}
+.m-saison-3 :focus-visible{outline-color:#fff}
+.m-bouquets{background:var(--bleu-pale)}
+.m-bouquets-liste{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.m-bouquets-liste li{display:grid;gap:10px;align-content:start;border-radius:32px;padding:32px 30px 36px;min-height:200px}
+.m-bouquets-liste b{font:600 1.625rem/1.15 var(--titres)}
+.m-bouquets-liste em{font-style:normal;font-weight:700}
+.m-b0{background:var(--bleu);color:#fff}
+.m-b1{background:color-mix(in srgb,var(--paille) 55%,#fff);color:var(--encre)}
+.m-b2{background:#fff;color:var(--encre);border:2px solid var(--bleu)}
+.m-bouquets .actions .btn{background:var(--bleu-fonce);border-color:var(--bleu-fonce);color:#fff}
+.m-bouquets .actions .btn-contour{background:transparent;color:var(--bleu-fonce)}
+@media (min-width:900px){.m-bouquets-liste{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}.m-b1{margin-top:40px}.m-b2{margin-top:80px}}
+.g-marche #boutique .ph-main{border-radius:200px 200px 28px 28px;aspect-ratio:3/4}
+.g-marche #boutique .ph-small{border-radius:50%;aspect-ratio:1;width:46%}
+.g-marche #demande{background:#fff}
+.g-marche #questions{background:var(--bleu-pale)}
+.g-marche .g-horaires-grille{background:var(--bleu-pale);border-radius:36px;padding:clamp(24px,4vw,56px)}
+.g-marche .carte-box{background:#fff}
+.g-marche .foot{background:var(--bleu-fonce);border-radius:40px 40px 0 0;margin-top:-1px}
+.g-marche .foot :focus-visible{outline-color:#fff}
+@media (prefers-reduced-motion:reduce){.g-marche *,.g-atelier *,.g-depannage *,.g-carte *{scroll-behavior:auto}}
+
+/* Retouches des gabarits */
+.g-nav a{white-space:nowrap}
+.d-voies-liste .d-lettre{color:#fff}
+.g-depannage .g-horaires .hours .today dt::after,.g-carte .g-horaires .hours .today dt::after{color:inherit}
+.g-depannage #boutique .about.sans-photo{display:grid;gap:20px;max-width:var(--wrap);margin:0 auto}
+.m-saison h3{color:inherit}
+@media (min-width:900px){
+  .g-depannage #boutique .about.sans-photo{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:72px;align-items:start}
+  .g-carte .c-familles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-count:auto;column-gap:88px;row-gap:12px}
+  .g-carte .c-famille:last-child:nth-child(odd){grid-column:1 / -1;width:calc(50% - 44px);margin-inline:auto}
+}
+.g-carte .g-horaires-grille{grid-template-columns:minmax(0,1fr)}
+/* Anneau de focus : sombre sur les boîtes claires posées dans une partie sombre, et sur la barre d'urgence jaune */
+.g-depannage .g-horaires .carte-box :focus-visible,.g-carte .g-horaires .carte-box :focus-visible{outline-color:var(--bleu-fonce)}
+.d-urgence :focus-visible{outline-color:var(--encre)}

@@ -169,7 +169,7 @@ function ecranConnexion(message) {
     onsubmit: seConnecter,
   },
   el('h1', { text: nom }),
-  el('p', { class: 'sous', text: 'Espace boutique' }),
+  el('p', { class: 'sous', text: 'Page de modification' }),
   DEMO ? el('p', { class: 'aide', text: 'Démonstration : aucun mot de passe n’est demandé, vos essais restent sur ce téléphone.' }) : null,
   el('div', { class: 'champ' }, el('label', { for: 'mdp', text: 'Mot de passe' }), el('div', { class: 'mdp' }, input, voir)),
   err, bouton,
@@ -499,9 +499,9 @@ let PANNEAUX = [];
 function vueSiteDemo() {
   let v = document.getElementById('demo-site');
   if (!v) {
-    v = el('div', { id: 'demo-site', class: 'apercu-plein' },
+    v = el('div', { id: 'demo-site', class: 'apercu-plein', role: 'region', 'aria-label': 'Aperçu du site' },
       el('div', { class: 'barre' }, el('b', { text: 'Le site' }),
-        el('button', { type: 'button', class: 'btn petit', text: 'Essayer l’espace boutique', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
+        el('button', { type: 'button', class: 'btn petit', text: 'Essayer la page de modification', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
       el('iframe', { title: 'Le site' }));
     document.body.append(v);
   }
@@ -580,7 +580,7 @@ function dessinerEditeur() {
 function ecranPrincipal() {
   racine.replaceChildren();
   const nom = E.C.boutique.nom || 'Votre boutique';
-  document.title = nom + ' : espace boutique';
+  document.title = nom + ' : page de modification';
   PANNEAUX = panneaux();
   appliquerTheme(E.C);
   const plein = el('div', { class: 'apercu-plein', hidden: true },
@@ -594,18 +594,18 @@ function ecranPrincipal() {
   etatBarre = el('span', { class: 'etat' });
   bEnr = el('button', { type: 'button', class: 'btn', text: 'Enregistrer', onclick: enregistrer });
   bAnn = el('button', { type: 'button', class: 'btn danger', onclick: annuler });
-  barre = el('div', { class: 'barre-enr' }, el('div', { class: 'in' }, etatBarre,
+  barre = el('div', { class: 'barre-enr', role: 'region', 'aria-label': 'Enregistrement' }, el('div', { class: 'in' }, etatBarre,
     el('button', { type: 'button', class: 'btn sec btn-apercu', text: 'Aperçu', onclick: () => { plein.hidden = false; document.body.style.overflow = 'hidden'; rendreApercu(); } }),
     bAnn, bEnr));
 
   racine.append(
     el('header', { class: 'haut' }, el('div', { class: 'haut-in' },
-      el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Espace boutique' })),
+      el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Page de modification' })),
       el('a', { class: 'btn', href: DEMO ? '#' : '/', target: DEMO ? null : '_blank', rel: 'noopener', text: 'Voir le site', onclick: DEMO ? (e) => { e.preventDefault(); plein.hidden = false; rendreApercu(); } : null }),
       el('button', { type: 'button', class: 'btn', text: 'Se déconnecter', onclick: async () => { if (modifie() && !confirm2()) return; await api.deconnexion(); ecranConnexion(); } }))),
-    DEMO ? el('p', { class: 'bandeau', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
-      : (E.maquette ? el('p', { class: 'bandeau', text: 'Le site est encore en mode proposition : les commandes ne sont pas envoyées.' }) : null),
-    el('div', { class: 'cadre' }, editeur, colonne), barre, plein);
+    DEMO ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
+      : (E.maquette ? el('aside', { class: 'bandeau', 'aria-label': 'Information', text: 'Le site est encore en mode proposition : les commandes ne sont pas envoyées.' }) : null),
+    el('main', { class: 'cadre' }, editeur, colonne), barre, plein);
   dessinerEditeur(); majBarre(); rendreApercu();
   api.commandes().then((L) => { E.nouvelles = L.filter((c) => c.statut === 'nouvelle').length; majResumes(); }).catch(() => {});
 }
@@ -634,7 +634,7 @@ async function demarrer() {
     if (brouillon && !DEMO) { E.C = normaliser(brouillon); memo.ecrire('brouillon', null); toast('Vos modifications non enregistrées ont été récupérées.'); }
     ecranPrincipal();
   } catch (x) {
-    racine.replaceChildren(el('main', { class: 'connexion' }, el('div', { class: 'erreur', text: 'Impossible de charger l’espace boutique : ' + x.message + ' Vérifiez la connexion internet et rechargez la page.' })));
+    racine.replaceChildren(el('main', { class: 'connexion' }, el('div', { class: 'erreur', text: 'Impossible de charger la page de modification : ' + x.message + ' Vérifiez la connexion internet et rechargez la page.' })));
   } finally {
     /* démonstration : on montre d'abord le site, une seule fois */
     if (DEMO && DEMO.siteDabord && !siteMontre) { siteMontre = true; vueSiteDemo(); }

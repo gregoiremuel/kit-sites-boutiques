@@ -70,6 +70,16 @@ async function tests() {
   }
   const polices = (await import('../public/assets/polices.js')).POLICES[C.theme.polices];
   for (const [, , f] of polices.fichiers) { r = await req('/fonts/' + f); verif(r.status === 200, 'Police ' + f); }
+  /* Chaque gabarit se rend sans erreur, avec sa classe, son menu, ses horaires et sans mot « undefined » */
+  const { rendreSite, GABARITS } = await import('../public/assets/rendu.js');
+  const { POLICES: TOUTES } = await import('../public/assets/polices.js');
+  for (const g of GABARITS) {
+    const page = rendreSite({ ...C, theme: { ...C.theme, gabarit: g } }, { maquette: false });
+    verif(page.includes(`class="g-${g} `) && page.includes('id="horaires"') && page.includes('id="menu-btn"') && !/undefined|NaN|\[object Object\]/.test(page.replace(/<script[\s\S]*?<\/script>/g, '')), `Gabarit « ${g} » : page complète`);
+  }
+  for (const [nom, jeu] of Object.entries(TOUTES)) {
+    for (const [, , f] of jeu.fichiers) { r = await req('/fonts/' + f); if (r.status !== 200) verif(false, `Police ${nom} : ${f} manquante`); }
+  }
   r = await req('/photos/nexistepas'); verif(r.status === 404, 'Photo inconnue : 404');
 
   /* Espace boutique */

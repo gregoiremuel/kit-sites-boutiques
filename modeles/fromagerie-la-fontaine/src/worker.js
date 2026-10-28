@@ -145,7 +145,7 @@ export default {
 
       /* Espace boutique : connexion */
       if (methode === 'POST' && p === '/api/connexion') {
-        if (!env.ADMIN_HASH || !env.SESSION_SECRET) return json({ ok: false, erreur: 'Espace boutique pas encore configuré : demandez à Grégoire.' }, 503);
+        if (!env.ADMIN_HASH || !env.SESSION_SECRET) return json({ ok: false, erreur: 'Page de modification pas encore configurée : demandez à Grégoire.' }, 503);
         const n = await essais(env, 'cnx:' + ip(req));
         if (n >= 8) return json({ ok: false, erreur: 'Trop d’essais. Réessayez dans un quart d’heure.' }, 429);
         const corps = await req.json().catch(() => ({}));

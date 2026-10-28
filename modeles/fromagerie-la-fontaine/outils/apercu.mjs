@@ -4,16 +4,33 @@
 //   apercu-site.html    le site seul (bandeau de proposition, demandes en démonstration), si besoin
 // Usage : node outils/apercu.mjs [fichier de contenu]   (par défaut : contenu-initial.json)
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, dirname, join } from 'node:path';
+import { existsSync } from 'node:fs';
 import { rendreSite } from '../public/assets/rendu.js';
 import { POLICES } from '../public/assets/polices.js';
 import { verifier } from './verifier.mjs';
 
 const ici = (f) => new URL('../' + f, import.meta.url);
 const lire = (f) => readFileSync(ici(f), 'utf8');
-const C = JSON.parse(readFileSync(resolve(process.argv[2] || new URL('../contenu-initial.json', import.meta.url).pathname), 'utf8'));
+const fichierContenu = resolve(process.argv[2] || new URL('../contenu-initial.json', import.meta.url).pathname);
+const C = JSON.parse(readFileSync(fichierContenu, 'utf8'));
 const { erreurs } = verifier(C);
 if (erreurs.length) { console.error(`Le contenu a ${erreurs.length} erreur(s) : lancez « npm run verifier » pour les voir. Aucun fichier fabriqué.`); process.exit(1); }
+/* Photos du contenu écrites « /photos/nom » : si un fichier photos/nom.jpg (ou .jpeg, .png, .webp) existe à côté du fichier de contenu,
+   il est intégré à la démonstration (elle s'ouvre alors sans internet, photos comprises). */
+const TYPES_PHOTO = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+const integrerPhotos = (o) => {
+  if (Array.isArray(o)) return o.map(integrerPhotos);
+  if (o && typeof o === 'object') { for (const k of Object.keys(o)) o[k] = integrerPhotos(o[k]); return o; }
+  const m = typeof o === 'string' && /^\/photos\/([a-z0-9-]+)$/.exec(o);
+  if (!m) return o;
+  for (const [ext, type] of Object.entries(TYPES_PHOTO)) {
+    const f = join(dirname(fichierContenu), 'photos', m[1] + '.' + ext);
+    if (existsSync(f)) return `data:${type};base64,` + readFileSync(f).toString('base64');
+  }
+  return o;
+};
+integrerPhotos(C);
 const css = lire('public/assets/site.css');
 const js = lire('public/assets/site.js');
 const jeu = POLICES[(C.theme || {}).polices] || POLICES.classique;

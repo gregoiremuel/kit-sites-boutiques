@@ -1,11 +1,11 @@
 ---
 name: sites-boutiques
-description: Méthode de Greg pour les sites de commerces (moteur + espace boutique) : maquette, contenu GLM, tests, démo, mise en ligne, prospection. À suivre dès qu'on crée ou modifie un site de boutique.
+description: Méthode de Greg pour les sites de commerces (moteur + page de modification) : maquette, contenu GLM, tests, démo, mise en ligne, prospection. À suivre dès qu'on crée ou modifie un site de boutique.
 ---
 
 # Sites boutiques : la méthode de Greg
 
-Greg (Grégoire Muel, joaillier à Paris 16e) crée des sites pour les commerces de son quartier, pour des entreprises (Opéria, maître d'œuvre à Vertou) et le site de la Maison Tcheskiss (joaillerie de son employeur). Chaque site est livré avec un **espace boutique** : une page privée où le commerçant modifie tout et reçoit les demandes de ses clients. Tout est déjà construit et testé : **on ne refait jamais le moteur, on remplit un contenu.**
+Greg (Grégoire Muel, joaillier à Paris 16e) crée des sites pour les commerces de son quartier, pour des entreprises (Opéria, maître d'œuvre à Vertou) et le site de la Maison Tcheskiss (joaillerie de son employeur). Chaque site est livré avec une **page de modification** : une page privée où le commerçant modifie tout et reçoit les demandes de ses clients. Tout est déjà construit et testé : **on ne refait jamais le moteur, on remplit un contenu.**
 
 ## 1. Trouver le kit avant toute chose
 
@@ -27,12 +27,12 @@ Lire `METHODE.md` en entier avant de commencer. Ce skill en est le résumé ; en
 1. Rassembler : fiche Google (texte copié ou captures), notes de Greg (modèle `prompts/3-modele-de-notes.md`), photos du commerçant, presse.
 2. Contenu : fiche de faits, liste « à valider » (questions pour le commerçant), puis `contenu.json`. Si le commerçant aime un site : `prompts/2-module-site-de-reference.md` (on ne reprend que couleurs, polices, variantes et ton).
 3. Construire dans le dossier de la boutique : `npm install`, `npm run verifier` (aucune erreur), `npm test` (tout « ok »), `npm run apercu`.
-4. Vérifier en vrai : ouvrir la démo dans un navigateur sans cadre et dans un cadre « allow-scripts » (comme l'aperçu de l'app Claude), à 390 px et 1280 px : navigation, panier ou demande, connexion à l'espace boutique (n'importe quel mot de passe), changer un prix, enregistrer, revoir le site. Aucune erreur JavaScript, aucun débordement horizontal.
+4. Vérifier en vrai : ouvrir la démo dans un navigateur sans cadre et dans un cadre « allow-scripts » (comme l'aperçu de l'app Claude), à 390 px et 1280 px : navigation, panier ou demande, connexion à la page de modification (n'importe quel mot de passe), changer un prix, enregistrer, revoir le site. Aucune erreur JavaScript, aucun débordement horizontal.
 5. Livrer avec SendUserFile : `demonstration.html` (à afficher) et le zip du projet (sans `node_modules`, `.wrangler`, `.dev.vars`, `demonstration.html`, `demo-en-ligne/`).
 
 ## 3 bis. Vidéo de fond (les trois moteurs)
 
-Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et case « Vidéo en fond (sinon la photo) » dans l'accueil de l'espace de modification. La photo reste l'image d'attente, bouton pause intégré. Une vidéo d'iPhone (.mov) se convertit avec ffmpeg (commande dans `METHODE.md`, partie 2.7). Sans vidéo du client, un lent mouvement sur une de ses photos (ffmpeg zoompan) fait une bonne démonstration.
+Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et case « Vidéo en fond (sinon la photo) » dans l'accueil de la page de modification. La photo reste l'image d'attente, bouton pause intégré. Une vidéo d'iPhone (.mov) se convertit avec ffmpeg (commande dans `METHODE.md`, partie 2.7). Sans vidéo du client, un lent mouvement sur une de ses photos (ffmpeg zoompan) fait une bonne démonstration.
 
 ## 4. Règles d'or
 
@@ -55,7 +55,7 @@ Champ « Vidéo de fond » (MP4 ou WebM, 20 Mo au plus, ou lien https .mp4) et c
 - **iPhone : un fichier HTML ne s'ouvre pas.** Il faut un lien : `demo-en-ligne/` (fabriqué par `npm run apercu`) à déposer sur Cloudflare Pages, uniquement pour une boutique fictive ou signée.
 - Photo verticale : hauteur plafonnée sur ordinateur (`max-height`) pour les bandes photo et texte.
 - Réunion des scripts pour la démo : deux noms identiques au premier niveau la cassent (`apercu` le signale).
-- Dans l'espace cloud de Claude : Unsplash et Cloudflare sont bloqués. Utiliser des photos de remplacement pour les captures, et faire la mise en ligne depuis l'ordinateur de Greg avec Claude Code (texte prêt dans le `LISEZMOI.md` du projet).
+- Dans l'espace cloud de Claude : Cloudflare est bloqué (mise en ligne depuis l'ordinateur de Greg avec Claude Code, texte prêt dans le `LISEZMOI.md` du projet). Pour les photos, **tester d'abord `images.unsplash.com` et `images.pexels.com`** ; s'ils sont bloqués, s'arrêter et le dire à Greg, sans contourner (`METHODE.md`, 2.8 bis). Avant de livrer : `npm run accessibilite` et l'avis de cinq sous-agents Haiku (`METHODE.md`, 2.8 ter et quater).
 - Captures « page entière » : images blanches possibles. Capturer en faisant défiler l'écran ; pour une démo dans son cadre, capturer la fenêtre et faire défiler le cadre.
 - Texte du bandeau d'une démo remplacé par expression régulière : s'arrêter au prochain `<`, sinon la balise fermante disparaît et toute la page se décale.
 - Le Chromium des tests ne lit pas le H.264 : tester la lecture vidéo avec un WebM.

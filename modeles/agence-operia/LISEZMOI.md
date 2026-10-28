@@ -89,3 +89,10 @@ Le site est alors en ligne en mode proposition (bandeau, non indexé par Google,
 | `public/admin/`, `public/assets/admin.*` | L'espace de modification |
 | `public/assets/operia-*.png` | Logo : nom, nom en blanc, monogramme, logo complet |
 | `outils/` | Vérificateur, tests, démonstration, mot de passe |
+
+## Ajouts du moteur (octobre 2026)
+
+- **Page Engagements** (`/engagements`) : clé facultative `engagements`, une liste de blocs `{ titre, texte, points }` (hébergement, données, sauvegardes, délais…). Sans bloc, ni page ni lien de menu. Modifiable dans la rubrique « Engagements » de la page de modification.
+- **Étiquette sur une vignette** : `realisations[].etiquette` (ex. « Démonstration »). L'accueil montre 6, 4 ou 3 réalisations selon leur nombre.
+- **Cartes** : le nom de la réalisation est au-dessus de l'image.
+- **Accessibilité** : `npm run accessibilite` (axe-core, WCAG 2.2 AA, bureau, mobile, « moins d'animations », parcours au clavier ; demande Playwright). Anneau de focus à deux tons, bandeaux de version et d'annonce repérés comme zones de la page.

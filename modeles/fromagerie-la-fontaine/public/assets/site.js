@@ -187,12 +187,12 @@
       heure.innerHTML = ''; heure.disabled = true;
       if (!dateIn.value) { infoJour.textContent = ''; return; }
       var d = deIso(dateIn.value);
-      if (dateIn.value < dateIn.min) { infoJour.textContent = 'Les commandes se font au moins ' + CMD.delai + ' h à l’avance : choisissez un jour à partir du ' + joli(premier) + '.'; return; }
+      if (dateIn.value < dateIn.min) { infoJour.textContent = 'Il faut au moins ' + CMD.delai + ' h d’avance : choisissez un jour à partir du ' + joli(premier) + '.'; return; }
       var c = creneauxDu(d);
-      if (!c.length) { heure.innerHTML = '<option value="">Fermé</option>'; infoJour.textContent = 'La boutique est fermée le ' + JOURS[d.getDay()] + '. Choisissez un autre jour.'; return; }
+      if (!c.length) { heure.innerHTML = '<option value="">Fermé</option>'; infoJour.textContent = 'Fermé le ' + JOURS[d.getDay()] + '. Choisissez un autre jour.'; return; }
       heure.innerHTML = c.map(function (m) { return '<option>' + fmt(m) + '</option>'; }).join('');
       heure.disabled = false;
-      infoJour.textContent = 'Retrait le ' + joli(d) + '.';
+      infoJour.textContent = V.jourPhrase + ' ' + joli(d) + '.';
     };
     if (heure) {
       var defaut = new Date(premier);
@@ -206,7 +206,7 @@
     var majEstimation = function () {
       if (!pers || !estim) return;
       var p = choisi(), n = +pers.value;
-      if (p && p.prixUnite && n) { estim.textContent = 'Estimation : ' + n + ' × ' + euros(p.prixUnite) + ' = ' + euros(n * p.prixUnite) + ', confirmée par la boutique.'; estim.hidden = false; }
+      if (p && p.prixUnite && n) { estim.textContent = 'Estimation : ' + n + ' × ' + euros(p.prixUnite) + ' = ' + euros(n * p.prixUnite) + ', à confirmer avec ' + V.qui + '.'; estim.hidden = false; }
       else estim.hidden = true;
     };
     if (pers) {
@@ -227,7 +227,7 @@
       var p = choisi(), nom = cf.nom.value.trim(), tel = cf.telephone.value.trim(), mail = cf.email.value.trim(), msg = cf.message.value.trim();
       var manque = [];
       if (!p) manque.push('votre choix');
-      if (!V.devis && (!dateIn.value || dateIn.value < dateIn.min || !heure || heure.disabled || !heure.value)) manque.push('un jour où la boutique est ouverte');
+      if (!V.devis && (!dateIn.value || dateIn.value < dateIn.min || !heure || heure.disabled || !heure.value)) manque.push('un jour d’ouverture');
       if (V.devis && dateIn.value && (dateIn.value < dateIn.min || dateIn.value > dateIn.max)) manque.push('une date à partir du ' + joli(premier));
       if (V.devis && !msg) manque.push('la description de votre demande');
       if (!nom) manque.push('votre nom');
@@ -243,7 +243,7 @@
       lignes.push(['Nom', nom], ['Téléphone', tel]);
       if (mail) lignes.push(['E-mail', mail]);
       if (n && p.prixUnite) lignes.push(['Estimation', euros(n * p.prixUnite)]);
-      var sujet = (V.devis ? 'Demande de devis : ' : 'Commande : ') + p.nom + (n ? ', ' + n + (V.unite ? ' ' + V.unite : '') : '') + (d ? ', ' + joli(d) + (heure ? ' ' + heure.value : '') : '');
+      var sujet = V.sujet + ' : ' + p.nom + (n ? ', ' + n + (V.unite ? ' ' + V.unite : '') : '') + (d ? ', ' + joli(d) + (heure ? ' ' + heure.value : '') : '');
       var texte = lignes.map(function (l) { return l[0] + ' : ' + l[1]; }).join('\n');
 
       var fini = function (titre, m) {
@@ -256,7 +256,7 @@
       var secours = CMD.email ? ', ou <a href="mailto:' + escH(CMD.email) + '?subject=' + encodeURIComponent(sujet) + '&body=' + encodeURIComponent(texte) + '">envoyez la demande depuis votre messagerie</a>' : '';
 
       if (cf.botcheck.checked) { fini('Demande envoyée', CMD.confirmation); return; }
-      if (CMD.maquette) { fini('Aperçu de la demande', 'Démonstration : rien n’a été envoyé. Une fois le site en ligne, la boutique reçoit exactement ce message.'); return; }
+      if (CMD.maquette) { fini('Aperçu de la demande', 'Démonstration : rien n’a été envoyé. Une fois le site en ligne, ' + V.qui + ' reçoit exactement ce message.'); return; }
       if (CMD.api || CMD.cle) {
         var envois = [];
         if (CMD.api) {
@@ -280,17 +280,17 @@
             if (--restants) return;
             envoyer.disabled = false; envoyer.textContent = 'Envoyer la demande';
             if (reussi) fini('Demande envoyée', CMD.confirmation);
-            else montrerErreur('L’envoi n’a pas abouti. Appelez la boutique au ' + telBoutique + secours + '.');
+            else montrerErreur('L’envoi n’a pas abouti. Appelez au ' + telBoutique + secours + '.');
           });
         });
         return;
       }
       if (CMD.email) {
         location.href = 'mailto:' + CMD.email + '?subject=' + encodeURIComponent(sujet) + '&body=' + encodeURIComponent(texte);
-        fini('Dernière étape', 'Votre messagerie s’ouvre avec la demande déjà rédigée : envoyez-la pour la transmettre à la boutique.');
+        fini('Dernière étape', 'Votre messagerie s’ouvre avec la demande déjà rédigée : envoyez-la pour la transmettre ' + V.a + '.');
         return;
       }
-      montrerErreur('Les demandes en ligne ne sont pas encore ouvertes. Appelez la boutique au ' + telBoutique + '.');
+      montrerErreur('Les demandes en ligne ne sont pas encore ouvertes. Appelez au ' + telBoutique + '.');
     };
     /* bouton simple (pas « submit ») : fonctionne aussi dans les aperçus qui bloquent les formulaires */
     envoyer.addEventListener('click', envoyerDemande);
