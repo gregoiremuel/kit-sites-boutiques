@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 12, 28 octobre 2026. Grégoire Muel.
+Version 13, 28 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -173,6 +173,9 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 |---|---|---|
 | Dans l'app Claude, un bouton ou la connexion de la démo ne fait rien | L'aperçu de l'app bloque les formulaires et la mémoire du navigateur | Boutons « type=button » avec un clic, mémoire de secours ; aucun `<form>` envoyé |
 | Une démo garde 2 ou 3 photos puis « oublie » après rechargement, tout en disant « Enregistré » | La mémoire du navigateur est limitée à ~5 Mo et les photos de base y étaient recopiées | Les photos déjà dans le fichier ne sont plus recopiées ; message clair si la mémoire est pleine, ou bloquée (aperçu de l'app Claude : rien n'est gardé après fermeture) |
+| Une démonstration « fait IA » malgré des photos réelles | Mise en page de gabarit : photos en arche, rond et carré, collages décalés, pastilles, tuiles lettrées, cadres inclinés ; un client juge un site à sa ressemblance avec ceux qu'il connaît (photo pleine largeur, titre lisible, un appel clair) | Les gabarits atelier, dépannage et marché ont une grande photo en tête (atelier : photo pleine largeur sous un dégradé ; dépannage : photo qui touche le bord droit ; marché : bandeau photo) et des angles presque droits ; jamais de collage ni de forme décorative |
+| Une règle de gabarit ne s'applique pas (position, marge) | Une règle plus précise plus haut (`.g-atelier figure{position:relative}`) l'emporte sur `.a-hero-fig` même écrite plus bas | Préfixer par le gabarit (`.g-atelier .a-hero-fig`) ; vérifier le style calculé dans le navigateur, pas seulement la capture |
+| Une vignette coupe un titre en deux | Capture à hauteur fixe | `outils/vignettes.mjs` coupe à la fin du dernier bloc entier visible et complète avec la couleur de fond de la page |
 | Une démo affiche le contenu ou les photos d'une autre démo | Tous les fichiers ouverts depuis l'ordinateur partagent la même mémoire du navigateur, et effacer les données de navigation ne la vide pas toujours | Chaque démo range ses essais sous une clé propre au site et à sa version ; bouton « Remettre la démonstration à zéro » sur l'écran de connexion de la démo |
 | Une vidéo MP4 ne se lit pas dans les tests automatiques | Le Chromium de test n'a pas le décodeur H.264 (Chrome, Safari, Brave l'ont) | Tester la lecture avec un fichier WebM ; le site masque le bouton pause si la vidéo ne se lit pas et garde la photo |
 | Le fichier HTML ne s'ouvre pas sur iPhone | iOS n'ouvre pas les fichiers HTML locaux dans un navigateur | Un lien : `demo-en-ligne/` sur Cloudflare Pages (ou Tiiny Host : en gratuit, 7 jours et 3 Mo selon un comparatif de 2026) |

@@ -622,3 +622,76 @@ textarea.saisie{min-height:96px;resize:vertical;line-height:1.45}
 /* Anneau de focus : sombre sur les boîtes claires posées dans une partie sombre, et sur la barre d'urgence jaune */
 .g-depannage .g-horaires .carte-box :focus-visible,.g-carte .g-horaires .carte-box :focus-visible{outline-color:var(--bleu-fonce)}
 .d-urgence :focus-visible{outline-color:var(--encre)}
+
+/* ===== Révision : en-têtes à grande photo (atelier, dépannage, marché), comme un site réel ===== */
+.g-atelier main>.sec:first-child{padding-top:clamp(48px,6vw,80px)}
+/* Atelier : photo pleine largeur, titre en bas à gauche */
+.a-scene{position:relative;display:grid;align-items:end;min-height:min(76svh,700px);background:var(--bleu-fonce);color:#fff;isolation:isolate}
+.g-atelier .a-hero-fig{position:absolute;inset:0;margin:0;z-index:-2}
+.a-hero-fig img{width:100%;height:100%;object-fit:cover;aspect-ratio:auto;max-height:none;object-position:50% 35%}
+.a-scene::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(24,15,8,.86) 0%,rgba(24,15,8,.5) 42%,rgba(24,15,8,.12) 100%)}
+.a-hero-fig .illus{left:auto;right:12px;bottom:12px}
+.a-scene .a-hero-txt{padding-top:clamp(72px,12vw,150px);padding-bottom:clamp(36px,6vw,72px)}
+.a-scene .a-genre{color:#fff;border-top-color:var(--accent,#e9cd8a)}
+.a-scene h1{color:#fff;max-width:14ch}
+.a-scene .a-hero-txt>p:not(.a-genre):not(.statut){color:rgba(255,255,255,.92);max-width:52ch}
+.a-scene .statut{color:#fff}
+.a-scene .actions .btn{background:#fff;border-color:#fff;color:var(--bleu-fonce)}
+.a-scene .actions .btn:hover{background:var(--accent,#e9cd8a);border-color:var(--accent,#e9cd8a)}
+.g-atelier .a-scene .actions .btn-contour{background:transparent;border-color:#fff;color:#fff}
+.g-atelier .a-scene .actions .btn-contour:hover{background:rgba(255,255,255,.16)}
+.a-scene :focus-visible{outline-color:#fff}
+.a-scene.sans-photo{min-height:0;background:var(--bleu-pale);color:var(--encre)}
+.a-scene.sans-photo::after{display:none}
+.a-scene.sans-photo .a-hero-txt{padding-top:clamp(40px,6vw,80px)}
+.a-scene.sans-photo h1,.a-scene.sans-photo .a-genre,.a-scene.sans-photo .statut{color:var(--bleu-fonce)}
+.a-scene.sans-photo .a-hero-txt>p:not(.a-genre):not(.statut){color:var(--encre)}
+.a-scene.sans-photo .actions .btn{background:var(--bleu-fonce);border-color:var(--bleu-fonce);color:#fff}
+/* Dépannage : texte à gauche, photo qui touche le bord droit ; un appel, un devis */
+.d-scene{display:grid;grid-template-columns:minmax(0,1fr);background:var(--bleu-fonce)}
+.d-hero-txt{padding:clamp(32px,6vw,64px) var(--gut) clamp(36px,6vw,72px)}
+.d-hero-fig{margin:0;position:relative;min-height:260px;aspect-ratio:16/10}
+.d-hero-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;aspect-ratio:auto;max-height:none;object-position:50% 40%}
+.d-hero-fig .illus{left:auto;right:12px;bottom:12px}
+.d-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.d-actions .btn{min-height:56px;padding:0 26px;font-size:1.125rem;font-weight:700;border-radius:0}
+.d-appel{background:var(--paille);border-color:var(--paille);color:var(--encre)}
+.d-appel:hover{background:#fff;border-color:#fff}
+.d-devis{background:transparent;border:2px solid #fff;color:#fff}
+.d-devis:hover{background:rgba(255,255,255,.14)}
+.d-scene.sans-photo .d-hero-txt{max-width:860px;margin:0 auto;width:100%}
+@media (min-width:900px){
+  .d-scene{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:clamp(460px,70svh,640px)}
+  .d-hero-txt{padding-left:max(var(--gut),calc((100vw - var(--wrap)) / 2 + var(--gut)));padding-right:clamp(32px,5vw,72px);align-self:center}
+  .d-hero-fig{aspect-ratio:auto;min-height:100%}
+  .d-scene.sans-photo{grid-template-columns:minmax(0,1fr)}
+}
+/* Marché : barre simple, une photo large, titre et texte côte à côte */
+.g-marche{--r:6px}
+.m-tete{padding:0;border-bottom:1px solid var(--trait)}
+.m-barre{display:flex;align-items:center;gap:22px;min-height:76px}
+.m-barre .g-nom{font:600 1.5rem/1 var(--titres);color:var(--bleu-fonce);margin-right:auto}
+.m-barre .g-nav a{color:var(--encre)}
+.m-barre .g-cta{background:var(--bleu);color:#fff;border-radius:0;padding:0 22px}
+.m-barre .g-cta:hover{background:var(--bleu-fonce)}
+.m-barre .menu-btn{border-radius:0;color:var(--bleu-fonce);border-color:var(--bleu-fonce)}
+.m-photo{margin:0;position:relative}
+.m-photo img{display:block;width:100%;aspect-ratio:16/9;max-height:min(66svh,620px);object-fit:cover;object-position:50% 55%}
+.m-photo .illus{left:auto;right:16px;bottom:16px}
+.m-hero .m-grille{display:grid;gap:20px;padding-top:clamp(28px,5vw,56px);padding-bottom:clamp(40px,6vw,80px);align-items:start}
+.m-hero .m-grille h1{font:600 clamp(2.25rem,5.4vw,4rem)/1.04 var(--titres);color:var(--bleu-fonce);max-width:14ch;letter-spacing:-.01em}
+.m-hero .m-txt>p{max-width:46ch;margin-top:0;font-size:1.1875rem}
+@media (min-width:900px){.m-hero .m-grille{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:end}}
+.g-marche .btn{border-radius:0}
+.g-marche .m-saison,.g-marche .m-bouquets-liste li{border-radius:0}
+.g-marche .m-saison li{border-top-style:solid;border-top-color:color-mix(in srgb,currentColor 28%,transparent)}
+.g-marche .m-bouquets-liste li{min-height:0}
+@media (min-width:900px){.g-marche .m-b1,.g-marche .m-b2{margin-top:0}}
+.g-marche #boutique .ph-main{border-radius:0;aspect-ratio:4/5}
+.g-marche #boutique .ph-small{border-radius:0;aspect-ratio:4/3;width:46%}
+.g-marche .g-horaires-grille{border-radius:0}
+.g-marche .foot{border-radius:0}
+@media (min-width:961px){.m-barre .g-nav{display:flex}}
+/* Photos de la boutique : deux images alignées, sans décalage ni collage */
+.g-atelier #boutique .ph-main,.g-marche #boutique .ph-main{aspect-ratio:3/2}
+.g-atelier #boutique .ph-small,.g-marche #boutique .ph-small{width:100%;aspect-ratio:3/2;margin:14px 0 0}

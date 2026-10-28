@@ -449,34 +449,34 @@ export function rendreSite(C, o = {}) {
 
   const heros = {
     atelier: () => {
-      const f = fig(T.photo_accueil, 1400, 'a-hero-fig', true);
+      const f = fig(T.photo_accueil, 1800, 'a-hero-fig', true);
       return `<header class="hero a-hero">
   ${entete('a-tete')}
-  <div class="wrap a-hero-grille${f ? '' : ' sans-photo'}">
-    <div class="a-hero-txt">
+  <div class="a-scene${f ? '' : ' sans-photo'}">
+    ${f}
+    <div class="wrap a-hero-txt">
       <p class="a-genre">${esc(cap(V.titrePage))}</p>
       <h1>${esc(T.titre || nom)}</h1>
       ${T.intro ? `<p>${esc(T.intro)}</p>` : ''}
       ${statutP}
       <div class="actions">${lienCta}${lienAppel()}</div>
     </div>
-    ${f}
   </div>
 </header>`;
     },
     depannage: () => {
-      const f = fig(T.photo_accueil, 1400, 'd-hero-fig', true);
+      const f = fig(T.photo_accueil, 1600, 'd-hero-fig', true);
       return `<header class="hero d-hero">
   <div class="d-urgence"><div class="wrap"><p>Dépannage ou devis</p><a href="${tel}">${esc(B.telephone)}</a></div></div>
   ${entete('d-tete')}
-  <div class="wrap d-hero-grille${f ? '' : ' sans-photo'}">
+  <div class="d-scene${f ? '' : ' sans-photo'}">
     <div class="d-hero-txt">
       <h1>${esc(T.titre || nom)}</h1>
       ${T.intro ? `<p>${esc(T.intro)}</p>` : ''}
       ${statutP}
-      <div class="actions d-choix">
-        <a class="d-choix-a" href="${tel}"><b>Dépannage</b><span>Appelez maintenant</span><strong>${esc(B.telephone)}</strong></a>
-        <a class="d-choix-b" href="${esc(cta[0])}"${cta[2]}><b>Devis</b><span>Décrivez-nous vos travaux</span><strong>${esc(formulaire ? D.nav : 'Appeler')}</strong></a>
+      <div class="actions d-actions">
+        <a class="btn d-appel" href="${tel}">Appeler le ${esc(B.telephone)}</a>
+        <a class="btn btn-contour d-devis" href="${esc(cta[0])}"${cta[2]}>${esc(formulaire ? D.nav : 'Appeler')}</a>
       </div>
     </div>
     ${f}
@@ -501,23 +501,19 @@ export function rendreSite(C, o = {}) {
   </div>
 </header>`,
     marche: () => `<header class="hero m-hero">
-  <div class="m-tete"><div class="wrap"><div class="m-pilule">
+  <div class="m-tete"><div class="wrap m-barre">
     <a class="g-nom" href="#contenu">${esc(nom)}</a>
     <nav class="g-nav" aria-label="Menu principal">${liensNavGab}</nav>
     <a class="g-cta" href="${esc(cta[0])}"${cta[2]}>${esc(cta[1])}</a>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
-  </div></div></div>
+  </div></div>
+  ${fig(T.photo_accueil, 1800, 'm-photo', true)}
   <div class="wrap m-grille">
+    <h1>${esc(T.titre || nom)}</h1>
     <div class="m-txt">
-      <h1>${esc(T.titre || nom)}</h1>
       ${T.intro ? `<p>${esc(T.intro)}</p>` : ''}
       ${statutP}
       <div class="actions">${lienCta}<a class="btn btn-contour" href="${itineraire}" target="_blank" rel="noopener">Itinéraire</a></div>
-    </div>
-    <div class="m-mosaique">
-      ${fig(T.photo_accueil, 1200, 'm-arche', true)}
-      ${fig(T.boutique_photo_1, 700, 'm-rond')}
-      ${fig(T.offres_photo || T.produits_photo, 700, 'm-carre')}
     </div>
   </div>
 </header>`,
