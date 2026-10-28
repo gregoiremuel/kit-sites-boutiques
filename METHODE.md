@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 8, 28 octobre 2026. Grégoire Muel.
+Version 9, 28 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -8,7 +8,7 @@ Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir le
 
 ## 0. En une minute
 
-- **L'offre** : un site rapide, à leur nom, avec un **espace boutique**, une page privée où le commerçant change lui-même ses horaires, prix, photos et textes, affiche ou masque chaque partie, et reçoit les demandes de ses clients. Maquette gratuite en 48 h, puis 590 € photos comprises et 29 € par mois (hébergement et mises à jour). Ces prix sont des recommandations de départ, pas des tarifs du marché.
+- **L'offre** : un site rapide, à leur nom, avec un **espace boutique**, une page privée où le commerçant change lui-même ses horaires, prix, photos et textes, affiche ou masque chaque partie, et reçoit les demandes de ses clients. Maquette gratuite en 48 h, puis le site à partir de 590 € (photos comprises), **sans abonnement obligatoire** ; en option, un abonnement mensuel (Sérénité 19 €, Croissance 49 €). Ces prix sont des propositions de départ ; repères du marché en partie 9.
 - **Trois moteurs, déjà testés**, dans `modeles/` :
   - **Vitrine** (`modeles/fromagerie-la-fontaine`) : une page pour un commerce de quartier (accueil, la boutique, produits, offres, demande en ligne, presse et note Google, questions, horaires, accès). Des variantes combinables (accueil sur grande photo, partagé ou sobre ; titres ; angles ; offres ; ordre des parties) et trois jeux de polices, pour que deux boutiques voisines ne se ressemblent pas.
   - **Agence** (`modeles/agence-operia`) : un site de plusieurs pages, haut de gamme, pour une entreprise de services ou du bâtiment (expertises, méthode, réalisations avec une page et une galerie par projet, filtres par secteur, équipe, engagements, références, formulaire de demande de projet avec statuts : Nouvelle, Rappelé, Devis envoyé, Signée, Classée).
@@ -73,9 +73,11 @@ Le moteur agence sert à toute entreprise de services, pas seulement au bâtimen
 - `libelles` : les mots du menu, des titres de rubrique, de la fiche d'une réalisation et du formulaire (liste et valeurs par défaut dans `LIBELLES`, `rendu.js`). Un champ du formulaire au libellé vide disparaît. Le panneau « Titres et libellés » ne s'affiche dans l'espace de modification que si le contenu a des `libelles`.
 - `metiers[].prix` : « À partir de… » sous chaque offre.
 - `realisations[].lien` et `lien_texte` : bouton vers le site en ligne ou une démonstration. Avec `accueil.essai_titre` et `essai_texte`, l'accueil affiche un bloc « À essayer » qui liste ces liens.
+- `abonnements` : bloc « Abonnement facultatif » de la page des offres (`titre`, `intro`, `note`, `formules[]` avec `nom`, `prix`, `periode`, `description`, `points`, `recommande`). Panneau « Abonnement mensuel » dans l'espace de modification, seulement si le bloc existe.
+- `theme.gabarit` : `classique` (par défaut : bandes foncées, photo plein cadre, Playfair + Manrope) ou `studio` (papier clair, accueil en deux colonnes, Bricolage Grotesque + DM Sans, pastilles, bandes arrondies). Voir la règle « Un site, une identité » (partie 3).
 - `mentions.tva` : ligne TVA des mentions légales (« TVA non applicable, article 293 B du CGI » pour une micro-entreprise en franchise).
 
-Des démonstrations à essayer peuvent vivre dans `public/demos/` : contenus imaginaires dans `exemples/`, fabriqués avec les moteurs vitrine et catalogue, bandeau « Site d'exemple : commerce imaginaire… ». Visuels sans photo de banque d'images : de vraies captures des sites (parties sans photo) dans des cadres d'ordinateur et de téléphone.
+Des démonstrations à essayer peuvent vivre dans `public/demos/` : contenus imaginaires dans `exemples/`, fabriqués avec le moteur vitrine (un atelier d'artisan avec demande de devis, une fleuriste avec commande à retirer), bandeau « Site d'exemple : commerce imaginaire… ». Visuels sans photo de banque d'images : de vraies captures des sites (parties sans photo) dans des cadres d'ordinateur et de téléphone.
 
 ### 2.5 La démonstration
 - `npm run apercu` fabrique `demonstration.html` : **un seul fichier**, sans serveur, qui s'ouvre sur le site puis « Essayer l'espace boutique » (n'importe quel mot de passe). On y modifie tout et le site de la démo change. Rien n'est publié.
@@ -115,6 +117,10 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 - **Respecter un refus** de prospection et ne plus recontacter. Par e-mail, la prospection entre professionnels est permise si le message concerne leur activité et propose de ne plus être contacté.
 - **Vérifier avant de livrer** : `npm run verifier` sans erreur, `npm test` tout « ok », démo ouverte et essayée sur téléphone.
 
+- **Un site, une identité** : deux sites montrés ou livrés ne se ressemblent pas. Couleur, polices, mise en page (accueil, ordre des parties), formes (angles, boutons) et ton changent d'un site à l'autre. Test : deux captures côte à côte, réduites ; si l'on hésite sur laquelle est laquelle, on recommence. Avant de créer, relire le registre ci-dessous et la ligne « Style » du vérificateur, puis choisir un autre jeu.
+- **L'interface suit le métier** : le style traduit ce que fait l'entreprise et à qui elle parle. Commerce de bouche : empattements chaleureux, couleur de la devanture. Artisan : empattements carrés, teintes de matière (bois, cuir), angles droits. Commerce de service moderne : une seule famille nette. Bâtiment, haut de gamme : sombre, didone, sobre. Création, conseil, numérique : grotesque, papier clair, une couleur vive. Un style choisi parce qu'il est déjà fait ne passe pas.
+- **Registre des styles** (à compléter à chaque site) : Fromagerie La Fontaine = vitrine, bleu ardoise, Vollkorn, angles doux, accueil photo · Maison Tcheskiss = catalogue, noir et blanc cassé, Bodoni + Hanken · Opéria = agence classique, marine #262a59 et jaune #f8c151, Playfair + Manrope · Grégoire Muel = agence studio, encre #12181a et vermillon #ff5a36 sur papier gris froid, Bricolage + DM Sans · démo Atelier du Merrain = vitrine, brun bois, Bitter, angles droits, titres à filet, accueil sobre · démo Le Pétale Sauvage = vitrine, vert bouteille, Libre Franklin, angles doux, accueil sobre. Un nouveau look qui manque au moteur (troisième gabarit agence, par exemple) s'ajoute au moteur, jamais par un contenu bricolé.
+
 ### Jamais
 - **Jamais de lien public au nom d'un commerce qui n'a pas signé** : montrer les fichiers sur le téléphone, ou deux captures par e-mail.
 - **Jamais les photos ou le texte des avis Google** : la note s'affiche en chiffres, avec un lien vers la fiche.
@@ -149,6 +155,10 @@ Doser selon le site : le moteur « agence » a le jeu complet. Le catalogue (joa
 | Dans la démo ou l'aperçu, un clic sur le menu (#produits, #horaires…) n'affiche pas la rubrique, le cadre recharge toute la démo | La page est affichée dans un cadre « srcdoc » : le navigateur comprend « #produits » comme une adresse de la page de démo | Les trois moteurs font défiler eux-mêmes jusqu'à la rubrique quand la page est dans un aperçu (`location.protocol === 'about:'`). Tester chaque lien du menu dans la démo, sur téléphone et ordinateur |
 | Lien vers `/demos/x.html` : redirection 307 | Cloudflare sert les fichiers .html sans l'extension | Écrire `/demos/x` |
 | Dans l'aperçu, un lien vers une démonstration affiche « Page introuvable » | L'aperçu transforme tout lien commençant par « / » en page du site | Les liens de réalisation portent `data-ouvrir` et s'ouvrent dans un nouvel onglet (marche en ligne ; pas dans le fichier de démonstration seul) |
+| Une démo fabriquée à partir du moteur a le texte centré et le contenu décalé | Un remplacement de texte (bandeau « Site d'exemple ») a avalé la balise fermante `</div>` : le bandeau englobe toute la page | Remplacer seulement jusqu'au prochain `<` (`[^<]*`), jamais jusqu'à une apostrophe ou un guillemet ; recompter les balises ou regarder la capture |
+| Capture « page entière » d'une démo : bloc étroit et texte centré | La démo affiche le site dans un cadre ; la page entière est faussée par le cadre | Capturer la fenêtre, et faire défiler le cadre (`frame.evaluate(scrollTo)`) |
+| Le moteur catalogue ne convient pas à une boutique de fleurs ou de meubles | Ses champs sont ceux d'un bijou : métal, pierres, poids, tailles, gravure, page entretien | Ne pas le proposer tel quel hors joaillerie ; pour un autre commerce, le moteur vitrine (commande ou devis), ou adapter d'abord le moteur catalogue. Pas de démo catalogue non bijoutière : la démo viendra du site de la joaillerie de Greg |
+| Deux sites du même moteur se ressemblent (même structure, mêmes polices, couleurs voisines) | Le contenu change mais pas le gabarit | Règle « Un site, une identité » (partie 3) : choisir un autre gabarit, jeu de polices et palette ; `theme.gabarit` pour le moteur agence ; ligne « Style » du vérificateur pour le moteur vitrine |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
 
 ---
@@ -179,7 +189,7 @@ Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produi
 - Sauvegarde du contenu : `npx wrangler kv key get contenu --binding CONTENU --remote > sauvegarde.json`.
 - Changer le mot de passe : `npm run mot-de-passe`, puis `npx wrangler secret put ADMIN_HASH`.
 - Sécurité intégrée : 8 mauvais mots de passe bloquent 15 minutes ; demandes limitées par appareil ; demandes gardées 180 jours.
-- Ce que couvrent les 29 € par mois : à définir avec le client (proposition : hébergement suivi, sauvegarde, petites modifications que le client ne fait pas lui-même).
+- Abonnement facultatif : ce que couvrent les formules (Sérénité, Croissance), à écrire noir sur blanc dans le devis ; proposition : hébergement et domaine, sauvegardes, petites modifications que le client ne fait pas lui-même.
 
 ---
 
@@ -213,3 +223,13 @@ Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produi
 - Une nouvelle leçon (un bug, un piège, une meilleure tournure) : l'ajouter à la partie 4 ou 3, changer la version en haut, refaire le zip (ou pousser sur le dépôt).
 - Un moteur corrigé : corriger d'abord le modèle (`modeles/…`), relancer `npm run verifier` et `npm test`, puis reporter dans les boutiques déjà en ligne (même correction, redéploiement).
 - Les prompts se mettent à jour dans `prompts/`. Le prompt 1 est lié au squelette du moteur vitrine : si la forme du contenu change, il change aussi.
+
+---
+
+## 9. Prix : repères du marché (octobre 2026)
+
+À relire et à rechercher de nouveau avant de changer les prix : ces chiffres bougent et viennent en partie de sites qui vendent eux-mêmes des sites.
+- **Création d'un site d'artisan ou de commerce, en France** : freelance débutant 800 à 2 500 €, freelance expérimenté 2 500 à 5 000 €, agence 3 000 à 15 000 € (Seedweb, repris par SK Web). Offres d'entrée de concurrents : un site « essentiel » dès 690 € puis 22 € par mois (SK Web) ; Wix : 16,80 à 30 € par mois, sans création.
+- **Maintenance** : basique 200 à 800 € par an (soit 17 à 67 € par mois), complète 800 à 2 500 € par an ; contrats professionnels d'entrée 50 à 120 € par mois (Kolonell, qui les vend). Domaine .fr : 8 à 15 € par an.
+- **Boutique en ligne** : aucun tarif fiable trouvé en ligne en octobre 2026 ; les fourchettes habituelles (1 500 à 4 000 € pour un petit catalogue) sont une estimation, à vérifier.
+- **Offre actuelle de Greg** : site dès 590 € (sous la fourchette des débutants : bon pour les premiers clients, à relever ensuite), boutique dès 1 290 €, entreprise dès 1 900 € ; abonnement facultatif Sérénité 19 € et Croissance 49 €, sans engagement de durée. Tout cela reste à valider par Greg.
