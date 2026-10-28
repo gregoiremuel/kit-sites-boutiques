@@ -752,3 +752,17 @@ textarea.saisie{min-height:96px;resize:vertical;line-height:1.45}
 .d-tete .g-nom{font-size:1.25rem}
 @media (max-width:480px){.g-nom{font-size:1.25rem;gap:10px}.g-logo{width:38px;height:38px}.m-hero .m-grille h1{font-size:2.125rem}.d-hero h1{font-size:2.375rem}}
 @media (max-width:600px){.m-photo img{aspect-ratio:2/1}.m-hero .m-grille{padding-top:22px;gap:12px}.m-hero .m-grille h1{line-height:1.02}}
+/* Photos de la boutique : colonne de droite pleine, deuxième photo plus petite sous le texte */
+.g-atelier #boutique .ph-main,.g-marche #boutique .ph-main{aspect-ratio:4/5}
+.g-atelier #boutique .ph-small,.g-marche #boutique .ph-small{width:72%;aspect-ratio:3/2;margin:28px 0 0}
+/* Dépannage : une photo moins saturée */
+.d-hero-fig img,.d-bandeau img{filter:saturate(.7) contrast(1.03)}
+/* Marché : saisons en lignes (titre à gauche, fleurs à droite) */
+@media (min-width:760px){
+  .g-marche .m-saisons{display:block}
+  .g-marche .m-saison{display:grid;grid-template-columns:minmax(180px,1fr) 3fr;gap:8px 40px;align-items:baseline;padding:22px 0}
+  .g-marche .m-saison h3{margin:0}
+  .g-marche .m-saison ul{display:flex;flex-wrap:wrap;gap:8px 36px}
+  .g-marche .m-saison li{display:grid;gap:2px;border:0;padding:0}
+  .g-marche .m-saison:last-child{border-bottom:1px solid var(--bleu-fonce)}
+}
