@@ -148,6 +148,7 @@
       f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
       var box = plan.closest('.carte-box');
       box.innerHTML = '';
+      box.classList.add('carte-ouverte');
       box.appendChild(f);
     });
   }
