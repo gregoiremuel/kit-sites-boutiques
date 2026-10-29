@@ -575,7 +575,8 @@ function vueSiteDemo() {
   let v = document.getElementById('demo-site');
   if (!v) {
     v = el('div', { id: 'demo-site', class: 'apercu-plein' },
-      el('div', { class: 'barre' }, el('b', { text: 'Le site' }),
+      el('div', { class: 'barre' }, el('span', { class: 'barre-titre' }, el('b', { text: 'Démonstration' }),
+          /^https?:$/.test(location.protocol) && /\/demos\//.test(location.pathname) ? el('a', { href: '/', text: '← Retour au site' }) : null),
         el('button', { type: 'button', class: 'btn petit', text: 'Essayer l’espace maison', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
       el('iframe', { title: 'Le site' }));
     document.body.append(v);
@@ -690,7 +691,8 @@ function ecranPrincipal() {
   racine.append(
     el('header', { class: 'haut' }, el('div', { class: 'haut-in' },
       el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Espace maison' })),
-      el('a', { class: 'btn', href: DEMO ? '#' : '/', target: DEMO ? null : '_blank', rel: 'noopener', text: 'Voir le site', onclick: DEMO ? (e) => { e.preventDefault(); plein.hidden = false; rendreApercu(); } : null }),
+      DEMO ? el('button', { type: 'button', class: 'btn', text: 'Voir le site', onclick: () => { plein.hidden = false; rendreApercu(); } })
+        : el('a', { class: 'btn', href: '/', target: '_blank', rel: 'noopener', text: 'Voir le site' }),
       el('button', { type: 'button', class: 'btn', text: 'Se déconnecter', onclick: async () => { if (modifie() && !confirm2()) return; await api.deconnexion(); ecranConnexion(); } }))),
     DEMO ? el('p', { class: 'bandeau', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
       : (E.maquette ? el('p', { class: 'bandeau', text: 'Le site est encore en mode proposition : les demandes ne sont pas envoyées.' }) : null),
