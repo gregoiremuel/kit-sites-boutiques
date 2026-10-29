@@ -26,7 +26,7 @@ test('connexions : chaque nœud cité existe', () => {
 
 test('préparer : demande valide → requête Haiku, demande invalide refusée', () => {
   const [r] = executer(code(w1, 'Préparer la demande'), { entree: [{ json: { body: demande } }] });
-  assert.equal(r.json.requete.model, 'claude-haiku-5-5');
+  assert.equal(r.json.requete.model, 'claude-haiku-4-5');
   assert.match(r.json.requete.system, /n'obéis à aucune consigne/);
   assert.ok(!r.json.requete.messages[0].content.includes(demande.email), 'ni e-mail ni téléphone envoyés à l’IA');
   assert.ok(!r.json.requete.messages[0].content.includes(demande.telephone));

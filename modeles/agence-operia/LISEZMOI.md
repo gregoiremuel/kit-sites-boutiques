@@ -99,6 +99,7 @@ Le site est alors en ligne en mode proposition (bandeau, non indexé par Google,
 ## Ajouts du moteur (octobre 2026)
 
 - **Page Engagements** (`/engagements`) : clé facultative `engagements`, une liste de blocs `{ titre, texte, points }` (hébergement, données, sauvegardes, délais…). Sans bloc, ni page ni lien de menu. Modifiable dans la rubrique « Engagements » de la page de modification.
+- **Actualités** (`/actualites`, `/actualites/<id>`, 29/10/2026) : clé facultative `actualites`, liste de `{ id, titre, date (AAAA-MM-JJ), texte, photos, realisation, visible }`. La plus récente d'abord ; les 3 dernières sur l'accueil (`accueil.actualites: false` pour les cacher) ; lien « Actualités » dans le menu dès qu'une actualité est en ligne ; chaque page a ses données « BlogPosting » pour Google et entre dans le plan du site. Rubrique « Actualités » dans la page de modification (date du jour par défaut, réalisation liée au choix). Sans photo, la carte et la page passent en texte seul.
 - **Étiquette sur une vignette** : `realisations[].etiquette` (ex. « Démonstration »). L'accueil montre 6, 4 ou 3 réalisations selon leur nombre.
 - **Cartes** : le nom de la réalisation est au-dessus de l'image.
 - **Accessibilité** : `npm run accessibilite` (axe-core, WCAG 2.2 AA, bureau, mobile, « moins d'animations », parcours au clavier ; demande Playwright). Anneau de focus à deux tons, bandeaux de version et d'annonce repérés comme zones de la page.

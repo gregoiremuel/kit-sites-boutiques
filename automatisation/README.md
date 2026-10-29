@@ -9,7 +9,7 @@ Formulaire du site ──► page de modification (comme avant)
         ▼
 n8n « 1. Demande reçue »
   1. contrôle la demande (identifiant, e-mail)
-  2. Haiku 5.5 la trie : catégorie, commerce, ville, infos manquantes (sans l'e-mail ni le téléphone du visiteur)
+  2. Haiku 4.5 la trie : catégorie, commerce, ville, infos manquantes (sans l'e-mail ni le téléphone du visiteur)
   3. te prévient : e-mail + Telegram (WhatsApp prêt mais désactivé)
   4. envoie au visiteur un e-mail de confirmation, modèle fixe, avec les questions manquantes (aucun texte écrit par l'IA)
   5. si c'est « créer » ou « refaire » et que le commerce est identifiable : dépose la demande pour le VPS et lance la maquette

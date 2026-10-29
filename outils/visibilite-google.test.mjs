@@ -103,7 +103,7 @@ test('rédiger avec un faux serveur d’IA : fichiers écrits, clé envoyée en 
   try {
     const sortie = mkdtempSync(join(tmpdir(), 'vg-'));
     const appel = (a) => appelerIA({ ...a, cle: 'cle-de-test', url });
-    const r = await rediger({ f: fiche, mois: MOIS, sortie, modele: 'claude-haiku-5-5', appel });
+    const r = await rediger({ f: fiche, mois: MOIS, sortie, modele: 'claude-haiku-4-5', appel });
     assert.deepEqual(r, { posts: 1, avis: 2 });
     for (const n of ['rapport.html', 'a-valider.md', 'brouillons-posts.md', 'brouillons-avis.md', 'controle.md']) assert.ok(existsSync(join(sortie, n)), n);
     assert.match(readFileSync(join(sortie, 'brouillons-posts.md'), 'utf8'), /BROUILLON, rien n'est publié/);
@@ -111,7 +111,7 @@ test('rédiger avec un faux serveur d’IA : fichiers écrits, clé envoyée en 
     assert.match(c, /a2 : .*3 étoiles ou moins/);
     assert.deepEqual(vues.map((v) => v.cle), ['cle-de-test', 'cle-de-test']);
     assert.equal(vues[0].version, '2023-06-01');
-    assert.equal(vues[0].modele, 'claude-haiku-5-5');
+    assert.equal(vues[0].modele, 'claude-haiku-4-5');
   } finally { serveur.close(); }
 });
 
