@@ -153,7 +153,7 @@ ${liste(f.travail_fait)}
 <h2>Prévu le mois prochain</h2>
 ${liste(f.prevu_mois_suivant)}
 
-<div class="note"><strong>À savoir.</strong> Je ne promets aucune place dans Google. Je promets un travail fait chaque mois, que je vous montre ici. Les appels et les demandes d’itinéraire bougent d’abord ; un meilleur classement local se joue sur plusieurs mois. Rien n’est publié sans votre accord.</div>
+<div class="note"><strong>À savoir.</strong> Je ne promets aucune place dans Google. Je promets un travail fait chaque mois, que je vous montre ici. Les appels et les demandes d’itinéraire sont les premiers chiffres à regarder ; je ne peux pas dire à l’avance dans quel délai ils évoluent. Rien n’est publié sans votre accord.</div>
 
 <footer>${esc(presta.nom)} · ${esc(presta.telephone)}</footer>
 </body></html>

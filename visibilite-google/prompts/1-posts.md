@@ -10,7 +10,7 @@ Contraintes :
 - 300 caractères au moins, 900 au plus (la limite de Google est de 1 500, à vérifier ; on reste loin).
 - Un seul sujet par post, tiré d'un fait de `faits_du_mois` (numérotés dans la fiche). Si `faits_du_mois` est vide, écris « Manque : aucun fait du mois, demander au commerçant » et rien d'autre.
 - Si une fermeture de `fermetures` tombe dans le mois, un post peut l'annoncer, avec les dates exactes de la fiche.
-- Dernière ligne de chaque post : `Faits utilisés : 1, 3` (les numéros des faits utilisés), puis `Bouton : Appeler` ou `Bouton : Aucun`.
+- Après le texte, trois lignes dans cet ordre : `Faits utilisés : 1, 3` (les numéros des faits utilisés), `Bouton : Appeler` ou `Bouton : Aucun`, puis `Manque : …` seulement s'il manque une information.
 
 Format :
 
@@ -18,4 +18,4 @@ Format :
 (texte du post)
 Faits utilisés : …
 Bouton : …
-Manque : (seulement s'il manque une information)
+Manque : … (seulement s'il manque une information)

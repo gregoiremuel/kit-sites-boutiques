@@ -30,7 +30,7 @@ Note actuelle : [x,y] sur [n] avis. [n] nouveaux avis ce mois-ci, [n] avec une r
 - 2 à 4 lignes, par exemple : « Annoncer [fait donné par vous] », « Mettre à jour vos fermetures de [mois] », « Demander cinq photos de produits ».
 
 ### À savoir
-Je ne promets aucune place dans Google. Je promets un travail fait chaque mois, que je vous montre ici. Les appels et les demandes d'itinéraire bougent d'abord ; un meilleur classement local se joue sur plusieurs mois. Rien n'est publié sans votre accord.
+Je ne promets aucune place dans Google. Je promets un travail fait chaque mois, que je vous montre ici. Les appels et les demandes d'itinéraire sont les premiers chiffres à regarder ; je ne peux pas dire à l'avance dans quel délai ils évoluent. Rien n'est publié sans votre accord.
 
 *Grégoire Muel · 07 80 00 81 37*
 

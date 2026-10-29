@@ -3,10 +3,10 @@
 Pour le palier 0, ces messages sont à copier tels quels. **Un seul canal par client**, écrit dans le devis (SMS ou e-mail : celui que le client utilise déjà). Le message est court : le commerçant répond en une minute.
 
 ## 1. Demande des informations du mois
-> Bonjour [prénom], c'est Grégoire. Pour la fiche Google de [commerce] du mois prochain, j'ai besoin de quatre choses, en deux lignes chacune :
-> 1. Quelque chose de nouveau ou de particulier ce mois-ci (un produit, un plat, un chantier réalisé, un événement). Ce que vous me dites, je l'écris tel quel.
+> Bonjour [prénom], c'est Grégoire. Pour la fiche Google de [commerce] pour [mois prochain], j'ai besoin de quatre choses, en deux lignes chacune :
+> 1. Quelque chose de nouveau ou de particulier pour [mois prochain] (un produit, un plat, un chantier réalisé, un événement). Ce que vous me dites, je l'écris tel quel.
 > 2. Vos congés ou fermetures, avec les dates.
-> 3. Une ou deux photos récentes (vitrine, produits, travaux). Photos de vous seulement, pas de photos trouvées sur internet.
+> 3. Une ou deux photos récentes (vitrine, produits, travaux). Des photos de votre commerce, prises par vous, pas de photos trouvées sur internet.
 > 4. Un changement d'horaires, de téléphone ou de services, s'il y en a un.
 > Je vous renvoie le tout à relire avant de publier. Sans votre réponse, je ne publie rien d'autre que les horaires et fermetures que vous m'avez déjà donnés.
 
