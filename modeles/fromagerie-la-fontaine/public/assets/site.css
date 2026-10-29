@@ -769,3 +769,16 @@ textarea.saisie{min-height:96px;resize:vertical;line-height:1.45}
 /* Mobile : la photo d'en-tête ne dépasse jamais l'écran (constaté sur la démonstration plombier à 390 px) */
 .d-hero-fig{max-width:100%;min-width:0;overflow:hidden}
 .d-hero-fig img{max-width:100%}
+/* Plan : en attente, un bandeau compact aux couleurs du site (et non un grand cadre vide) ; il prend sa hauteur une fois chargé */
+.carte-box:not(.carte-ouverte){height:auto;min-height:0;padding:22px 24px;place-items:start;text-align:left;background:var(--bleu-pale)!important;border-color:transparent!important}
+.carte-attente{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.carte-attente p{margin-top:8px}
+.carte-pin{flex:none;width:40px;height:40px;fill:none;stroke:var(--bleu);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.carte-box.carte-ouverte{padding:0}
+/* Très petits écrans (320 px) : le nom du commerce se replie au lieu de pousser le bouton Menu hors de l'écran */
+.wrap:has(> .menu-btn) > .g-nom{min-width:0;flex:0 1 auto}
+@media (max-width:380px){
+  .wrap:has(> .menu-btn){gap:12px}
+  .g-nom{overflow-wrap:anywhere}
+  .btn{white-space:normal;text-align:center}
+}

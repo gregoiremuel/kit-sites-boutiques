@@ -640,9 +640,10 @@ export function rendreSite(C, o = {}) {
         </div>
       </div>
       <div class="carte-box">
-        <div>
-          <button class="btn btn-contour" id="plan-btn" type="button" data-src="${esc(planSrc)}">Afficher le plan</button>
-          <p>Le plan est fourni par Google Maps. Il ne se charge que si vous cliquez.</p>
+        <div class="carte-attente">
+          <svg class="carte-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><button class="btn btn-contour" id="plan-btn" type="button" data-src="${esc(planSrc)}">Afficher le plan</button>
+          <p>Le plan est fourni par Google Maps. Il ne se charge que si vous cliquez.</p></div>
         </div>
       </div>
     </div>
@@ -671,9 +672,10 @@ export function rendreSite(C, o = {}) {
         </div>
       </div>
       <div class="carte-box">
-        <div>
-          <button class="btn btn-contour" id="plan-btn" type="button" data-src="${esc(planSrc)}">Afficher le plan</button>
-          <p>Le plan est fourni par Google Maps. Il ne se charge que si vous cliquez.</p>
+        <div class="carte-attente">
+          <svg class="carte-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><button class="btn btn-contour" id="plan-btn" type="button" data-src="${esc(planSrc)}">Afficher le plan</button>
+          <p>Le plan est fourni par Google Maps. Il ne se charge que si vous cliquez.</p></div>
         </div>
       </div>
     </div>
