@@ -1,0 +1,167 @@
+{
+  "name": "5. Rappel aux clients : une actualité toutes les deux semaines",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 9 * * 1"
+            }
+          ]
+        }
+      },
+      "name": "Le lundi à 9 h 30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "name": "Lancer à la main",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Les clients à relancer quand ils n'ont rien publié depuis 14 jours. Adresse du site sans « / » final.\n// « actif: false » pour mettre un client en pause (vacances, accord pour ne pas être relancé).\nconst CLIENTS = [\n  // { nom: 'Opéria', prenom: 'Prénom', email: 'contact@exemple.fr', url: 'https://www.exemple.fr' },\n];\nreturn CLIENTS.filter((c) => c.actif !== false && /^https:\\/\\/[^\\s/]+$/.test(c.url) && /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(c.email)).map((c) => ({ json: c }));\n"
+      },
+      "name": "Clients suivis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Clients suivis').item.json.url }}/sitemap.xml",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "name": "Plan du site",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Garde seulement les clients dont la dernière actualité date de plus de 14 jours (ou qui n'en ont aucune), et prépare l'e-mail.\n// Modèle fixe, aucun texte écrit par une IA ; une idée d'actualité différente chaque semaine.\nconst clients = $('Clients suivis').all().map((i) => i.json), plans = $('Plan du site').all().map((i) => i.json);\nconst IDEES = [\n  'un chantier qui démarre, avec 2 photos du lieu avant travaux et ce que le client vous a demandé',\n  'une étape en cours, avec ce qui a été posé cette semaine et les matériaux utilisés',\n  'une livraison, avec 3 photos du résultat, la surface et le délai',\n  'un conseil du métier, à partir de la question que vos clients vous posent le plus souvent',\n  'un nouveau produit, un nouvel horaire ou un changement dans l’équipe',\n  'un avant/après, avec deux photos prises du même endroit',\n];\nconst semaine = Math.floor(Date.now() / (7 * 864e5));\nconst sortie = [];\nclients.forEach((c, i) => {\n  const plan = plans[i] || {}, corps = String(plan.data ?? plan.body ?? '');\n  if (+plan.statusCode !== 200 || !corps.includes('<urlset')) return; // site injoignable : la veille du lundi le signale déjà à Greg\n  const dates = [...corps.matchAll(/<loc>[^<]*\\/actualites\\/[^<]+<\\/loc><lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/g)].map((m) => m[1]).sort();\n  const derniere = dates[dates.length - 1];\n  const jours = derniere ? Math.floor((Date.now() - Date.parse(derniere + 'T12:00:00Z')) / 864e5) : null;\n  if (jours !== null && jours <= 14) return;\n  const idee = IDEES[(semaine + i) % IDEES.length];\n  const texte = `Bonjour ${c.prenom || ''},\n\n${jours === null ? 'Votre site n’a pas encore d’actualité.' : `Votre dernière actualité date d’il y a ${jours} jours.`} Une courte publication toutes les une à deux semaines donne à Google de nouvelles pages à montrer, et à vos clients la preuve que l’entreprise est active.\n\nIdée pour cette semaine : ${idee}.\n\nÇa prend une minute depuis votre téléphone : ${c.url}/admin/ puis « Publier une actualité » tout en haut.\n\nSi vous préférez, envoyez-moi simplement les photos et deux phrases en réponse à ce message : je m’en occupe.\n\nGrégoire Muel\n07 80 00 81 37`.replace('Bonjour ,', 'Bonjour,');\n  sortie.push({ json: { a: c.email, sujet: 'Une actualité cette semaine pour votre site ?', texte } });\n});\nreturn sortie;\n"
+      },
+      "name": "Qui relancer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "contact@gregoiremuel.fr",
+        "toEmail": "={{ $json.a }}",
+        "subject": "={{ $json.sujet }}",
+        "emailFormat": "text",
+        "text": "={{ $json.texte }}",
+        "options": {
+          "replyTo": "contact@gregoiremuel.fr"
+        }
+      },
+      "name": "E-mail au client",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        0
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP (e-mail pro)"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Le lundi à 9 h 30": {
+      "main": [
+        [
+          {
+            "node": "Clients suivis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lancer à la main": {
+      "main": [
+        [
+          {
+            "node": "Clients suivis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clients suivis": {
+      "main": [
+        [
+          {
+            "node": "Plan du site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan du site": {
+      "main": [
+        [
+          {
+            "node": "Qui relancer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qui relancer": {
+      "main": [
+        [
+          {
+            "node": "E-mail au client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Paris"
+  }
+}
