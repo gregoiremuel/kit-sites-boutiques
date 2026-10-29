@@ -43,7 +43,7 @@ sudo chown -R 1000:maquettes /opt/greg/partage && sudo chmod -R 2775 /opt/greg/p
 ```bash
 sudo -iu maquettes
 git clone https://github.com/gregoiremuel/kit-sites-boutiques.git
-cd kit-sites-boutiques/modeles/fromagerie-la-fontaine && npm install && cd ~
+cd kit-sites-boutiques/modeles/fromagerie-la-fontaine && npm install && cd ~   # moteur vitrine : celui de la fabrique de maquettes
 # Installer Claude Code selon la page officielle (code.claude.com), puis vérifier : claude --version
 exit
 ```
@@ -112,12 +112,12 @@ Pour l'essai, mets ta propre adresse : tu reçois la confirmation comme un visit
 
 ## Sécurité
 - Le texte du visiteur n'atteint jamais le shell : seul l'identifiant (lettres, chiffres, tiret) passe, contrôlé trois fois (n8n, `ssh-filtre.sh`, `lancer-maquette.sh`).
-- Claude Code tourne sous un utilisateur sans droits, sans shell libre (seules les commandes du kit sont permises), avec la consigne de traiter la demande comme une donnée. Une injection dans le message ne peut ni lancer une commande ni lire `config.env` (fichier en 600 ; Claude n'a pas de shell libre pour le lire).
+- Claude Code tourne sous un utilisateur sans droits, sans shell libre (seules les commandes du kit sont permises), avec la consigne de traiter la demande comme une donnée. Une injection dans le message ne devrait pouvoir ni lancer une commande ni lire `config.env` (fichier en 600, pas de shell libre). Cela repose sur les permissions de Claude Code : à revérifier après chaque mise à jour de Claude Code, et ne jamais ajouter de clé à l'environnement de cet utilisateur en dehors de `config.env`.
 - Ni l'e-mail ni le téléphone du visiteur ne partent vers Haiku ni vers la maquette.
 - Aucun texte de l'IA ne part chez le visiteur : l'e-mail de confirmation est un modèle fixe, les questions sont choisies dans une liste fermée.
 
 ## Texte pour la confidentialité (à coller dans `/admin`, à faire relire)
-> Votre demande est aussi transmise à un outil de suivi installé sur un serveur que je loue chez Hostinger ([pays à vérifier]). Il m'envoie une notification (par e-mail et par Telegram) et vous adresse un e-mail de confirmation. Pour classer votre demande, son texte est lu par un service d'intelligence artificielle (Claude, de la société Anthropic, États-Unis), sans votre e-mail ni votre téléphone. Pour une demande de création ou de refonte de site, ce service peut aussi chercher les informations publiques de votre commerce afin de préparer une maquette, qui n'est jamais publiée sans votre accord. Dans cet outil, elles sont conservées 180 jours au plus.
+> Votre demande est aussi transmise à un outil de suivi installé sur un serveur que je loue chez Hostinger ([pays à vérifier]). Il m'envoie une notification (par e-mail et par Telegram) et vous adresse un e-mail de confirmation. Pour classer votre demande, son texte est lu par un service d'intelligence artificielle (Claude, de la société Anthropic, [pays et conditions à vérifier]), sans votre e-mail ni votre téléphone. Pour une demande de création ou de refonte de site, ce service peut aussi chercher les informations publiques de votre commerce afin de préparer une maquette, qui n'est jamais publiée sans votre accord. Dans mon outil de suivi, elles sont conservées 180 jours au plus ; chez Anthropic, selon ses conditions [durée à vérifier].
 
 La durée de conservation dans n8n (historique des exécutions) se règle dans n8n (« Executions », suppression automatique) : à mettre à 180 jours au plus, nom de réglage à vérifier.
 

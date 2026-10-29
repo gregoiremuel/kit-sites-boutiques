@@ -1,11 +1,11 @@
-# Mise en route Google, à chaque livraison de site (environ 1 h 30)
+# Mise en route Google, à chaque livraison de site (environ 1 h 15)
 
-À faire une fois, le jour où le site d'un client passe en ligne. C'est ce qui transforme « un site » en « un site qu'on trouve ». Prix : **à fixer par Greg** (compris dans le prix du site, ce qui renforce « je m'en occupe », ou en option) ; rien n'est promis sur la position dans Google.
+À faire une fois, le jour où le site d'un client passe en ligne. C'est ce qui donne au site toutes ses chances d'être trouvé : sans ces étapes, Google peut mettre longtemps à le connaître. Prix : **à fixer par Greg** (compris dans le prix du site, ce qui renforce « je m'en occupe », ou en option) ; rien n'est promis sur la position dans Google.
 
 **Principe** : tous les comptes sont **au nom du client** (domaine, Search Console, fiche Google) ; Greg y est ajouté comme utilisateur ou gestionnaire. Jamais le mot de passe du client. Les noms de boutons de Google changent : vérifier à l'écran.
 
 ## 1. Avant l'ouverture (dans le dépôt du site)
-- [ ] `reglages.url` = l'adresse définitive (`https://…`), `MAQUETTE` = « non ».
+- [ ] `reglages.url` = l'adresse définitive (`https://…`) : dans la page de modification du site (Réglages) ou dans `contenu-initial.json` avant la première mise en ligne ; `MAQUETTE` = « non » dans `wrangler.jsonc`.
 - [ ] `npm run verifier`, `npm test`, `npm run referencement` : 0 erreur (ce dernier existe dans les trois moteurs depuis le 29/10/2026).
 - [ ] Une seule adresse ouverte aux moteurs : l'adresse provisoire `….workers.dev` fermée (réglage du Worker sur Cloudflare).
 - [ ] `/robots.txt` et `/sitemap.xml` ouverts dans le navigateur ; `rel="canonical"` présent dans le code de l'accueil.
@@ -26,16 +26,16 @@
 
 ## 4. Mêmes coordonnées partout (20 min)
 - [ ] Bing Webmaster Tools (import depuis Search Console) et Bing Places ; Apple Business Connect ; Pages Jaunes (fiche gratuite, ne pas payer d'option sans raison) ; réseaux du client.
-- [ ] Contrôle automatique : `node outils/coherence.mjs fiche.txt https://<site> https://<page-réseau>` (nom, téléphone, adresse identiques ; un autre numéro est signalé).
+- [ ] Contrôle automatique : `node outils/coherence.mjs fiche.txt https://<site> https://<page-réseau>`. `fiche.txt` = le texte de la fiche Google copié tel quel (comme pour la fabrique de maquettes, `METHODE.md` 2.2 bis). Nom, téléphone, adresse identiques ; un autre numéro est signalé.
 
 ## 5. Être compris par les assistants IA (rien en plus à vendre)
-Les mêmes leviers servent : faits clairs sur le site (horaires, zone, services, prix si le client les donne), questions fréquentes, données structurées, coordonnées cohérentes, avis récents avec réponses. Pas de texte écrit pour les robots.
+Les assistants ne publient pas leurs critères (à vérifier au fil du temps) ; ce qui les aide le plus probablement : faits clairs sur le site (horaires, zone, services, prix si le client les donne), questions fréquentes, données structurées, coordonnées cohérentes, avis récents avec réponses. Pas de texte écrit pour les robots.
 
 ## 6. Pages par service ou par quartier : oui, mais utiles
-Une page par **vrai** service (« débouchage », « chauffe-eau ») ou par zone **réellement** servie, chacune avec un texte propre, des questions réelles et une preuve (photo, chantier, avis). Des pages presque identiques où seul le nom de la ville change sont des « pages satellites » que Google pénalise : jamais.
+Une page par **vrai** service (« débouchage », « chauffe-eau ») ou par zone **réellement** servie, chacune avec un texte propre, des questions réelles et une preuve (photo, chantier, avis). Des pages presque identiques où seul le nom de la ville change sont des « pages satellites », que les règles anti-spam de Google visent (règles de Google, à relire) : jamais.
 
 ## 7. Le jour même et dans 3 mois
-- [ ] Diagnostic de la fiche **avant** (`node outils/diagnostic-fiche.mjs`) gardé dans le dossier du client ; refait à 3 mois pour montrer le changement.
+- [ ] Diagnostic de la fiche **avant** (`node outils/diagnostic-fiche.mjs`) gardé dans le dossier du client ; refait à 3 mois pour mesurer ce qui a changé (ou non).
 - [ ] À 3 mois, avec l'accord écrit du client : étude de cas (avant, après, délai, phrase du client) pour ton site.
 - [ ] Proposer **Visibilité Google** (39 € par mois, proposition) pour la suite : `visibilite-google/README.md`.
 

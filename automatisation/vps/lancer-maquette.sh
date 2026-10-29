@@ -8,7 +8,7 @@ ID="${1:-}"
 # L'identifiant vient du site (chiffres, lettres, tiret) : tout autre caractère est refusé, rien du visiteur n'atteint le shell.
 [[ "$ID" =~ ^[a-z0-9]{6,16}-[a-z0-9]{4,8}$ ]] || { echo "identifiant refusé"; exit 2; }
 
-source /opt/greg/config.env   # KIT, PARTAGE, N8N_RAPPEL_URL, N8N_SECRET, ANTHROPIC_API_KEY, MODELE (droits 600)
+set -a; source /opt/greg/config.env; set +a   # KIT, PARTAGE, N8N_RAPPEL_URL, N8N_SECRET, ANTHROPIC_API_KEY (exportée pour Claude Code), MODELE ; droits 600
 DEMANDE="$PARTAGE/demandes/$ID.json"
 [[ -f "$DEMANDE" ]] || { echo "demande introuvable"; exit 3; }
 TRAVAIL="$KIT/maquettes/$ID"
