@@ -34,6 +34,7 @@ export const LIBELLES = {
   mentions_immatriculation: 'RCS', mentions_siege: 'Siège',
   type_schema: 'GeneralContractor', bandeau_maquette: '',
   pages_sur: 'Par métier', pages_titre: 'Un site pensé pour votre métier', page_demo: 'Essayer la démonstration', page_maquette: 'Demander ma maquette gratuite', faq_sur: 'Questions', faq_titre: 'Les questions qu’on me pose', pied_metiers: 'Par métier',
+  nav_actualites: 'Actualités', actu_sur: 'Actualités', actu_titre: 'Les dernières nouvelles', actu_tout: 'Toutes les actualités', page_actu_titre: 'Actualités', page_actu_chapo: '', actu_lien_real: 'Voir la réalisation', actu_suivi: 'Actualités de ce projet',
   comparaison_sur: 'Comparer', comparaison_titre: 'Un constructeur en ligne, ou un site réalisé pour vous ?',
 };
 /* Valeur d'un libellé : le texte du site s'il est rempli, sinon celui par défaut ; vide("") accepté pour les champs du formulaire */
@@ -71,11 +72,15 @@ export function donnees(C) {
   const lignesCp = CP && Array.isArray(CP.lignes) ? CP.lignes.filter((l) => l && l.critere && l.a && l.b) : [];
   const colsCp = CP && Array.isArray(CP.colonnes) && CP.colonnes.length === 2 && CP.colonnes.every((c) => typeof c === 'string' && c.trim()) ? CP.colonnes : null;
   const comparaison = CP && lignesCp.length && colsCp ? { actif: CP.actif === true, sur: CP.sur || '', titre: CP.titre || '', intro: CP.intro || '', note: CP.note || '', colonnes: colsCp, lignes: lignesCp } : null;
-  return { secteurs, secteursUtiles, realisations, metiers, etapes, equipe, references, chiffres, lots, secteur, abonnements, engagements, pages, comparaison };
+  /* Actualités (clé facultative « actualites ») : la plus récente d'abord ; une date AAAA-MM-JJ, ou pas de date */
+  const actualites = liste('actualites').filter((x) => x && x.id && x.titre && x.visible !== false)
+    .map((x) => ({ ...x, date: /^\d{4}-\d{2}-\d{2}$/.test(String(x.date || '')) ? x.date : '', photos: (Array.isArray(x.photos) ? x.photos : []).filter(Boolean) }))
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  return { secteurs, secteursUtiles, realisations, actualites, metiers, etapes, equipe, references, chiffres, lots, secteur, abonnements, engagements, pages, comparaison };
 }
 
 /* Adresses qu'une page par métier ne peut pas prendre */
-export const ADRESSES_RESERVEES = ['expertises', 'realisations', 'agence', 'engagements', 'contact', 'mentions-legales', 'confidentialite', 'admin', 'api', 'assets', 'fonts', 'photos', 'videos', 'demos'];
+export const ADRESSES_RESERVEES = ['expertises', 'realisations', 'actualites', 'agence', 'engagements', 'contact', 'mentions-legales', 'confidentialite', 'admin', 'api', 'assets', 'fonts', 'photos', 'videos', 'demos'];
 export function pagesMetier(C) {
   const liste = Array.isArray(C && C.pages_metier) ? C.pages_metier : [];
   return liste.filter((x) => x && typeof x === 'object' && /^[a-z0-9-]{3,60}$/.test(x.id || '') && !ADRESSES_RESERVEES.includes(x.id) && x.nom && x.visible !== false)
@@ -189,7 +194,8 @@ function document_(C, o, page) {
   const marque = src(G.nom_image, 600) ? `<img src="${esc(src(G.nom_image, 600))}" alt="${esc(nom)}">` : esc(nom);
   const marqueClaire = src(G.nom_image_blanc, 600) ? `<img src="${esc(src(G.nom_image_blanc, 600))}" alt="${esc(nom)}">` : esc(nom);
   const avecEngagements = Array.isArray(C.engagements) && C.engagements.some((e) => e && e.titre);
-  const nav = [['/expertises', libelle(C, 'nav_expertises')], ['/realisations', libelle(C, 'nav_realisations')], ['/agence', libelle(C, 'nav_agence')], ...(avecEngagements ? [['/engagements', libelle(C, 'nav_engagements')]] : [])].map(([h, t]) => [h, esc(t)]);
+  const avecActualites = donnees(C).actualites.length > 0;
+  const nav = [['/expertises', libelle(C, 'nav_expertises')], ['/realisations', libelle(C, 'nav_realisations')], ...(avecActualites ? [['/actualites', libelle(C, 'nav_actualites')]] : []), ['/agence', libelle(C, 'nav_agence')], ...(avecEngagements ? [['/engagements', libelle(C, 'nav_engagements')]] : [])].map(([h, t]) => [h, esc(t)]);
   const actif = (h) => (page.rubrique === h ? ' aria-current="page"' : '');
   const reseaux = [['linkedin', 'LinkedIn'], ['instagram', 'Instagram']].filter(([k]) => /^https:\/\//.test(G[k] || ''));
   const AG = {
@@ -199,7 +205,8 @@ function document_(C, o, page) {
   };
   const donneesJs = `var AGENCE=${JSON.stringify(AG).replace(/</g, '\\u003c')};`;
   const scripts = o.js != null ? `<script>\n${donneesJs}\n${o.js}\n</script>` : `<script>${donneesJs}</script>\n<script src="${o.jsHref || '/assets/site.js'}" defer></script>`;
-  const titre = page.titre ? `${page.titre}, ${nom}` : `${nom}, ${G.activite || ''}`.replace(/, $/, '');
+  /* Google affiche environ 60 signes : le nom du site n'est ajouté au titre de la page que s'il tient */
+  const titre = page.titre ? (page.titre.length + nom.length + 2 <= 60 ? `${page.titre}, ${nom}` : page.titre) : `${nom}, ${G.activite || ''}`.replace(/, $/, '');
   const desc = page.description || G.description_google || '';
 
   return `<!doctype html>
@@ -213,8 +220,10 @@ ${o.maquette ? '<meta name="robots" content="noindex">' : ''}
 ${!o.maquette && page.chemin && /^https:\/\//.test((C.reglages || {}).url || '') ? `<link rel="canonical" href="${esc(C.reglages.url.replace(/\/$/, '') + (page.chemin === '/' ? '/' : page.chemin))}">` : ''}
 <meta property="og:title" content="${esc(titre)}">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${page.ogType || 'website'}">
+${page.publie ? `<meta property="article:published_time" content="${esc(page.publie)}">` : ''}
 ${(() => { const u = src(page.image, 1200) || src((C.reglages || {}).image_partage, 1200); const base = /^https:\/\//.test((C.reglages || {}).url || '') ? C.reglages.url.replace(/\/$/, '') : ''; return u ? `<meta property="og:image" content="${esc(/^\//.test(u) ? base + u : u)}">` : ''; })()}
+${donnees(C).actualites.length ? `<link rel="alternate" type="application/rss+xml" title="${esc(libelle(C, 'nav_actualites'))}, ${esc(nom)}" href="/actualites.xml">` : ''}
 <meta name="theme-color" content="${hex(T.fond, '#f4f6f8')}">
 <link rel="icon" href="${esc(favicon(C))}">
 ${style}
@@ -263,6 +272,7 @@ ${page.corps}
       <a href="/confidentialite">Confidentialité</a>
       ${o.lienAdmin ? `<a href="${o.lienAdmin}">Page de modification</a>` : ''}
       <span>© ${new Date().getFullYear()} ${esc(nom)}</span>
+      ${(() => { const [t, u] = String(o.credit || '').split('|').map((x) => x.trim()); return t && /^https:\/\/\S+$/.test(u || '') ? `<a href="${esc(u)}">${esc(t)}</a>` : ''; })()}
       ${C.credits_photos ? ((C.theme || {}).gabarit === 'edition' ? `<details class="credits"><summary>Crédits des photos</summary><p>${esc(C.credits_photos)}</p></details>` : `<span class="credits">${esc(C.credits_photos)}</span>`) : ''}
     </div>
   </div>
@@ -281,6 +291,20 @@ const etiquette = (x) => (x.etiquette ? `<span class="etiq">${esc(x.etiquette)}<
 const carte = (D, x, grande) => `<li class="carte${grande ? ' carte-grande' : ''}"><a href="/realisations/${esc(x.id)}">
       <span class="carte-img">${x.photos[0] ? img(x.photos[0], grande ? 1600 : 1000, 'carte-photo', false, '') + illus(x.photos[0]) : '<span class="sans-photo">Photos à venir</span>'}${etiquette(x)}</span>
       <span class="carte-txt"><span class="carte-sec">${esc((D.secteur(x.secteur) || {}).nom || '')}</span><span class="carte-nom">${esc(x.nom)}</span>${meta(x) ? `<span class="carte-meta">${esc(meta(x))}</span>` : ''}</span>
+    </a></li>`;
+/* Fil d'Ariane pour Google (BreadcrumbList) : seulement quand l'adresse définitive du site est connue */
+const baseSite = (C) => (/^https:\/\//.test((C.reglages || {}).url || '') ? C.reglages.url.replace(/\/$/, '') : '');
+const filAriane = (C, etapes) => { const b = baseSite(C); return b ? { '@type': 'BreadcrumbList', itemListElement: [[(C.agence || {}).nom || 'Accueil', '/'], ...etapes].map(([n, ch], i) => ({ '@type': 'ListItem', position: i + 1, name: n, item: b + ch })) } : null; };
+const graphe = (...objets) => { const g = objets.filter(Boolean); return g.length ? { '@context': 'https://schema.org', '@graph': g } : undefined; };
+
+/* Actualités : date en toutes lettres, extrait du texte, vignette */
+const dateFr = (d) => (d ? new Date(d + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : '');
+const extrait = (t, n = 150) => { const s = String(t || '').replace(/^##\s+/gm, '').replace(/^-\s+/gm, '').replace(/\s+/g, ' ').trim(); return s.length <= n ? s : s.slice(0, n - 1).replace(/[\s,;:.]+\S*$/, '') + '…'; };
+/* Liste éditoriale : date, titre et extrait, petite vignette à droite si l'actualité a une photo ; les lignes restent alignées avec ou sans photo */
+const carteActu = (x) => `<li class="actu"><a href="/actualites/${esc(x.id)}">
+      <span class="actu-date">${x.date ? `<time datetime="${esc(x.date)}">${esc(dateFr(x.date))}</time>` : ''}</span>
+      <span class="actu-corps"><span class="actu-titre">${esc(x.titre)}</span>${x.texte ? `<span class="actu-extrait">${esc(extrait(x.texte))}</span>` : ''}</span>
+      ${x.photos[0] ? `<span class="actu-vignette">${img(x.photos[0], 600, 'actu-img', false, '', '(max-width: 700px) 30vw, 200px')}${illus(x.photos[0])}</span>` : ''}
     </a></li>`;
 const titreSection = (sur, titre, id) => `<p class="sur">${esc(sur)}</p><h2${id ? ` id="${id}"` : ''}>${esc(titre)}</h2>`;
 const listeCoches = (pts) => (pts.length ? `<ul class="coches">${pts.map((p) => `<li>${ico.coche}<span>${esc(p)}</span></li>`).join('')}</ul>` : '');
@@ -377,9 +401,12 @@ function accueil(C, D) {
   const essais = D.realisations.filter((x) => x.lien);
   return {
     classe: 'p-accueil', image: A.photo, rubrique: '/',
-    jsonld: { '@context': 'https://schema.org', '@type': libelle(C, 'type_schema'), name: G.nom, description: G.description_google || '', telephone: G.telephone || undefined, email: G.email || undefined,
+    jsonld: graphe({ '@type': libelle(C, 'type_schema'), name: G.nom, description: G.description_google || '', telephone: G.telephone || undefined, email: G.email || undefined,
       address: G.adresse ? { '@type': 'PostalAddress', streetAddress: G.adresse, postalCode: G.code_postal, addressLocality: G.ville, addressCountry: 'FR' } : undefined,
+      image: (() => { const u = src(A.photo, 1200) || src((C.reglages || {}).image_partage, 1200); return u ? (/^\//.test(u) ? baseSite(C) + u : u) : undefined; })(),
+      logo: (() => { const u = src(G.logo, 600); return u && baseSite(C) ? (/^\//.test(u) ? baseSite(C) + u : u) : undefined; })(),
       areaServed: G.zone || undefined, ...((C.reglages || {}).url ? { url: C.reglages.url } : {}), sameAs: ['linkedin', 'instagram'].map((k) => G[k]).filter((u) => /^https:\/\//.test(u || '')) },
+      baseSite(C) ? { '@type': 'WebSite', name: G.nom, url: baseSite(C) + '/', inLanguage: 'fr-FR' } : null),
     corps: `
   <section class="hero">
     ${video ? videoFond(video, src(A.photo, 2200), 'hero-media') : src(A.photo, 2400) ? img(A.photo, 2400, 'hero-media', true, '') : compoHero(essais)}
@@ -441,6 +468,15 @@ function accueil(C, D) {
       <div class="sec-tete sec-tete-ligne"><div>${titreSection(libelle(C, 'real_sur'), libelle(C, 'real_titre'), 't-real')}</div><a class="lien" href="/realisations">${esc(libelle(C, 'real_tout'))} ${ico.fleche}</a></div>
       <ul class="cartes cartes-une${choix.length === 4 ? ' cartes-quatre' : ''}">
         ${choix.map((x, i) => carte(D, x, i === 0 && choix.length === 6)).join('\n        ')}
+      </ul>
+    </div>
+  </section>` : ''}
+  ${D.actualites.length && A.actualites !== false ? `
+  <section class="sec" aria-labelledby="t-actu">
+    <div class="wrap">
+      <div class="sec-tete sec-tete-ligne"><div>${titreSection(libelle(C, 'actu_sur'), libelle(C, 'actu_titre'), 't-actu')}</div><a class="lien" href="/actualites">${esc(libelle(C, 'actu_tout'))} ${ico.fleche}</a></div>
+      <ul class="actus">
+        ${D.actualites.slice(0, 3).map(carteActu).join('\n        ')}
       </ul>
     </div>
   </section>` : ''}
@@ -555,7 +591,7 @@ function pageMetier(C, D, id) {
   if (!x) return null;
   return {
     classe: 'p-metier', titre: x.titre || x.nom, rubrique: '/' + x.id, image: x.photo, description: x.description || x.accroche || '',
-    jsonld: x.questions.length ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: x.questions.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.r } })) } : undefined,
+    jsonld: graphe(x.questions.length ? { '@type': 'FAQPage', mainEntity: x.questions.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.r } })) } : null, filAriane(C, [[x.nom, '/' + x.id]])),
     corps: `
   <section class="tete-page wrap">
     <p class="sur">${esc(x.sur || libelle(C, 'pages_sur'))}</p>
@@ -613,6 +649,7 @@ function pageRealisation(C, D, id) {
   const fiche = [['fiche_client', x.client], ['fiche_lieu', x.lieu], ['fiche_surface', x.surface], ['fiche_mission', x.mission], ['fiche_annee', x.annee], ['fiche_secteur', s && s.nom]].map(([k, v]) => [libelle(C, k), v]).filter(([, v]) => v);
   const [p0, ...autres] = x.photos;
   return {
+    jsonld: graphe(filAriane(C, [[libelle(C, 'nav_realisations'), '/realisations'], [x.nom, '/realisations/' + x.id]])),
     classe: 'p-realisation', titre: x.nom, rubrique: '/realisations', image: p0, description: ((x.lien ? 'Démonstration : ' : '') + (x.accroche || `${x.nom} : ${meta(x)}`)).slice(0, 158),
     corps: `
   <section class="real-tete">
@@ -633,6 +670,11 @@ function pageRealisation(C, D, id) {
       </div>
     </div>
   </section>
+  ${(() => { const L = D.actualites.filter((a) => a.realisation === x.id); return L.length ? `
+  <section class="sec sec-serre" aria-labelledby="t-suivi">
+    <div class="wrap"><h2 class="h-petit" id="t-suivi">${esc(libelle(C, 'actu_suivi'))}</h2>
+      <ul class="actus">${L.map(carteActu).join('')}</ul></div>
+  </section>` : ''; })()}
   ${autres.length ? `
   <section class="sec sec-serre" aria-label="Photos du projet">
     <div class="wrap"><ul class="galerie">${autres.map((u) => `<li>${img(u, 1400, 'galerie-img', false, x.nom)}${illus(u)}</li>`).join('')}</ul></div>
@@ -641,6 +683,78 @@ function pageRealisation(C, D, id) {
   <nav class="wrap suite" aria-label="Autres réalisations">
     <a href="/realisations/${esc(prec.id)}">${ico.gauche}<span><small>Précédente</small>${esc(prec.nom)}</span></a>
     <a href="/realisations/${esc(suiv.id)}"><span><small>Suivante</small>${esc(suiv.nom)}</span>${ico.fleche}</a>
+  </nav>` : ''}
+  ${appel(C, true)}`,
+  };
+}
+
+function pageActualites(C, D) {
+  return {
+    classe: 'p-realisations p-actualites', description: descr(C, libelle(C, 'nav_actualites')), titre: libelle(C, 'nav_actualites'), rubrique: '/actualites', image: (D.actualites[0] && D.actualites[0].photos[0]) || '',
+    corps: `
+  <section class="tete-page wrap">
+    <p class="sur">${esc(libelle(C, 'actu_sur'))}</p>
+    <h1>${esc(libelle(C, 'page_actu_titre'))}</h1>
+    ${libelle(C, 'page_actu_chapo') ? `<p class="chapo">${esc(libelle(C, 'page_actu_chapo'))}</p>` : ''}
+  </section>
+  <section class="sec sec-serre">
+    <div class="wrap">
+      <ul class="actus">${D.actualites.map(carteActu).join('\n        ')}</ul>
+    </div>
+  </section>
+  ${appel(C, true)}`,
+  };
+}
+
+/* Une actualité : photos, date, texte, lien vers la réalisation liée ; données structurées « BlogPosting » pour les moteurs de recherche */
+function pageActualite(C, D, id) {
+  const i = D.actualites.findIndex((x) => x.id === id);
+  if (i < 0) return null;
+  const x = D.actualites[i], G = C.agence || {};
+  const real = x.realisation ? D.realisations.find((r) => r.id === x.realisation) : null;
+  const plusRecente = D.actualites[i - 1], plusAncienne = D.actualites[i + 1];
+  const [p0, ...autres] = x.photos;
+  const base = /^https:\/\//.test((C.reglages || {}).url || '') ? C.reglages.url.replace(/\/$/, '') : '';
+  const absolue = (u) => (/^\//.test(u) ? base + u : u);
+  return {
+    classe: 'p-realisation p-actualite', titre: x.titre, rubrique: '/actualites', image: p0, description: extrait(x.texte, 155) || descr(C, x.titre), ogType: 'article', publie: x.date,
+    jsonld: { '@context': 'https://schema.org', '@graph': [
+      { '@type': 'BlogPosting', headline: String(x.titre).slice(0, 110), description: extrait(x.texte, 155) || undefined, inLanguage: 'fr-FR',
+        datePublished: x.date || undefined, dateModified: x.date || undefined,
+        image: x.photos.length ? x.photos.map((u) => absolue(src(u, 1600))).filter(Boolean) : undefined,
+        author: { '@type': 'Organization', name: G.nom || undefined, url: base || undefined }, publisher: { '@type': 'Organization', name: G.nom || undefined, url: base || undefined },
+        ...(real ? { about: { '@type': 'CreativeWork', name: real.nom, ...(base ? { url: base + '/realisations/' + real.id } : {}) } } : {}),
+        ...(base ? { mainEntityOfPage: base + '/actualites/' + x.id, url: base + '/actualites/' + x.id } : {}) },
+      ...(base ? [{ '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: G.nom || 'Accueil', item: base + '/' },
+        { '@type': 'ListItem', position: 2, name: libelle(C, 'nav_actualites'), item: base + '/actualites' },
+        { '@type': 'ListItem', position: 3, name: x.titre, item: base + '/actualites/' + x.id }] }] : []),
+    ] },
+    corps: `
+  <section class="real-tete">
+    ${p0 ? `<div class="real-fig">${img(p0, 2200, 'real-img', true, x.titre) + illus(p0)}</div>` : ''}
+    <div class="wrap real-titre">
+      <nav class="fil" aria-label="Fil d’Ariane"><a href="/actualites">${esc(libelle(C, 'nav_actualites'))}</a></nav>
+      <h1>${esc(x.titre)}</h1>
+      ${x.date ? `<p class="chapo"><time datetime="${esc(x.date)}">${esc(dateFr(x.date))}</time></p>` : ''}
+    </div>
+  </section>
+  <section class="sec sec-serre">
+    <div class="wrap real-grille">
+      <div class="real-txt">
+        ${x.texte ? `<div class="prose">${texteRiche(x.texte)}</div>` : ''}
+        ${real ? `<p class="actions"><a class="btn" href="/realisations/${esc(real.id)}">${esc(libelle(C, 'actu_lien_real'))} : ${esc(real.nom)} ${ico.fleche}</a></p>` : ''}
+      </div>
+    </div>
+  </section>
+  ${autres.length ? `
+  <section class="sec sec-serre" aria-label="Photos">
+    <div class="wrap"><ul class="galerie">${autres.map((u) => `<li>${img(u, 1400, 'galerie-img', false, x.titre)}${illus(u)}</li>`).join('')}</ul></div>
+  </section>` : ''}
+  ${plusRecente || plusAncienne ? `
+  <nav class="wrap suite" aria-label="Autres actualités">
+    ${plusAncienne ? `<a href="/actualites/${esc(plusAncienne.id)}">${ico.gauche}<span><small>Plus ancienne</small>${esc(plusAncienne.titre)}</span></a>` : '<span></span>'}
+    ${plusRecente ? `<a href="/actualites/${esc(plusRecente.id)}"><span><small>Plus récente</small>${esc(plusRecente.titre)}</span>${ico.fleche}</a>` : ''}
   </nav>` : ''}
   ${appel(C, true)}`,
   };
@@ -809,7 +923,7 @@ function page404() {
 export function routes(C) {
   const D = donnees(C);
   return ['/', '/expertises', '/realisations', ...(D.secteursUtiles.length > 1 ? D.secteursUtiles.map((s) => '/realisations?secteur=' + s.id) : []),
-    ...D.realisations.map((x) => '/realisations/' + x.id), '/agence', ...(D.engagements.length ? ['/engagements'] : []), '/contact', '/mentions-legales', '/confidentialite', ...D.pages.map((x) => '/' + x.id)];
+    ...D.realisations.map((x) => '/realisations/' + x.id), ...(D.actualites.length ? ['/actualites', ...D.actualites.map((x) => '/actualites/' + x.id)] : []), '/agence', ...(D.engagements.length ? ['/engagements'] : []), '/contact', '/mentions-legales', '/confidentialite', ...D.pages.map((x) => '/' + x.id)];
 }
 
 /* Rend une adresse : { statut, html } */
@@ -824,6 +938,8 @@ export function rendrePage(C, chemin, o = {}) {
   else if (p === '/expertises') page = pageExpertises(C, D);
   else if (p === '/realisations') page = pageRealisations(C, D, D.secteur(secQ) ? secQ : '');
   else if ((m = p.match(/^\/realisations\/([a-z0-9-]+)$/))) page = pageRealisation(C, D, m[1]);
+  else if (p === '/actualites' && D.actualites.length) page = pageActualites(C, D);
+  else if ((m = p.match(/^\/actualites\/([a-z0-9-]+)$/))) page = pageActualite(C, D, m[1]);
   else if (p === '/agence') page = pageAgence(C, D);
   else if (p === '/engagements' && D.engagements.length) page = pageEngagements(C, D);
   else if (p === '/contact') page = pageContact(C, D);
@@ -832,4 +948,12 @@ export function rendrePage(C, chemin, o = {}) {
   else if ((m = p.match(/^\/([a-z0-9-]{3,60})$/))) page = pageMetier(C, D, m[1]);
   const statut = page ? 200 : 404;
   return { statut, html: document_(C, o, page ? { ...page, chemin: p } : page404()) };
+}
+
+/* Flux RSS des actualités (/actualites.xml) : les 20 plus récentes ; lu par les lecteurs de flux, Bing, et accepté comme plan du site par la Search Console */
+export function fluxRss(C, origine) {
+  const D = donnees(C), G = C.agence || {}, base = baseSite(C) || String(origine || '').replace(/\/$/, '');
+  const x = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
+  const items = D.actualites.slice(0, 20).map((a) => `<item><title>${x(a.titre)}</title><link>${base}/actualites/${a.id}</link><guid isPermaLink="true">${base}/actualites/${a.id}</guid>${a.date ? `<pubDate>${new Date(a.date + 'T08:00:00Z').toUTCString()}</pubDate>` : ''}<description>${x(extrait(a.texte, 300))}</description></item>`).join('');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>${x(libelle(C, 'nav_actualites') + ', ' + (G.nom || ''))}</title><link>${base}/actualites</link><atom:link href="${base}/actualites.xml" rel="self" type="application/rss+xml"/><description>${x(G.description_google || libelle(C, 'nav_actualites'))}</description><language>fr-FR</language>${items}</channel></rss>`;
 }

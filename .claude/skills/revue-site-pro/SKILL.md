@@ -15,7 +15,7 @@ Lis `docs/REGLES-DESIGN.md` (goût, preuve humaine, tailles : texte 14 px minimu
 Lancer le serveur avec un mot de passe connu, puis 4 sous-agents Haiku en parallèle, scripts dans le dossier de travail (jamais dans le dépôt), rapport de 35 lignes max, bugs puis améliorations, « ne dis que ce que tu as constaté » : (1) visiteur et formulaire de contact, bureau et mobile, 404, clavier ; (2) espace /admin : connexion, chaque rubrique, modification, mot de passe, photo ; (3) quatre démonstrations et leur page de modification (rien ne doit partir au serveur) ; (4) commandes npm, contenu volontairement cassé, LISEZMOI. Les envois de test arrivent dans les demandes du serveur local : normal. Le sous-agent d'admin change le mot de passe de test : prévoir de ne pas le réutiliser.
 
 ## Report et mise en ligne
-Toute évolution de `site.css`, `site.js`, `rendu.js`, `admin.*` se copie dans `kit-sites-boutiques/modeles/agence-operia/public/assets/` (`npm test` du kit : 88 ok). Branche de travail `ccr-04ab3608-pccm5z`, demande de fusion vers `main` des deux dépôts ; `MAQUETTE` reste « oui » tant que TVA, nom commercial, domaine et mentions ne sont pas décidés.
+Toute évolution de `site.css`, `site.js`, `rendu.js`, `admin.*` se copie dans `kit-sites-boutiques/modeles/agence-operia/public/assets/` (`npm test` du kit : 95 ok, dont 4 pour les actualités). Branche de travail `ccr-04ab3608-pccm5z`, demande de fusion vers `main` des deux dépôts ; `MAQUETTE` reste « oui » tant que TVA, nom commercial, domaine et mentions ne sont pas décidés.
 
 ## Jugement à l'œil
 Preuve humaine (portrait, vrais pilotes, accord écrit) et goût (un seul bleu, pas de motif répété, pas de duo de boutons de même poids) : captures bureau et mobile.

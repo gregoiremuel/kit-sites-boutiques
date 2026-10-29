@@ -31,6 +31,8 @@ Sans cela, travaille uniquement sur des fiches imaginaires.
 | Vers le 3 | Remplir le rapport, l'envoyer | 10 min | `modele-rapport.md`, message 3 |
 Le temps réel est à mesurer sur les trois pilotes (le plan donne 1 heure, estimation) : note-le dans le rapport interne.
 
+**Le site aussi** : le fait principal du mois devient aussi une **actualité** sur le site du client (rubrique Actualités du moteur agence, publiée par le client ou par Greg avec son accord), avec un lien entre le post Google et la page. Voir `METHODE.md`, partie 2.11.
+
 **Règles d'arrêt** : le client ne répond pas → un rappel, puis uniquement les mises à jour factuelles déjà données. Un avis de 3 étoiles ou moins → relu avec le client, par téléphone si possible. Un fait manque → on ne l'invente pas, on le demande.
 
 ## Palier 1 : le script (à partir du 5e client), environ 30 à 45 minutes par client
@@ -42,7 +44,7 @@ node --test outils/visibilite-google.test.mjs                                   
 ```
 - `preparer` (sans réseau) : `rapport.html` (le modèle de rapport rempli), `prompt-posts.md` et `prompt-avis.md` (les fichiers `prompts/0-regles.md` + `1-posts.md` ou `2-reponses-avis.md`, fiche déjà collée : prêts à coller dans Claude), `a-valider.md`.
 - La fiche du client : copie de `visibilite-google/fiche-exemple.json` dans `suivi-google/<client>/fiche.json`. La clé : `export ANTHROPIC_API_KEY=…` dans le terminal, avant `rediger` (jamais dans un fichier du dépôt).
-- `rediger` : en plus, écrit `brouillons-posts.md`, `brouillons-avis.md` et `controle.md` (le contrôle y est déjà fait) ; il demande à Haiku 5.5 (`claude-haiku-5-5`, modifiable par `--modele`) les brouillons de posts et de réponses, puis `controle.md`. Un texte qui ne cite pas ses « Faits utilisés », qui contient un prix ou un chiffre absent de la fiche, une promesse, un mot de la liste « site IA », un cadeau ou un remboursement, est signalé.
+- `rediger` : en plus, écrit `brouillons-posts.md`, `brouillons-avis.md` et `controle.md` (le contrôle y est déjà fait) ; il demande à Haiku 4.5 (`claude-haiku-4-5`, modifiable par `--modele`) les brouillons de posts et de réponses, puis `controle.md`. Un texte qui ne cite pas ses « Faits utilisés », qui contient un prix ou un chiffre absent de la fiche, une promesse, un mot de la liste « site IA », un cadeau ou un remboursement, est signalé.
 - La clé reste dans la variable `ANTHROPIC_API_KEY` (jamais dans un fichier). `suivi-google/` est ignoré par git : les fiches de clients ne partent jamais sur GitHub.
 - **Le rapport ne contient aucun chiffre écrit par l'IA** : seulement ceux de la fiche. L'IA n'écrit ni commentaire ni interprétation du rapport.
 - Limites : le script n'a été essayé que sur une fiche imaginaire et un faux serveur ; l'appel réel à l'API n'a pas été testé. Le contrôle repère des signaux, il ne remplace pas la relecture.

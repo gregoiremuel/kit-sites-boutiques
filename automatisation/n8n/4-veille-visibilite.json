@@ -1,0 +1,245 @@
+{
+  "name": "4. Visibilité : veille du lundi (sites, actualités, avis)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "name": "Le lundi à 9 h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Les sites à surveiller chaque lundi : ton site et ceux de tes clients. Adresse complète, sans « / » à la fin.\n// « actif: false » pour en sauter un. Rien n'est publié : le flux lit seulement le plan du site, robots.txt et /avis.\nconst SITES = [\n  { nom: 'Mon site (version de travail)', url: 'https://site-atelier-muel.gregoire-muel.workers.dev' },\n  // { nom: 'Mon site', url: 'https://www.mon-domaine.fr' },\n  // { nom: 'Boulangerie Exemple', url: 'https://www.boulangerie-exemple.fr' },\n];\nreturn SITES.filter((s) => s.actif !== false && /^https:\\/\\/[^\\s/]+$/.test(s.url)).map((s) => ({ json: s }));\n"
+      },
+      "name": "Sites suivis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Sites suivis').item.json.url }}/sitemap.xml",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "name": "Plan du site",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Sites suivis').item.json.url }}/robots.txt",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "name": "Robots",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Sites suivis').item.json.url }}/avis",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "name": "Lien avis",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Bilan de la semaine, site par site, sans IA : en ligne ? ouvert à Google ? dernière actualité ? lien d'avis ?\nconst sites = $('Sites suivis').all().map((i) => i.json);\nconst plans = $('Plan du site').all().map((i) => i.json), robots = $('Robots').all().map((i) => i.json), avis = $('Lien avis').all().map((i) => i.json);\nconst JOUR = 86400000, maintenant = Date.now();\nconst lignes = ['📊 Visibilité : bilan du lundi', ''];\nsites.forEach((s, i) => {\n  const plan = plans[i] || {}, rob = robots[i] || {}, av = avis[i] || {};\n  const texteDe = (r) => String(r.data ?? r.body ?? ''); // réponse texte du nœud HTTP (champ « data »)\n  const corps = texteDe(plan);\n  lignes.push('• ' + s.nom);\n  if (+plan.statusCode !== 200 || !corps.includes('<urlset')) { lignes.push('  ❌ Plan du site introuvable (' + (plan.statusCode || 'pas de réponse') + ') : le site est-il en ligne ?', ''); return; }\n  const pages = (corps.match(/<loc>/g) || []).length;\n  const bloque = /^Disallow:\\s*\\/\\s*$/m.test(texteDe(rob));\n  lignes.push(bloque ? '  ⚠️ Fermé à Google (site encore en version de travail : MAQUETTE = oui)' : '  ✅ En ligne, ' + pages + ' pages dans le plan du site');\n  const dates = [...corps.matchAll(/<loc>[^<]*\\/actualites\\/[^<]+<\\/loc><lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/g)].map((m) => m[1]).sort();\n  const derniere = dates[dates.length - 1];\n  if (!derniere) lignes.push('  ✍️ Aucune actualité : publie la première (un chantier, une livraison, un conseil).');\n  else {\n    const jours = Math.floor((maintenant - Date.parse(derniere + 'T12:00:00Z')) / JOUR);\n    lignes.push(jours > 14 ? `  ✍️ Dernière actualité il y a ${jours} jours : publie-en une cette semaine.` : `  ✅ Dernière actualité il y a ${jours} jour${jours > 1 ? 's' : ''} (${dates.length} au total)`);\n  }\n  lignes.push(+av.statusCode === 302 ? '  ✅ Lien /avis prêt (QR code)' : '  ⭐ Lien /avis pas réglé : page de modification, « Coordonnées, logo et mentions », « Lien pour laisser un avis Google ».');\n  lignes.push('');\n});\nlignes.push('Cette semaine sur chaque fiche Google :', '1. un post (le fait de la semaine, avec une photo)', '2. deux ou trois photos récentes', '3. répondre à tous les nouveaux avis', '4. horaires et fermetures à jour');\nif (new Date().getDate() <= 7) lignes.push('', 'Premier lundi du mois : regarde Search Console et Bing Webmaster Tools (pages indexées, erreurs), et demande 2 ou 3 avis à des clients contents.');\nreturn [{ json: { texte: lignes.join('\\n').slice(0, 4000) } }];\n"
+      },
+      "name": "Bilan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "REMPLACER_PAR_TON_CHAT_ID",
+        "text": "={{ $json.texte }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "name": "Me prévenir (Telegram)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        0
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "name": "Lancer à la main",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Le lundi à 9 h": {
+      "main": [
+        [
+          {
+            "node": "Sites suivis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sites suivis": {
+      "main": [
+        [
+          {
+            "node": "Plan du site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan du site": {
+      "main": [
+        [
+          {
+            "node": "Robots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Robots": {
+      "main": [
+        [
+          {
+            "node": "Lien avis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lien avis": {
+      "main": [
+        [
+          {
+            "node": "Bilan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bilan": {
+      "main": [
+        [
+          {
+            "node": "Me prévenir (Telegram)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lancer à la main": {
+      "main": [
+        [
+          {
+            "node": "Sites suivis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Paris"
+  }
+}

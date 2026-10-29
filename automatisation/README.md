@@ -9,7 +9,7 @@ Formulaire du site ──► page de modification (comme avant)
         ▼
 n8n « 1. Demande reçue »
   1. contrôle la demande (identifiant, e-mail)
-  2. Haiku 5.5 la trie : catégorie, commerce, ville, infos manquantes (sans l'e-mail ni le téléphone du visiteur)
+  2. Haiku 4.5 la trie : catégorie, commerce, ville, infos manquantes (sans l'e-mail ni le téléphone du visiteur)
   3. te prévient : e-mail + Telegram (WhatsApp prêt mais désactivé)
   4. envoie au visiteur un e-mail de confirmation, modèle fixe, avec les questions manquantes (aucun texte écrit par l'IA)
   5. si c'est « créer » ou « refaire » et que le commerce est identifiable : dépose la demande pour le VPS et lance la maquette
@@ -100,6 +100,9 @@ Pour l'essai, mets ta propre adresse : tu reçois la confirmation comme un visit
 
 ## Flux 3 : rappels du mois (Visibilité Google)
 `n8n/3-rappels-visibilite.json` : les 3, 25 et 28 à 8 h 40 (heure de Paris), un message Telegram liste les clients à relancer et l'étape du mois (infos à demander, brouillons à faire valider, rapports à envoyer). La liste des clients se tient dans le nœud « Rappels du mois », dans n8n, jamais dans le dépôt. Vérifier que le fuseau de n8n est `Europe/Paris` (variable `GENERIC_TIMEZONE`, à vérifier).
+
+## Flux 4 : veille du lundi (visibilité de tes sites)
+`n8n/4-veille-visibilite.json` : chaque lundi à 9 h, pour chaque site de la liste « Sites suivis » (ton site, puis tes clients) : en ligne ou non, fermé à Google (`MAQUETTE` à « oui ») ou non, jours depuis la dernière actualité (lu dans le plan du site daté), lien `/avis` réglé ou non ; puis la liste de la semaine pour les fiches Google. Message Telegram, aucune IA, rien n'est publié. Bouton « Lancer à la main » pour l'essayer. Essayé le 29/10/2026 sur le VPS avec la version de travail de ton site : bilan reçu sur Telegram. Méthode complète : `METHODE.md`, partie 2.11.
 
 ## Notifications
 - **Telegram** (gratuit, recommandé pour le téléphone) : dans Telegram, @BotFather, `/newbot`, garder le jeton. Écrire un message à ton bot, puis ouvrir `https://api.telegram.org/bot<jeton>/getUpdates` : le `chat.id` est ton identifiant. Les notifications passent par les serveurs de Telegram (nom, téléphone et e-mail du visiteur) : c'est dans le texte de confidentialité.

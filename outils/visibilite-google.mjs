@@ -5,7 +5,7 @@
 //       Sans réseau. Écrit : rapport.html (une page), prompt-posts.md et prompt-avis.md (prêts à coller dans Claude,
 //       c'est le palier 0 outillé) et a-valider.md. Le rapport ne contient que les chiffres de la fiche : l'IA n'écrit aucun chiffre.
 //
-//   node outils/visibilite-google.mjs rediger <fiche.json> [--mois AAAA-MM] [--sortie dossier] [--modele claude-haiku-5-5]
+//   node outils/visibilite-google.mjs rediger <fiche.json> [--mois AAAA-MM] [--sortie dossier] [--modele claude-haiku-4-5]
 //       Comme « preparer », puis demande les brouillons à l'API d'Anthropic (clé dans la variable ANTHROPIC_API_KEY,
 //       jamais dans un fichier du dépôt) et écrit brouillons-posts.md, brouillons-avis.md et controle.md.
 //       À ne lancer sur un vrai client qu'après mise à jour de l'annexe 3 du contrat de sous-traitance (Anthropic).
@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 
 const kit = fileURLToPath(new URL('..', import.meta.url));
 const dossierModeles = join(kit, 'visibilite-google', 'prompts');
-const MODELE_PAR_DEFAUT = 'claude-haiku-5-5';
+const MODELE_PAR_DEFAUT = 'claude-haiku-4-5';
 const URL_API = 'https://api.anthropic.com/v1/messages';
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 const INDICATEURS = [
