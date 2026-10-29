@@ -17,6 +17,7 @@ mkdir -p "$TRAVAIL" "$PARTAGE/$ID"
 cp "$DEMANDE" "$TRAVAIL/demande.json"
 
 (
+  set +e   # la suite doit toujours aller au bout et prévenir n8n, même si Claude ou un fichier manque
   cd "$KIT"
   git pull --ff-only --quiet || true
   export PATH="$HOME/.local/bin:$PATH"
