@@ -72,3 +72,12 @@ Compte Cloudflare gratuit, puis : `npm install`, `npm test`, `npx wrangler login
 - Honnête plutôt que rassurant ; dire ce qui n'a pas pu être testé.
 - Tâches simples et répétitives : les confier à un modèle moins cher quand c'est possible. GLM sert au contenu (prompt 1).
 - Chaque nouvelle leçon (bug, piège, meilleure façon de faire) : l'ajouter à `METHODE.md` (partie 3 ou 4), changer la version, refaire le zip ou pousser sur le dépôt, et proposer de mettre ce skill à jour.
+
+## 8. Leçons du 28 et 29 octobre 2026 (à relire avant de toucher au style)
+
+- **Contrôles** : `npm run verifier`, `npm test`, `npm run accessibilite` (2 min 30), et dans le dépôt de l'agence `npm run rendu <adresse>` (texte jamais sous 14 px, titres plafonnés, rien de caché au chargement, liens alignés, `alt`). Le détecteur Impeccable se lance en détection seule : `DO_NOT_TRACK=1 npx impeccable detect <adresse>`, jamais `install`.
+- **Style** : un seul bleu, fond papier froid (pas de crème), texte presque noir, pas de motif répété, pas d'ombre dure, pas de surtitre, icônes Lucide (ISC), pas de fondu au défilement. Taille mobile : titre d'accueil 28 px, titres de pages 26, rubriques 20, sous-titres 17. Toujours vérifier à 412 px.
+- **Preuve** : jamais de faux client, d'avis ou de chiffre ; démonstrations étiquetées ; photos d'illustration créditées. Le frein à la vente est la preuve, pas le prix.
+- **Tests de bout en bout** : quatre sous-agents Haiku (visiteur, admin, démonstrations, commandes) sur un serveur jetable avec mot de passe connu ; rapport de 35 lignes ; ne croire que ce qui est constaté.
+- **Pièges** : voir `METHODE.md`, partie 4 (version 15) : titres trop gros, rangées désalignées, `pkill`, Chromium en root, KV qui garde son contenu, clé facultative du vérificateur, démonstrations à refaire, `git checkout -B` après un commit.
+- **Joaillerie (Atelier Muel)** : même méthode, modèle catalogue (`maison-tcheskiss`) avec un contenu, une couleur, des polices et une mise en page propres ; photos réelles des pièces ; mentions sur les métaux précieux, poinçons, garantie et rétractation à faire confirmer ; compte bancaire dédié dès le début ; ne pas citer l'employeur.
