@@ -165,7 +165,7 @@ function ecranConnexion(message) {
     if (bouton.disabled) return;
     err.hidden = true; bouton.disabled = true; bouton.textContent = 'Connexion…';
     try { await api.connexion(input.value); await demarrer(); }
-    catch (x) { err.textContent = x.message; err.hidden = false; bouton.disabled = false; bouton.textContent = 'Se connecter'; }
+    catch (x) { err.textContent = x.message; err.hidden = false; bouton.disabled = false; bouton.textContent = 'Se connecter'; input.focus(); input.select(); }
   };
   const bouton = el('button', { class: 'btn', type: 'button', id: 'btn-connexion', text: 'Se connecter', onclick: seConnecter });
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') seConnecter(e); });
@@ -575,7 +575,8 @@ function vueSiteDemo() {
   let v = document.getElementById('demo-site');
   if (!v) {
     v = el('div', { id: 'demo-site', class: 'apercu-plein' },
-      el('div', { class: 'barre' }, el('b', { text: 'Le site' }),
+      el('div', { class: 'barre' }, el('span', { class: 'barre-titre' }, el('b', { text: 'Démonstration' }),
+          /^https?:$/.test(location.protocol) && /\/demos\//.test(location.pathname) ? el('a', { href: '/', text: '← Retour au site' }) : null),
         el('button', { type: 'button', class: 'btn petit', text: 'Essayer l’espace maison', onclick: () => { v.hidden = true; document.body.style.overflow = ''; } })),
       el('iframe', { title: 'Le site' }));
     document.body.append(v);
@@ -642,7 +643,7 @@ async function enregistrer() {
 }
 async function annuler() {
   if (modifie()) { E.C = JSON.parse(E.base); dessinerEditeur(); rendreApercu(); toast('Modifications annulées.'); return; }
-  if (!bAnn.classList.contains('confirmer')) { bAnn.classList.add('confirmer'); bAnn.textContent = 'Confirmer'; setTimeout(() => { bAnn.classList.remove('confirmer'); majBarre(); }, 4000); return; }
+  if (!bAnn.classList.contains('confirmer')) { bAnn.classList.add('confirmer'); bAnn.textContent = 'Confirmer le retour ?'; bAnn.title = 'Touchez encore pour rétablir la version enregistrée juste avant'; setTimeout(() => { bAnn.classList.remove('confirmer'); majBarre(); }, 4000); return; }
   bAnn.classList.remove('confirmer');
   try { E.C = await api.annuler(); E.base = JSON.stringify(E.C); dessinerEditeur(); rendreApercu(); toast('Version précédente rétablie.'); } catch (x) { toast(x.message); }
   majBarre();
@@ -690,7 +691,8 @@ function ecranPrincipal() {
   racine.append(
     el('header', { class: 'haut' }, el('div', { class: 'haut-in' },
       el('div', { class: 'haut-titre' }, el('b', { text: nom }), el('span', { text: 'Espace maison' })),
-      el('a', { class: 'btn', href: DEMO ? '#' : '/', target: DEMO ? null : '_blank', rel: 'noopener', text: 'Voir le site', onclick: DEMO ? (e) => { e.preventDefault(); plein.hidden = false; rendreApercu(); } : null }),
+      DEMO ? el('button', { type: 'button', class: 'btn', text: 'Voir le site', onclick: () => { plein.hidden = false; rendreApercu(); } })
+        : el('a', { class: 'btn', href: '/', target: '_blank', rel: 'noopener', text: 'Voir le site' }),
       el('button', { type: 'button', class: 'btn', text: 'Se déconnecter', onclick: async () => { if (modifie() && !confirm2()) return; await api.deconnexion(); ecranConnexion(); } }))),
     DEMO ? el('p', { class: 'bandeau', text: 'Démonstration : vos essais restent sur ce téléphone, rien n’est publié.' })
       : (E.maquette ? el('p', { class: 'bandeau', text: 'Le site est encore en mode proposition : les demandes ne sont pas envoyées.' }) : null),

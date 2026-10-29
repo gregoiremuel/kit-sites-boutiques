@@ -1,0 +1,172 @@
+{
+  "name": "2. Maquette prête : me prévenir",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "maquette-prete",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "id": "339e95c2-a8e0-5c36-9a4b-70a11e2d8faa",
+      "name": "Maquette terminée (VPS)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Secret du VPS (X-Webhook-Secret)"
+        }
+      },
+      "webhookId": "0fcf2421-3b05-59f1-853f-72b2ef791652"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Rappel envoyé par lancer-maquette.sh à la fin. L'identifiant est contrôlé avant de servir de nom de fichier.\nconst b = $input.first().json.body || {};\nconst id = String(b.id || '');\nif (!/^[a-z0-9]{6,16}-[a-z0-9]{4,8}$/.test(id)) throw new Error('Identifiant refusé');\nconst statut = ['ok', 'infos', 'echec'].includes(b.statut) ? b.statut : 'echec';\nconst titre = { ok: 'Maquette prête à relire', infos: 'Maquette en attente : infos manquantes', echec: 'Maquette en échec : à reprendre à la main' }[statut];\nconst texte = `${titre} (${id})\\n\\n${String(b.resume || '').slice(0, 1500)}\\n\\nRien n'est publié. Fichiers sur le VPS : /opt/greg/partage/${id}/`;\nreturn [{ json: { id, statut, titre, texte } }];"
+      },
+      "id": "c590b102-6f76-57bf-9656-d4aa4be5ef8b",
+      "name": "Lire le rappel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "REMPLACER_PAR_TON_CHAT_ID",
+        "text": "={{ $json.texte }}",
+        "additionalFields": {}
+      },
+      "id": "570e6174-a434-5844-a9a9-24f53f008e50",
+      "name": "Me prévenir (Telegram)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        160
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Seulement si la démonstration existe.\nreturn $input.all().filter((i) => i.json.statut === 'ok');"
+      },
+      "id": "258ef375-e5db-5d85-b66e-807ba52ef7df",
+      "name": "Si démonstration",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "=/partage/{{ $json.id }}/demonstration.html",
+        "options": {}
+      },
+      "id": "e79934f3-6e30-5fdf-9a91-1d18566416b8",
+      "name": "Lire la démonstration",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        680,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "contact@gregoiremuel.fr",
+        "toEmail": "contact@gregoiremuel.fr",
+        "subject": "={{ $('Si démonstration').item.json.titre }}",
+        "emailFormat": "text",
+        "text": "={{ $('Si démonstration').item.json.texte }}\n\nLa démonstration est en pièce jointe : à montrer sur ton téléphone, jamais par lien public.",
+        "options": {
+          "attachments": "data"
+        }
+      },
+      "id": "304d4126-71a0-512d-9daf-cc39591516ab",
+      "name": "M'envoyer la démonstration",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        420
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP (e-mail pro)"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Maquette terminée (VPS)": {
+      "main": [
+        [
+          {
+            "node": "Lire le rappel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire le rappel": {
+      "main": [
+        [
+          {
+            "node": "Me prévenir (Telegram)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Si démonstration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Si démonstration": {
+      "main": [
+        [
+          {
+            "node": "Lire la démonstration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire la démonstration": {
+      "main": [
+        [
+          {
+            "node": "M'envoyer la démonstration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {}
+}

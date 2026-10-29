@@ -1,0 +1,5 @@
+date;commerce;metier;quartier;contact;statut;prochaine_date;prochaine_action;notes
+2026-10-27;Boulangerie Exemple Un;boulangerie;Auteuil;Prénom A;maquette;2026-10-30;montrer la maquette à 18 h 30;veut mettre en avant le pain au levain
+2026-10-27;Plomberie Exemple Deux;plombier;Paris 15e;Prénom B;refus;;;"ne pas recontacter"
+2026-10-28;Fleuriste Exemple Trois;fleuriste;Boulogne;Prénom C;devis;2026-11-04;relancer une fois par SMS;hésite sur l'abonnement
+2026-10-29;Restaurant Exemple Quatre;restaurant;Auteuil;Prénom D;visite;2026-11-02;repasser hors service;"envoyez-moi un mail"

@@ -1,0 +1,89 @@
+{
+  "name": "3. Visibilité Google : rappels du mois",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "40 8 3,25,28 * *"
+            }
+          ]
+        }
+      },
+      "id": "1ce5ced0-663d-5ad0-8714-a633238a3c5d",
+      "name": "Les 3, 25 et 28 à 8 h 40",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Rappels du mois pour l'offre Visibilité Google. La liste des clients se tient ici, dans n8n (jamais dans le dépôt).\n// Le 25 : demander les infos du mois. Le 28 : envoyer les brouillons à valider. Le 3 : envoyer le rapport.\nconst CLIENTS = [\n  // { commerce: 'Nom du commerce', prenom: 'Prénom', canal: 'SMS' }   ← une ligne par client abonné\n];\nconst jour = Number(($input.first().json.jour) ?? new Date().getDate());\nconst etapes = {\n  25: { titre: 'Infos du mois à demander', quoi: 'message 1 de visibilite-google/prompts/3-point-mensuel.md' },\n  28: { titre: 'Brouillons à faire valider', quoi: 'preparer ou rediger, controler, puis message 2' },\n  3: { titre: 'Rapports à envoyer', quoi: 'rapport.html relu, puis message 3' }\n};\nconst e = etapes[jour];\nif (!e) return [];\nconst lignes = CLIENTS.length ? CLIENTS.map((c) => `- ${c.commerce} (${c.prenom}, ${c.canal})`) : ['- aucun client dans la liste (nœud « Rappels du mois »)'];\nreturn [{ json: { texte: `Visibilité Google : ${e.titre}\\n${lignes.join('\\n')}\\n\\nÀ faire : ${e.quoi}.` } }];"
+      },
+      "id": "f96e54d7-cec4-566b-b303-781ad370bef6",
+      "name": "Rappels du mois",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "REMPLACER_PAR_TON_CHAT_ID",
+        "text": "={{ $json.texte }}",
+        "additionalFields": {}
+      },
+      "id": "6ee1a614-e043-5bef-bc51-1a8c3d7db13b",
+      "name": "Me prévenir (Telegram)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Bot Telegram"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Les 3, 25 et 28 à 8 h 40": {
+      "main": [
+        [
+          {
+            "node": "Rappels du mois",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rappels du mois": {
+      "main": [
+        [
+          {
+            "node": "Me prévenir (Telegram)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Paris"
+  },
+  "active": false,
+  "pinData": {}
+}

@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 15, 29 octobre 2026. Grégoire Muel.
+Version 16, 29 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -223,6 +223,11 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 | Décalage de mise en page (CLS) dû aux images et aux polices | Pas de `width` ni `height` sur les images, polices qui remplacent la police de secours | `npm run dimensions` (table dans `rendu.js`) et préchargement des deux polices du gabarit ; mesure avec `PerformanceObserver('layout-shift')` |
 | Un défaut de démonstration corrigé à la main revient | Les démonstrations sont fabriquées (`npm run demos`) | Corriger le modèle du kit, puis refaire les démonstrations ; jamais le HTML |
 | Les testeurs de bout en bout laissent des demandes dans le serveur local | Ils envoient de vrais formulaires et changent le mot de passe de test | Serveur jetable (`--persist-to` dans un dossier temporaire), mot de passe de test connu, rien dans le dépôt |
+| Envoyer les avis d'un client à une IA (chat ou API) sans l'avoir prévu au contrat | Les avis sont des données personnelles et le fournisseur d'IA devient sous-traitant ultérieur | Annexe 3 du contrat de sous-traitance à jour avant le premier client ; n'envoyer que le prénom et le texte ; fiches imaginaires pour les essais (`visibilite-google/README.md`) |
+| Une IA écrit un chiffre du rapport mensuel d'un client | Un modèle complète ce qui manque | Le rapport n'est fabriqué que depuis les chiffres relevés (« non disponible » jamais écrit 0) ; l'IA n'écrit que des brouillons de texte, contrôlés puis relus |
+| Le texte d'un visiteur lancé dans une commande (n8n, SSH, Claude Code) | Injection : le message peut contenir des commandes ou des consignes pour l'IA | Seul un identifiant contrôlé passe au shell ; Claude Code sans shell libre, sous un utilisateur sans droits ; la demande est une donnée ; aucun texte d'IA n'est envoyé au visiteur (`automatisation/README.md`) |
+| Un site vitrine livré sans `robots.txt`, plan du site ni adresse canonique, et des mentions de maquette indexables | Le moteur vitrine ne les avait pas (corrigé le 29/10/2026) | `npm run referencement` dans chaque moteur avant livraison ; reporter la correction dans les vitrines déjà en ligne |
+| La même description Google sur toutes les pages d'un catalogue | La description générale servait de secours partout | Le moteur catalogue complète la description propre à chaque page (corrigé le 29/10/2026) |
 
 ---
 
@@ -239,6 +244,7 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 
 ### Avant la mise en ligne (après signature)
 - [ ] Vraies photos, vrais prix, textes validés ; pièces ou produits d'exemple supprimés ; crédit des photos d'essai vidé.
+- [ ] `npm run referencement` : 0 erreur ; puis `livraison/MISE-EN-ROUTE-GOOGLE.md` le jour de l'ouverture.
 - [ ] Logo définitif (SVG ou PNG transparent), coordonnées, réseaux.
 - [ ] Mentions légales complètes (raison sociale, forme et capital, SIRET, adresse, directeur de la publication, médiateur si vente aux particuliers).
 - [ ] CGV relues (idéalement par un juriste).
@@ -270,6 +276,10 @@ Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produi
 | `npm run accessibilite` | Audit axe-core (WCAG 2.2 AA) en bureau, mobile et « moins d'animations », et parcours au clavier. Demande Playwright. |
 | `npm run mot-de-passe` | Crée le mot de passe de la page de modification et son empreinte. |
 | `node outils/fabrique-maquette.mjs preparer …` / `construire …` | (Racine du kit) Fabrique de maquettes en 1 heure : partie 2.2 bis. |
+| `node outils/diagnostic-fiche.mjs preparer fiche.txt` / `fabriquer …/grille.json` | (Racine du kit) Mini-diagnostic de la fiche Google en une page, à laisser en visite. |
+| `node outils/coherence.mjs fiche.txt <site> [réseaux…]` | (Racine du kit) Mêmes nom, téléphone et adresse partout. |
+| `node outils/visibilite-google.mjs preparer|rediger|controler …` | (Racine du kit) Offre Visibilité Google : brouillons du mois, contrôle, rapport d'une page. |
+| `npm run referencement` | (Dans chaque moteur) Titres, descriptions, canonique, données structurées, liens, images. À 0 erreur avant chaque livraison. |
 | `npm run deploy` | Vérifie le contenu puis met en ligne. |
 | `npm run dev` | Le site sur l'ordinateur, pour essayer en vrai (adresse locale). |
 

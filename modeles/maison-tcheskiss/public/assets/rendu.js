@@ -157,7 +157,7 @@ function document_(C, o, page) {
   const donneesJs = `var MAISON=${JSON.stringify(MAISON).replace(/</g, '\\u003c')};`;
   const scripts = o.js != null ? `<script>\n${donneesJs}\n${o.js}\n</script>` : `<script>${donneesJs}</script>\n<script src="${o.jsHref || '/assets/site.js'}" defer></script>`;
   const titre = page.titre ? `${page.titre}, ${nom}` : nom;
-  const desc = page.description || M.description_google || '';
+  const desc = decrire(page, M);
 
   return `<!doctype html>
 <html lang="fr">
@@ -171,13 +171,14 @@ ${o.maquette ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:type" content="website">
 ${page.image ? `<meta property="og:image" content="${esc(src(page.image, 1200))}">` : ''}
+${!o.maquette && page.chemin && /^https:\/\//.test((C.reglages || {}).url || '') ? `<link rel="canonical" href="${esc(C.reglages.url.replace(/\/$/, '') + page.chemin)}">` : ''}
 <meta name="theme-color" content="${hex(T.fond, '#faf8f4')}">
 <link rel="icon" href="${esc(favicon(C))}">
 ${style}
 </head>
 <body class="${page.classe || ''}${o.calme ? ' calme' : ''}"${accent}>
 <a class="skip" href="#contenu">Aller au contenu</a>
-${o.maquette ? `<div class="maquette" role="note">Proposition de site pour ${esc(nom)}, préparée par Grégoire Muel. Version de travail non publiée : textes, prix et photos à valider.</div>` : ''}
+${o.maquette ? `<aside class="maquette" aria-label="Information sur ce site">Proposition de site pour ${esc(nom)}, préparée par Grégoire Muel. Version de travail non publiée : textes, prix et photos à valider.</aside>` : ''}
 ${C.annonce && C.annonce.afficher && C.annonce.texte ? `<div class="annonce" role="status">${esc(C.annonce.texte)}</div>` : ''}
 <header class="tete">
   <button class="ico" type="button" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu">${ico.menu}</button>
@@ -473,6 +474,15 @@ export function routes(C) {
 }
 
 /* Rend une adresse : { statut, html } */
+/* Description propre à chaque page : celle de la page, complétée par la description générale si elle est courte ou absente (jamais la même partout) */
+export function decrire(page, M) {
+  const net = (t) => String(t || '').replace(/[*_[\]{}]/g, '').replace(/\s+/g, ' ').trim();
+  const propre = net(page.description), general = net(M.description_google);
+  let d = propre.length >= 50 ? propre : page.titre ? [propre || page.titre, general].filter(Boolean).join('. ').replace(/\.\./g, '.') : general || propre;
+  if (d.length > 150) d = d.slice(0, 150).replace(/\s+\S*$/, '') + '…';
+  return d;
+}
+
 export function rendrePage(C, chemin, o = {}) {
   const D = donnees(C);
   const [p0, requete = ''] = String(chemin || '/').split('?');
@@ -489,5 +499,6 @@ export function rendrePage(C, chemin, o = {}) {
   else if (p === '/confidentialite') page = pageConfidentialite(C);
   else { const k = Object.keys(PAGES).find((x) => PAGES[x] === p); if (k) page = pageInfo(C, D, k); }
   const statut = page ? 200 : 404;
+  if (page && statut === 200 && p !== '/panier') page.chemin = p;
   return { statut, html: document_(C, o, page || page404()) };
 }
