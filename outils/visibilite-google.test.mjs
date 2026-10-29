@@ -1,4 +1,4 @@
-// Essais du script « Visibilité Google » : fiche imaginaire, faux serveur d'IA (aucun réseau, aucune clé). Lancer : node --test outils/
+// Essais du script « Visibilité Google » : fiche imaginaire, faux serveur d'IA (aucun réseau, aucune clé). Lancer : node --test outils/visibilite-google.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';

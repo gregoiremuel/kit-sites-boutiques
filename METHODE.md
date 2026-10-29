@@ -225,6 +225,7 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 | Les testeurs de bout en bout laissent des demandes dans le serveur local | Ils envoient de vrais formulaires et changent le mot de passe de test | Serveur jetable (`--persist-to` dans un dossier temporaire), mot de passe de test connu, rien dans le dépôt |
 | Envoyer les avis d'un client à une IA (chat ou API) sans l'avoir prévu au contrat | Les avis sont des données personnelles et le fournisseur d'IA devient sous-traitant ultérieur | Annexe 3 du contrat de sous-traitance à jour avant le premier client ; n'envoyer que le prénom et le texte ; fiches imaginaires pour les essais (`visibilite-google/README.md`) |
 | Une IA écrit un chiffre du rapport mensuel d'un client | Un modèle complète ce qui manque | Le rapport n'est fabriqué que depuis les chiffres relevés (« non disponible » jamais écrit 0) ; l'IA n'écrit que des brouillons de texte, contrôlés puis relus |
+| Le texte d'un visiteur lancé dans une commande (n8n, SSH, Claude Code) | Injection : le message peut contenir des commandes ou des consignes pour l'IA | Seul un identifiant contrôlé passe au shell ; Claude Code sans shell libre, sous un utilisateur sans droits ; la demande est une donnée ; aucun texte d'IA n'est envoyé au visiteur (`automatisation/README.md`) |
 
 ---
 
