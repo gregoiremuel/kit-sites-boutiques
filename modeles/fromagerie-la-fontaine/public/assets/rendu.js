@@ -135,7 +135,10 @@ export const favicon = (C) => 'data:image/svg+xml,' + encodeURIComponent(`<svg x
 /*
   o = { maquette, urlPolice: (fichier) => url, css | cssHref, js | jsHref, lienMentions, lienAdmin, apiCommande, calme (aperçu de l'espace boutique : sans animations) }
 */
-function tete(C, o, titre, description) {
+function tete(C, o, titre, description, chemin = '/') {
+  const base = /^https:\/\//.test((C.reglages || {}).url || '') ? C.reglages.url.replace(/\/$/, '') : '';
+  const photo = src((C.textes || {}).photo_accueil, 1200);
+  const image = /^https:\/\//.test(photo) ? photo : base && /^\/photos\//.test(photo) ? base + photo : '';
   const theme = cssTheme(C, o.urlPolice || ((f) => '/fonts/' + f));
   const style = o.css != null ? `<style>\n${o.css}\n${theme}\n</style>` : `<link rel="stylesheet" href="${o.cssHref || '/assets/site.css'}">\n<style>${theme}</style>`;
   return `<!doctype html>
@@ -149,6 +152,8 @@ ${o.maquette ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:title" content="${esc(titre)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
+${!o.maquette && base ? `<link rel="canonical" href="${esc(base + chemin)}">\n<meta property="og:url" content="${esc(base + chemin)}">` : ''}
+${image ? `<meta property="og:image" content="${esc(image)}">` : ''}
 <meta name="theme-color" content="${couleur((C.theme || {}).couleur, '#46667f')}">
 <link rel="icon" href="${favicon(C)}">
 ${style}
@@ -749,7 +754,7 @@ export function rendreMentions(C, o = {}) {
   const nom = B.nom || 'Boutique';
   const k = (v) => (v ? esc(v) : '<em>à compléter</em>');
   const demandes = C.commandes && C.commandes.actif && voc(C).demande.type !== 'lien';
-  return `${tete(C, o, 'Mentions légales, ' + nom, 'Mentions légales du site de ' + nom)}
+  return `${tete(C, o, 'Mentions légales, ' + nom, 'Mentions légales du site de ' + nom, '/mentions-legales')}
 <body>
 <main class="sec"><div class="wrap" style="max-width:760px">
   <p><a href="/">← Retour au site</a></p>

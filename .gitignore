@@ -7,3 +7,6 @@ demo-en-ligne/
 .DS_Store
 maquettes/
 suivi-google/
+diagnostics/
+prospection/*.csv
+!prospection/prospects-exemple.csv

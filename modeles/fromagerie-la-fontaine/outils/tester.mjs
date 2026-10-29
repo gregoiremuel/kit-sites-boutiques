@@ -65,6 +65,8 @@ async function tests() {
   verif(!h.includes('class="maquette"') && !h.includes('noindex'), 'Pas de bandeau de proposition quand MAQUETTE = non');
   verif(h.includes('id="demande"') === formulaire, `Formulaire de demande ${formulaire ? 'présent' : 'absent'} comme prévu`);
   r = await req('/mentions-legales'); verif(r.status === 200 && (await r.text()).includes('Cloudflare'), 'Mentions légales');
+  r = await req('/robots.txt'); h = await r.text(); verif(r.status === 200 && /Sitemap: \S+\/sitemap\.xml/.test(h) && /Disallow: \/admin\//.test(h), 'robots.txt ouvert aux moteurs, avec le plan du site');
+  r = await req('/sitemap.xml'); h = await r.text(); verif(r.status === 200 && (h.match(/<loc>/g) || []).length === 2, 'Plan du site : accueil et mentions');
   for (const f of ['/assets/site.css', '/assets/site.js', '/assets/rendu.js', '/assets/polices.js', '/assets/admin.js', '/assets/admin.css']) {
     r = await req(f); verif(r.status === 200, 'Fichier ' + f);
   }

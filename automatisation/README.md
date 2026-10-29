@@ -98,6 +98,9 @@ curl -X POST https://<ton-n8n>/webhook-test/demande-site -H "Content-Type: appli
 ```
 Pour l'essai, mets ta propre adresse : tu reçois la confirmation comme un visiteur.
 
+## Flux 3 : rappels du mois (Visibilité Google)
+`n8n/3-rappels-visibilite.json` : les 3, 25 et 28 à 8 h 40 (heure de Paris), un message Telegram liste les clients à relancer et l'étape du mois (infos à demander, brouillons à faire valider, rapports à envoyer). La liste des clients se tient dans le nœud « Rappels du mois », dans n8n, jamais dans le dépôt. Vérifier que le fuseau de n8n est `Europe/Paris` (variable `GENERIC_TIMEZONE`, à vérifier).
+
 ## Notifications
 - **Telegram** (gratuit, recommandé pour le téléphone) : dans Telegram, @BotFather, `/newbot`, garder le jeton. Écrire un message à ton bot, puis ouvrir `https://api.telegram.org/bot<jeton>/getUpdates` : le `chat.id` est ton identifiant. Les notifications passent par les serveurs de Telegram (nom, téléphone et e-mail du visiteur) : c'est dans le texte de confidentialité.
 - **WhatsApp** (nœud prêt, désactivé) : il faut l'API WhatsApp Business de Meta (compte Meta Business vérifié, numéro dédié qui n'est pas ton WhatsApp personnel). Un message envoyé par l'entreprise hors d'une conversation ouverte depuis moins de 24 h doit utiliser un **modèle de message approuvé par Meta**, et les messages sont facturés selon la grille de Meta. Tout cela est à vérifier sur la documentation de Meta le jour où tu le fais. En attendant : Telegram.

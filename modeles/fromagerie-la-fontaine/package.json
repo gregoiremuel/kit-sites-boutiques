@@ -12,7 +12,8 @@
     "apercu": "node outils/apercu.mjs",
     "mot-de-passe": "node outils/mot-de-passe.mjs",
     "nouvelle-boutique": "node outils/nouvelle-boutique.mjs",
-    "accessibilite": "node outils/accessibilite.mjs"
+    "accessibilite": "node outils/accessibilite.mjs",
+    "referencement": "node outils/referencement.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.20.0",

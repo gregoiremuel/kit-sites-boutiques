@@ -273,6 +273,10 @@ Se connecter, changer un horaire, mettre un message d'annonce, ajouter un produi
 | `npm run accessibilite` | Audit axe-core (WCAG 2.2 AA) en bureau, mobile et « moins d'animations », et parcours au clavier. Demande Playwright. |
 | `npm run mot-de-passe` | Crée le mot de passe de la page de modification et son empreinte. |
 | `node outils/fabrique-maquette.mjs preparer …` / `construire …` | (Racine du kit) Fabrique de maquettes en 1 heure : partie 2.2 bis. |
+| `node outils/diagnostic-fiche.mjs preparer fiche.txt` / `fabriquer …/grille.json` | (Racine du kit) Mini-diagnostic de la fiche Google en une page, à laisser en visite. |
+| `node outils/coherence.mjs fiche.txt <site> [réseaux…]` | (Racine du kit) Mêmes nom, téléphone et adresse partout. |
+| `node outils/visibilite-google.mjs preparer|rediger|controler …` | (Racine du kit) Offre Visibilité Google : brouillons du mois, contrôle, rapport d'une page. |
+| `npm run referencement` | (Dans chaque moteur) Titres, descriptions, canonique, données structurées, liens, images. À 0 erreur avant chaque livraison. |
 | `npm run deploy` | Vérifie le contenu puis met en ligne. |
 | `npm run dev` | Le site sur l'ordinateur, pour essayer en vrai (adresse locale). |
 

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const flux = (f) => JSON.parse(readFileSync(new URL(`./n8n/${f}`, import.meta.url), 'utf8'));
-const w1 = flux('1-demande-recue.json'), w2 = flux('2-maquette-prete.json');
+const w1 = flux('1-demande-recue.json'), w2 = flux('2-maquette-prete.json'), w3 = flux('3-rappels-visibilite.json');
 const code = (w, nom) => w.nodes.find((n) => n.name === nom).parameters.jsCode;
 function executer(js, { entree = [], json = {}, noeuds = {} } = {}) {
   const $input = { first: () => entree[0], all: () => entree };
@@ -15,7 +15,7 @@ const demande = { id: '2wq4vtwwt-ole441', recue: '2026-10-29T10:00:00Z', nom: 'C
 const reponseIA = (o) => ({ content: [{ type: 'text', text: JSON.stringify(o) }] });
 
 test('connexions : chaque nœud cité existe', () => {
-  for (const w of [w1, w2]) {
+  for (const w of [w1, w2, w3]) {
     const noms = new Set(w.nodes.map((n) => n.name));
     for (const [de, c] of Object.entries(w.connections)) {
       assert.ok(noms.has(de), de);
@@ -69,4 +69,12 @@ test('maquette prête : identifiant contrôlé, statut inconnu → échec', () =
   const [e] = executer(code(w2, 'Lire le rappel'), { entree: [{ json: { body: { id: demande.id, statut: 'bizarre' } } }] });
   assert.equal(e.json.statut, 'echec');
   assert.throws(() => executer(code(w2, 'Lire le rappel'), { entree: [{ json: { body: { id: '../../etc/passwd', statut: 'ok' } } }] }), /refusé/);
+});
+
+test('rappels du mois : seulement les 3, 25 et 28', () => {
+  const js = code(w3, 'Rappels du mois');
+  assert.equal(executer(js, { entree: [{ json: { jour: 12 } }] }).length, 0);
+  const [r] = executer(js, { entree: [{ json: { jour: 25 } }] });
+  assert.match(r.json.texte, /Infos du mois/);
+  assert.match(r.json.texte, /aucun client/);
 });

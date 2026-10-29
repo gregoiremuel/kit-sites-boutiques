@@ -108,7 +108,18 @@ export default {
         return html(rendreSite(C, { maquette: estMaquette(env), lienMentions: '/mentions-legales', lienAdmin: '/admin/', apiCommande: '/api/commande' }));
       }
       if (methode === 'GET' && p === '/mentions-legales') {
-        return html(rendreMentions(await lireContenu(env), {}));
+        return html(rendreMentions(await lireContenu(env), { maquette: estMaquette(env) }));
+      }
+      /* Référencement : robots.txt et plan du site (fermés aux moteurs tant que MAQUETTE vaut « oui ») */
+      if (methode === 'GET' && p === '/robots.txt') {
+        const C = await lireContenu(env), base = ((C.reglages || {}).url || url.origin).replace(/\/$/, '');
+        const corps = estMaquette(env) ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nDisallow: /admin/\nSitemap: ${base}/sitemap.xml\n`;
+        return new Response(corps, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+      }
+      if (methode === 'GET' && p === '/sitemap.xml') {
+        const C = await lireContenu(env), base = ((C.reglages || {}).url || url.origin).replace(/\/$/, '');
+        const corps = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${base}/</loc></url><url><loc>${base}/mentions-legales</loc></url></urlset>`;
+        return new Response(corps, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
       }
       /* Vidéos envoyées depuis l'espace de modification : lecture par morceaux (Range), indispensable pour Safari */
       if ((methode === 'GET' || methode === 'HEAD') && p.startsWith('/videos/')) {
