@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 15, 29 octobre 2026. Grégoire Muel.
+Version 16, 29 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -223,6 +223,8 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 | Décalage de mise en page (CLS) dû aux images et aux polices | Pas de `width` ni `height` sur les images, polices qui remplacent la police de secours | `npm run dimensions` (table dans `rendu.js`) et préchargement des deux polices du gabarit ; mesure avec `PerformanceObserver('layout-shift')` |
 | Un défaut de démonstration corrigé à la main revient | Les démonstrations sont fabriquées (`npm run demos`) | Corriger le modèle du kit, puis refaire les démonstrations ; jamais le HTML |
 | Les testeurs de bout en bout laissent des demandes dans le serveur local | Ils envoient de vrais formulaires et changent le mot de passe de test | Serveur jetable (`--persist-to` dans un dossier temporaire), mot de passe de test connu, rien dans le dépôt |
+| Envoyer les avis d'un client à une IA (chat ou API) sans l'avoir prévu au contrat | Les avis sont des données personnelles et le fournisseur d'IA devient sous-traitant ultérieur | Annexe 3 du contrat de sous-traitance à jour avant le premier client ; n'envoyer que le prénom et le texte ; fiches imaginaires pour les essais (`visibilite-google/README.md`) |
+| Une IA écrit un chiffre du rapport mensuel d'un client | Un modèle complète ce qui manque | Le rapport n'est fabriqué que depuis les chiffres relevés (« non disponible » jamais écrit 0) ; l'IA n'écrit que des brouillons de texte, contrôlés puis relus |
 
 ---
 

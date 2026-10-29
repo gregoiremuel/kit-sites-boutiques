@@ -1,0 +1,43 @@
+{
+  "_note": "FICHE IMAGINAIRE pour essayer le script. Aucun vrai commerce, aucun vrai avis, aucun vrai chiffre. Ne jamais mettre ici les données d'un vrai client : copier ce fichier dans suivi-google/<client>/ (dossier ignoré par git).",
+  "client": {
+    "nom": "Boulangerie Les Quatre Fournées",
+    "metier": "boulangerie-pâtisserie",
+    "quartier": "Auteuil (exemple)",
+    "adresse": "12 rue de l'Exemple, 75016 Paris",
+    "telephone": "01 23 45 67 89",
+    "site": "",
+    "lien_fiche": "",
+    "ton": "nous, simple et chaleureux, sans formule toute faite",
+    "note_actuelle": "4,6",
+    "nombre_avis": 87
+  },
+  "horaires": "Du mardi au samedi, 7 h à 19 h 30. Dimanche, 7 h à 13 h. Fermé le lundi.",
+  "fermetures": [
+    { "du": "2026-12-24", "au": "2026-12-25", "raison": "Noël, fermé l'après-midi du 24 à partir de 14 h" }
+  ],
+  "specialites": ["pain au levain", "tarte aux pommes", "galette des rois en janvier"],
+  "faits_du_mois": [
+    "Les galettes des rois sont en vente à partir du 2 janvier",
+    "Le pain aux noix est de retour le week-end"
+  ],
+  "avis": [
+    { "id": "a1", "prenom": "Camille", "note": 5, "date": "2026-10-12", "texte": "Le pain au levain est excellent, et l'accueil toujours souriant.", "reponse_publiee": false },
+    { "id": "a2", "prenom": "Jean", "note": 2, "date": "2026-10-20", "texte": "J'ai attendu longtemps un samedi matin, la file n'avançait pas.", "reponse_publiee": false },
+    { "id": "a3", "prenom": "Sarah", "note": 5, "date": "2026-10-03", "texte": "Très bonne tarte aux pommes.", "reponse_publiee": true }
+  ],
+  "chiffres": {
+    "2026-09": { "appels": 31, "itineraires": 54, "clics_site": null, "impressions_fiche": 2310, "visites_site": null },
+    "2026-10": { "appels": 38, "itineraires": 49, "clics_site": null, "impressions_fiche": 2540, "visites_site": null }
+  },
+  "travail_fait": [
+    "Horaires des jours fériés de novembre vérifiés et à jour sur la fiche",
+    "Deux photos de la vitrine ajoutées (envoyées par le commerçant)",
+    "Deux réponses aux avis préparées, une publiée après validation"
+  ],
+  "prevu_mois_suivant": [
+    "Annoncer les galettes des rois",
+    "Mettre à jour les fermetures de Noël",
+    "Demander cinq nouvelles photos de produits"
+  ]
+}

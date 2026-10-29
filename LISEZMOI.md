@@ -11,6 +11,7 @@ Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans 
 | `prompts/2-module-site-de-reference.md` | À coller au-dessus du prompt 1 quand le commerçant aime un site. |
 | `prompts/3-modele-de-notes.md` | Le modèle de tes notes de boutique, en cinq parties. |
 | `outils/fabrique-maquette.mjs` | La fabrique de maquettes en 1 heure : fiche Google collée → prompt → contrôle croisé → démonstration (`METHODE.md`, 2.2 bis). Les dossiers `maquettes/` restent sur l'ordinateur. |
+| `outils/visibilite-google.mjs` | Offre Visibilité Google : de la fiche du client aux brouillons de posts et de réponses aux avis, au contrôle et au rapport d'une page (`visibilite-google/README.md`). Rien n'est publié ; les dossiers `suivi-google/` restent sur l'ordinateur. |
 | `prospection-pitchs.md` | Pitchs en boutique, au téléphone, par e-mail (trois messages), SMS, Instagram, réponses aux objections. |
 | `modeles/fromagerie-la-fontaine/` | Le moteur **vitrine** (site d'une page + page de modification), avec son guide `LISEZMOI.md`. |
 | `modeles/agence-operia/` | Le moteur **agence** (expertises, réalisations avec galerie, équipe, références, demande de projet) + page de modification, avec son guide. |
