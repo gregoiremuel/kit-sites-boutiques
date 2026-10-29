@@ -60,7 +60,7 @@ export function verifierGrille(G) {
   for (const p of POINTS) {
     const x = (G.points || {})[p.id];
     if (!x) { erreurs.push(`point « ${p.id} » absent`); continue; }
-    if (x.etat === '?') erreurs.push(`« ${p.nom} » n’est pas rempli (?)`);
+    if (x.etat === '?') erreurs.push(`« ${p.nom} » : remplacer "etat": "?" par "OK", "À faire" ou "Manque", et écrire un constat d’une ligne`);
     else if (!ETATS.includes(x.etat)) erreurs.push(`« ${p.nom} » : état « ${x.etat} » inconnu (OK, À faire ou Manque)`);
     else if (/à vérifier|à compter|à appeler|aucun horaire lu/i.test(x.constat || '')) erreurs.push(`« ${p.nom} » : le constat prérempli dit encore « à vérifier » : le réécrire après vérification`);
   }
@@ -134,7 +134,7 @@ function principal() {
     mkdirSync(dossier, { recursive: true });
     writeFileSync(join(dossier, 'grille.json'), JSON.stringify(G, null, 2) + '\n');
     const reste = POINTS.filter((p) => G.points[p.id].etat === '?').map((p) => p.nom);
-    console.log(`Grille écrite : ${join(dossier, 'grille.json')}\nÀ remplir en regardant la fiche (OK, À faire ou Manque, et un constat d’une ligne) : ${reste.join(', ')}.\nFacultatif : « bien » (2 lignes) et « actions » (3 lignes) pour remplacer le choix automatique.`);
+    console.log(`Grille écrite : ${join(dossier, 'grille.json')}\nOuvre ce fichier dans un éditeur de texte et, pour chaque point dont "etat" vaut "?", écris "OK", "À faire" ou "Manque" (en regardant la fiche) et un "constat" d’une ligne : ${reste.join(', ')}.\nFacultatif : « bien » (2 lignes) et « actions » (3 lignes) pour remplacer le choix automatique.`);
     return;
   }
   if (commande === 'fabriquer') {
@@ -142,7 +142,7 @@ function principal() {
     const G = JSON.parse(readFileSync(a, 'utf8'));
     const brouillon = process.argv.includes('--brouillon');
     const erreurs = verifierGrille(G);
-    if (erreurs.length && !brouillon) { console.error('Grille incomplète :\n- ' + erreurs.join('\n- ') + '\n(--brouillon pour une page provisoire)'); process.exit(1); }
+    if (erreurs.length && !brouillon) { console.error(`Grille incomplète. Ouvre ${a} dans un éditeur de texte et complète chaque point :\n- ` + erreurs.join('\n- ') + '\nPour une page provisoire marquée « brouillon » : ajouter --brouillon.'); process.exit(1); }
     const sortie = join(dirname(resolve(a)), 'diagnostic.html');
     writeFileSync(sortie, construireHtml(G, { brouillon: brouillon && erreurs.length > 0 }));
     console.log(`Diagnostic écrit : ${sortie}\nÀ montrer sur ton téléphone ou à imprimer. Jamais de lien public.`);

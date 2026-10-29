@@ -226,6 +226,8 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 | Envoyer les avis d'un client à une IA (chat ou API) sans l'avoir prévu au contrat | Les avis sont des données personnelles et le fournisseur d'IA devient sous-traitant ultérieur | Annexe 3 du contrat de sous-traitance à jour avant le premier client ; n'envoyer que le prénom et le texte ; fiches imaginaires pour les essais (`visibilite-google/README.md`) |
 | Une IA écrit un chiffre du rapport mensuel d'un client | Un modèle complète ce qui manque | Le rapport n'est fabriqué que depuis les chiffres relevés (« non disponible » jamais écrit 0) ; l'IA n'écrit que des brouillons de texte, contrôlés puis relus |
 | Le texte d'un visiteur lancé dans une commande (n8n, SSH, Claude Code) | Injection : le message peut contenir des commandes ou des consignes pour l'IA | Seul un identifiant contrôlé passe au shell ; Claude Code sans shell libre, sous un utilisateur sans droits ; la demande est une donnée ; aucun texte d'IA n'est envoyé au visiteur (`automatisation/README.md`) |
+| Un site vitrine livré sans `robots.txt`, plan du site ni adresse canonique, et des mentions de maquette indexables | Le moteur vitrine ne les avait pas (corrigé le 29/10/2026) | `npm run referencement` dans chaque moteur avant livraison ; reporter la correction dans les vitrines déjà en ligne |
+| La même description Google sur toutes les pages d'un catalogue | La description générale servait de secours partout | Le moteur catalogue complète la description propre à chaque page (corrigé le 29/10/2026) |
 
 ---
 
@@ -242,6 +244,7 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 
 ### Avant la mise en ligne (après signature)
 - [ ] Vraies photos, vrais prix, textes validés ; pièces ou produits d'exemple supprimés ; crédit des photos d'essai vidé.
+- [ ] `npm run referencement` : 0 erreur ; puis `livraison/MISE-EN-ROUTE-GOOGLE.md` le jour de l'ouverture.
 - [ ] Logo définitif (SVG ou PNG transparent), coordonnées, réseaux.
 - [ ] Mentions légales complètes (raison sociale, forme et capital, SIRET, adresse, directeur de la publication, médiateur si vente aux particuliers).
 - [ ] CGV relues (idéalement par un juriste).

@@ -42,7 +42,7 @@ function principal() {
   const b = bilan(lireCsv(readFileSync(fichier, 'utf8')), jour);
   if (b.erreurs.length) console.log('À corriger :\n- ' + b.erreurs.join('\n- ') + '\n');
   const s = b.semaine, t = b.total;
-  console.log(`Semaine jusqu'au ${jour} : ${s.visites} visite(s), ${s.maquettes} maquette(s) montrée(s) ou plus, ${s.devis} devis ou plus, ${s.signes} signé(s), ${s.refus} refus.`);
+  console.log(`Semaine jusqu'au ${jour} : ${s.visites} visite(s) ; parmi elles, ${s.maquettes} ont vu une maquette, ${s.devis} ont reçu un devis, ${s.signes} ont signé, ${s.refus} ont refusé.`);
   console.log(`Depuis le début : ${t.commerces} commerces, ${t.maquettes} maquettes, ${t.devis} devis, ${t.signes} signés${t.commerces ? ` (${Math.round((100 * t.signes) / t.commerces)} % des visites)` : ''}, ${t.refus} refus.\n`);
   console.log(b.relances.length ? 'À faire aujourd’hui ou en retard :' : 'Aucune relance due.');
   for (const p of b.relances) console.log(`- ${p.prochaine_date} · ${p.commerce} (${p.contact || '?'}) : ${p.prochaine_action || 'action à préciser'}`);
