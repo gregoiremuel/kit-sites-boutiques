@@ -11,7 +11,7 @@ Tu es sur le VPS Hostinger de Greg (srv1953111, Paris). Greg est sur téléphone
 ## 1. Adresse de n8n
 - **N'utilise jamais `gemmalis.com`** : ce domaine sert un autre projet (lithos). Ne touche ni à son bloc Caddy ni à lithos.
 - Utilise l'adresse Hostinger du serveur (`hostname -f`, vérifiée avec `dig +short`). Si elle ne pointe pas vers l'IP du serveur, arrête-toi et dis-le : on attendra le domaine `gregoiremuel.fr` (`n8n.gregoiremuel.fr`).
-- Mets cette adresse partout : docker-compose de n8n (`N8N_HOST`, `WEBHOOK_URL`), bloc Caddy, `N8N_RAPPEL_URL` de `/opt/greg/config.env`.
+- Mets cette adresse partout : docker-compose de n8n (`N8N_HOST`, `N8N_WEBHOOK_URL` : `WEBHOOK_URL` est déprécié depuis n8n 2.45), bloc Caddy, `N8N_RAPPEL_URL` de `/opt/greg/config.env`.
 
 ## 2. n8n (si ce n'est pas déjà fait)
 - `/opt/n8n/docker-compose.yml` comme proposé plus tôt : image n8n épinglée, réseau Docker de Caddy, **aucun port publié**, `GENERIC_TIMEZONE` et `TZ` = `Europe/Paris`, clé de chiffrement dans un fichier 600, historique des exécutions effacé à 180 jours, volume `/opt/greg/partage:/partage`, `N8N_RESTRICT_FILE_ACCESS_TO=/partage`, `extra_hosts: host.docker.internal:host-gateway`.
