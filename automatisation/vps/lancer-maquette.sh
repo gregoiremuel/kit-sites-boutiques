@@ -19,9 +19,10 @@ cp "$DEMANDE" "$TRAVAIL/demande.json"
 (
   cd "$KIT"
   git pull --ff-only --quiet || true
+  export PATH="$HOME/.local/bin:$PATH"
   PROMPT="$(sed "s/{{ID}}/$ID/g" "$KIT/automatisation/vps/prompt-maquette.md")"
   # Outils permis : lecture, écriture, recherche web, et seulement les commandes du kit. Pas de shell libre.
-  timeout 45m claude -p "$PROMPT" \
+  timeout 45m "${CLAUDE_BIN:-claude}" -p "$PROMPT" \
     --model "${MODELE:-sonnet}" \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch" \
