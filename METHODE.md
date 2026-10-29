@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 14, 28 octobre 2026. Grégoire Muel.
+Version 15, 29 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -210,6 +210,19 @@ Test à faire (5 minutes) : `npx wrangler kv namespace create TEST-UE --jurisdic
 | Sur téléphone, le titre passe sous l'image de l'accueil, ou une page déborde de quelques pixels | Une grille CSS place les éléments dans l'ordre du code, et un texte « sans retour à la ligne » (flèche d'un lien) dépasse sa colonne | `order` explicite sur téléphone ; `white-space:normal` dans les colonnes étroites ; contrôle `debord.mjs` (éléments dont le bord droit dépasse la fenêtre) à 320, 360, 390, 430 et 768 px |
 | L'anneau de focus du clavier est invisible sur l'accueil d'un gabarit à fond clair | La règle générale met un contour blanc sur tout ce qui est dans `.hero` (prévu pour une photo sombre) | Contour foncé dans l'accueil clair des gabarits `studio` et `edition` |
 | GLM rend un JSON avec une clé en trop ou un guillemet | Écart au squelette | Recoller les lignes « ERREUR » : « corrige uniquement ces points » |
+| Titres « beaucoup trop gros » sur le téléphone de Greg, alors que les tailles mesurées étaient correctes | Des règles empilées au fil des retouches (les plus anciennes, plus spécifiques, gagnent) et un téléphone dont le texte système est agrandi | Un bloc final unique en `body.g-edition main h3` (mobile : titre d'accueil 28 px, titres de pages 26, rubriques 20, sous-titres 17, menu 22) ; `npm run rendu` plafonne les titres ; toujours essayer à 412 px |
+| Dans une rangée de cartes, le lien « Essayer la démonstration » n'est pas à la même hauteur | Un titre tient sur une ligne, un autre sur deux | `min-height` du titre (2,5 em) ; `npm run rendu` compare la position des liens dans chaque rangée |
+| Capture pleine page avec des sections vides ou un en-tête collant au milieu | Apparition au défilement et en-tête fixe | Défiler la page avant de capturer ; en gabarit édition, le contenu est visible dès le chargement (pas de fondu, pas de compteur animé) |
+| `pkill -f wrangler` arrête aussi le shell qui l'a lancé | Le motif se retrouve dans la ligne de commande du shell | `pkill -f "[w]rangler"` |
+| Chromium refuse de démarrer en root (Impeccable, Playwright) | Bac à sable | Un petit script qui lance `chrome --no-sandbox "$@"`, passé par `IMPECCABLE_BROWSER` ; Chromium se trouve dans `/opt/pw-browsers/` |
+| Impossible de comparer avec d'autres sites : les domaines sont refusés par le réseau de l'espace de travail | Liste de domaines autorisés | Ne pas insister ; utiliser des repères connus (GOV.UK, Bootstrap, Material) et écrire « non revérifié » |
+| Un test d'adresse canonique casse dès que `reglages.url` est renseigné | Le test supposait l'adresse vide | Le test clone le contenu avec l'adresse vide |
+| Une clé facultative ajoutée au contenu provoque « Clé manquante » sur tous les autres contenus | Elle a été ajoutée à `FORME` (clés obligatoires) du vérificateur | Les clés facultatives vont seulement dans `FACULTATIVES` ; la liste des clés autorisées est dans `CLES` |
+| Les changements de `contenu-initial.json` n'apparaissent pas sur le site en ligne | La mémoire du site (KV) garde sa copie du contenu | Saisir le changement dans `/admin`, ou supprimer la clé `contenu` pour repartir du fichier |
+| Un commit « disparaît » après `git checkout -B branche origin/main` | La branche est ramenée sur `main` | `git reflog`, puis `git reset --hard <empreinte>` ; ne jamais enchaîner commit et reset de branche |
+| Décalage de mise en page (CLS) dû aux images et aux polices | Pas de `width` ni `height` sur les images, polices qui remplacent la police de secours | `npm run dimensions` (table dans `rendu.js`) et préchargement des deux polices du gabarit ; mesure avec `PerformanceObserver('layout-shift')` |
+| Un défaut de démonstration corrigé à la main revient | Les démonstrations sont fabriquées (`npm run demos`) | Corriger le modèle du kit, puis refaire les démonstrations ; jamais le HTML |
+| Les testeurs de bout en bout laissent des demandes dans le serveur local | Ils envoient de vrais formulaires et changent le mot de passe de test | Serveur jetable (`--persist-to` dans un dossier temporaire), mot de passe de test connu, rien dans le dépôt |
 
 ---
 
