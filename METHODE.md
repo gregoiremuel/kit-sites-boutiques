@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 17, 29 octobre 2026. Grégoire Muel.
+Version 18, 30 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -169,6 +169,17 @@ Ce qui fait remonter une entreprise locale dans Google et Maps, par ordre d'effe
   - *Mesurer* : chaque mois, dans la Search Console, les recherches qui amènent des visites et les pages vues mais peu cliquées (titre ou description à retravailler).
 - Différence avec les Réalisations : une réalisation est un projet fini, présenté en vitrine ; une actualité est datée, courte, et peut parler d'un chantier en cours.
 
+### 2.12 Conformité web (France, UE) et titres Google : à faire sur chaque site avant l'ouverture
+**Pas de conseil juridique** : tout texte légal est un brouillon à faire relire. Prompt prêt à coller : `prompts/4-conformite-web.md` ; exemple rempli : `docs/CONFORMITE.md` du site de Greg (dépôt `site-atelier-muel`).
+- **Relever ce qui est vraiment chargé** (HTML rendu de chaque page) : cookies, scripts, polices, cartes, vidéos, pixels. Les moteurs du kit ne déposent **aucun cookie** sur les pages publiques (seul `boutique_session` après connexion à la page de modification, exempté), comptent les visites sans cookie ni IP, et servent leurs polices eux-mêmes. **Pas de bandeau de cookies tant qu'aucun traceur non exempté n'existe** ; si on en ajoute un (Google Analytics, carte Google, YouTube, pixel), bandeau « Tout accepter / Tout refuser » au même niveau et scripts bloqués avant accord.
+- **Images hébergées chez un tiers** (Unsplash en lien direct, comme dans le contenu de départ d'Opéria) : l'adresse IP du visiteur part chez ce tiers ; les télécharger, les réduire et les servir depuis le site avant l'ouverture (le test ne contrôle que les scripts, styles et cadres).
+- **Pages (moteur agence)** : `/mentions-legales` (éditeur, SIRET, adresse, TVA, directeur de la publication, hébergeur avec **téléphone** : champ `mentions.hebergeur_telephone`, médiateur seulement si vente aux particuliers, section « Utilisation du site »), `/confidentialite` (responsable, cookies `#cookies`, mesure des visites, données, finalité et base légale, destinataires, durée, transferts hors UE, droits, CNIL), liens « Mentions légales », « Confidentialité », « Cookies » dans le pied de page. Mention d'information sous le formulaire de contact ; aucune case de consentement tant qu'il n'y a ni lettre d'information ni prospection.
+- **Dire la vérité sur les flux** : le texte de confidentialité décrit ce que le site fait. Champ `contact.traitement` : n8n, Telegram, e-mail d'accusé de réception, Web3Forms, Anthropic **le jour où ils servent** (et seulement alors). Une IA qui lit les demandes = à écrire avant de l'activer.
+- **À ne pas inventer** : nom, SIRET, adresse, téléphone de l'hébergeur, directeur de publication. Champ vide, `npm run verifier` le liste dans « à faire avant la mise en ligne ».
+- **CGV** : seulement si le site vend ; pour des clients professionnels : prix, paiement, délai, pénalités de retard et indemnité forfaitaire de 40 €. Vente à des particuliers : rétractation de 14 jours, formulaire type, médiateur. Ce sont des décisions du client ou de Greg, pas du moteur.
+- **Titres et descriptions par page** : clé facultative `seo` du contenu de départ (`{ "/adresse": { "titre", "description" } }`), lue même si la mémoire du site (KV) a déjà un contenu, conservée par la page de modification ; titre ≤ 60 signes, description 70 à 160 (le vérificateur avertit). Mettre dans le titre ce que le client écrit dans Google (« site internet restaurant », « création de site Paris »), jamais une promesse de place. Le moteur ne met pas les titres dans la page de modification (à faire si un client veut les changer).
+- **Search Console** : tant que `MAQUETTE` vaut « oui », le site est fermé aux moteurs (robots, `noindex`) et Search Console dira « bloqué ». Le plan du site liste les adresses de `reglages.url` : la propriété ajoutée doit être ce domaine (propriété « Domaine »), pas l'adresse provisoire `workers.dev`.
+
 ## 3. Règles d'or
 
 ### Toujours
@@ -258,6 +269,10 @@ Ce qui fait remonter une entreprise locale dans Google et Maps, par ordre d'effe
 | Un site vitrine livré sans `robots.txt`, plan du site ni adresse canonique, et des mentions de maquette indexables | Le moteur vitrine ne les avait pas (corrigé le 29/10/2026) | `npm run referencement` dans chaque moteur avant livraison ; reporter la correction dans les vitrines déjà en ligne |
 | Deux démonstrations se ressemblent malgré des gabarits différents | Fonds pâles presque identiques (`#f4efe7` et `#f6f2ea`) sur toute la page, mêmes blocs du bas | Comparer les pages **entières** côte à côte (défiler lentement avant la capture : le contenu se dévoile au défilement) ; un fond pâle propre au métier ; le plan en bandeau compact (corrigé le 29/10/2026) |
 | La même description Google sur toutes les pages d'un catalogue | La description générale servait de secours partout | Le moteur catalogue complète la description propre à chaque page (corrigé le 29/10/2026) |
+| Un titre de page « Offres, Nom du site » qui ne contient aucun mot que le client tape dans Google | Le moteur construisait le titre avec le seul nom de la rubrique | Clé `seo` du contenu de départ, page par page, 60 signes au plus (corrigé le 30/10/2026) |
+| Search Console dit « bloqué » ou refuse le plan du site | Site encore en `MAQUETTE` « oui » (robots et `noindex`), ou propriété différente de `reglages.url` (domaine pas encore acheté) | Ouvrir d'abord (domaine, `MAQUETTE` « non »), puis propriété « Domaine » et envoi du plan du site |
+| Une page de confidentialité qui dit « ne dépose rien » alors qu'un flux envoie la demande à n8n, Telegram ou une IA | Texte écrit avant les automatismes | Relire `contact.traitement` à chaque nouveau service qui reçoit des données ; relever le HTML rendu et les flux n8n, pas seulement le code |
+| Un champ légal inventé pour « faire plein » (téléphone de l'hébergeur, e-mail) | Envie de supprimer la ligne « à compléter » | Champ vide, signalé par `npm run verifier` ; ne jamais le deviner |
 
 ---
 
@@ -277,6 +292,7 @@ Ce qui fait remonter une entreprise locale dans Google et Maps, par ordre d'effe
 - [ ] `npm run referencement` : 0 erreur ; puis `livraison/MISE-EN-ROUTE-GOOGLE.md` le jour de l'ouverture.
 - [ ] Logo définitif (SVG ou PNG transparent), coordonnées, réseaux.
 - [ ] Mentions légales complètes (raison sociale, forme et capital, SIRET, adresse, directeur de la publication, médiateur si vente aux particuliers).
+- [ ] Conformité (partie 2.12) : e-mail de contact, téléphone de l'hébergeur, texte de confidentialité relu et fidèle aux flux réels, aucune ressource tierce (images comprises), titres et descriptions (`seo`) relus, tableau de conformité fait (`prompts/4-conformite-web.md`).
 - [ ] CGV relues (idéalement par un juriste).
 - [ ] Clé Web3Forms et demande d'essai reçue par e-mail.
 - [ ] Nom de domaine au nom du client, MAQUETTE à « non », route ajoutée, redéployé.
