@@ -9,3 +9,10 @@ Avant toute tâche dans ce dossier, lis `METHODE.md` en entier et suis le skill 
 - **Photos libres** : tester d'abord `images.unsplash.com` et `images.pexels.com` ; s'ils sont bloqués, s'arrêter et le dire à Greg, sans contourner (`METHODE.md`, 2.8 bis).
 - **Pièges connus** : `METHODE.md`, partie 4. Ajoute-y toute nouvelle leçon et change la version en haut du fichier.
 - **Avec Greg** : français, tutoiement, direct, textes prêts à coller. Réponse finale en trois parties : Réponse claire ; Niveau de confiance (0.0 à 1.0, avec la raison) ; Réserves clés.
+
+## Démarrage automatique (à faire sans que Greg le demande)
+1. **Dépôts** : si `gregoiremuel/kit-sites-boutiques` n'est pas dans la session, l'ajouter (`add_repo`) et le cloner ; ajouter `gregoiremuel/site-operia` seulement si on parle d'Opéria. Branche `ccr-04ab3608-pccm5z` ; si elle est fusionnée, repartir de `main` avec le même nom.
+2. **Skill** : charger `sites-boutiques` (`.claude/skills/sites-boutiques/` du kit) dès qu'il s'agit d'un site, d'un texte, d'un style, d'un contrôle ou d'une mise en ligne ; il dit quel skill de design lancer à quel moment (Taste, Impeccable, Frontend UI Engineering, Apple, Emil, performance, sécurité) et dans quel ordre. Ne pas choisir un seul skill par commodité : utiliser ceux que l'étape demande.
+3. **Outils** : tout contrôle passe par les outils du dépôt (`npm run verifier`, `npm test`, `npm run referencement`, `npm run accessibilite`, `npm run rendu`, `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`) ; regarder les captures, bureau et téléphone, avant de dire que c'est bon.
+4. **Modèle** : avant un gros chantier (direction artistique, réécriture de textes, arbitrage), dire à Greg sur quel modèle passer ; l'exécution d'un plan validé se fait sur un modèle plus économe, les tests répétitifs sur des sous-agents Haiku.
+5. **Fin** : pousser, ouvrir la demande de fusion, fusionner quand Greg le demande ; ne dire « en ligne » qu'après l'avoir constaté. Nouvelle leçon : l'ajouter à `METHODE.md` (partie 4) et au skill.
