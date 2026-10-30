@@ -12,7 +12,7 @@ Le but : un site de joaillerie **artisanale** (pas une grande maison), beau, sob
 
 ## 1. Avant d'écrire une ligne
 
-1. Ajoute et lis le dépôt `gregoiremuel/kit-sites-boutiques` : `AGENTS.md`, `METHODE.md` (parties 2, 2.11 à 2.13, 3, 4), puis le skill `.claude/skills/sites-boutiques/SKILL.md` et **tous** ses fichiers `references/` (surtout `joaillerie.md` et `creation-design.md`). Si ton outil ne charge pas les skills tout seul, lis les `SKILL.md` comme des fichiers et applique-les.
+1. Ajoute et lis le dépôt `gregoiremuel/kit-sites-boutiques` : `AGENTS.md`, tout `cerveau/` (qui est Greg, ses décisions, les erreurs à éviter), `METHODE.md` (parties 2, 2.11 à 2.13, 3, 4), puis le skill `.claude/skills/sites-boutiques/SKILL.md` et **tous** ses fichiers `references/` (surtout `joaillerie.md` et `creation-design.md`). Si ton outil ne charge pas les skills tout seul, lis les `SKILL.md` comme des fichiers et applique-les.
 2. Travaille dans le dépôt privé `gregoiremuel/site-joaillerie` (Greg l'a créé vide). Branche de travail : `travail`. Jamais de commit direct sur `main`.
 3. Copie le moteur **catalogue** (`modeles/maison-tcheskiss`) dans ce dépôt, puis **remplace entièrement** son `contenu-initial.json` et ses photos : rien de la Maison Tcheskiss ne doit rester (ni nom, ni texte, ni photo, ni couleur, ni police). On ne réécrit pas le moteur ; un look qui lui manque s'ajoute comme **gabarit** (`theme.gabarit`), testé.
 4. Écris `docs/FAITS.md` (ce que Greg a dit, mot pour mot quand c'est possible) et `docs/A-VALIDER.md` (tout ce qui manque). Montre-les à Greg et attends sa réponse avant le design.
@@ -21,6 +21,7 @@ Le but : un site de joaillerie **artisanale** (pas une grande maison), beau, sob
 
 - **Ne rien inventer** : histoire, années, formation, prix, matières, pierres, délais, avis, chiffres, presse, clients. Ce qui manque reste vide et va dans `docs/A-VALIDER.md`.
 - **Ne jamais citer** l'employeur de Greg ni la Maison Tcheskiss, ni dire « ancien de… ».
+- **Rendus 3D** : si Greg fournit des rendus de ses modèles Blender (skill `cao-bijouterie-blender`), ils s'affichent marqués « Rendu 3D », jamais présentés comme une photo de la pièce réelle.
 - **Photos** : seulement celles de Greg. Réduites à 1600 px de large au plus, JPEG ~80, **sans métadonnées** (`exiftool -all= -overwrite_original` ou Pillow sans `exif`). Aucune photo de banque d'images présentée comme une pièce. Une photo manque : un emplacement vide marqué, pas une image d'IA.
 - **Juridique** (brouillons à faire relire, pas de conseil) : mentions légales, CGV, confidentialité ; métaux précieux (poinçon de maître, garantie), rétractation de 14 jours en vente à distance et son exception pour une pièce faite sur mesure ou personnalisée, livraison assurée, garantie. Tout reste « à vérifier » tant que Greg ne l'a pas confirmé. Aucun champ légal inventé (SIRET, adresse, assurance) : vide, et listé.
 - **Achat (décidé par Greg le 31/10/2026)** : **demande de commande**, comme le moteur actuel ; Greg confirme et encaisse lui-même. Pas de paiement en ligne : Stripe ne s'ajoute que si Greg le redemande.
@@ -82,6 +83,8 @@ Pousse la branche `travail`, ouvre une demande de fusion vers `main` avec : ce q
    - MCP de vision et de recherche de Z.AI (inclus dans le plan GLM ; commande donnée par l'assistant « Coding Tool Helper » de z.ai) : sans vision, GLM ne voit pas les captures ;
    - `claude mcp add chrome-devtools -- npx chrome-devtools-mcp@latest` (mesurer et voir la page dans un vrai navigateur).
 5. Ouvrir Claude Code dans le dossier `site-joaillerie` et coller ce fichier.
+
+**Autre agent que Claude Code** (OpenCode, Codex, Cursor…) : installer les skills du kit avec `npx skills add gregoiremuel/kit-sites-boutiques` (dépôt privé : être connecté à GitHub), ou simplement laisser l'agent lire les `SKILL.md` comme des fichiers, comme le dit `AGENTS.md`.
 
 **Autres cerveaux** : OpenCode (GLM, GPT, Claude…), Codex (GPT), Cursor, Gemini CLI lisent `AGENTS.md` ; les skills sont de simples fichiers `SKILL.md` qu'ils lisent quand `AGENTS.md` le leur dit. La méthode et la mémoire vivent dans les dépôts (`METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md`), pas dans le cerveau : on peut changer de modèle à tout moment.
 
