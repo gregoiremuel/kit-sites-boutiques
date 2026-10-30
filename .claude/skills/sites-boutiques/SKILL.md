@@ -46,7 +46,7 @@ Greg (Grégoire Muel EI, Paris 16e) crée et tient à jour des sites pour les co
 | Pièges connus et leur parade | `references/pieges.md` (complet : `METHODE.md`, partie 4) |
 | Joaillerie Atelier Muel | `references/joaillerie.md` et le prompt complet `prompts/5-site-joaillerie-glm.md` |
 | Changer de modèle (GLM, GPT…) sans rien perdre | `METHODE.md` 2.14, `AGENTS.md`, `cerveau/ROUTAGE-MODELES.md` |
-| Agence Koios (chef qui délègue, interface, mémoire) | `prompts/6-agence-koios.md` |
+| EIMS, l'agence IA (chef qui délègue, interface, mémoire) | `prompts/6-eims-agence-ia.md` |
 | CAO de bijoux, manuel de l'agence, page HTML hors site | skills `cao-bijouterie-blender`, `manuel-agence`, `page-html` |
 
 ## 6. Travailler avec Greg

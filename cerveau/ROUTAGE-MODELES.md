@@ -10,6 +10,6 @@ Principe : **un modèle chef** décide et relit ; des **modèles ouvriers** exé
 | Vision (regarder une capture, une photo de bijou) | selon l'outil | Claude ; GLM avec le MCP Vision de z.ai | sans vision, pas de jugement visuel |
 
 ## Ne jamais être bloqué par une limite
-- **Repli automatique** : si le chef ou l'ouvrier atteint sa limite, passer au suivant de la liste (ex. Claude → GLM → autre), en le disant à Greg. Dans l'agence Koios : passerelle LiteLLM (budgets, repli, coûts) ; à la main : Claude Code branché sur GLM (`ANTHROPIC_BASE_URL`).
+- **Repli automatique** : si le chef ou l'ouvrier atteint sa limite, passer au suivant de la liste (ex. Claude → GLM → autre), en le disant à Greg. Dans EIMS : passerelle LiteLLM (budgets, repli, coûts) ; à la main : Claude Code branché sur GLM (`ANTHROPIC_BASE_URL`).
 - **Abonnement ≠ API** : les abonnements (Claude, GLM Coding Plan) servent dans leurs outils officiels ; une plateforme automatique utilise des **clés API** avec un plafond de dépense.
 - **Économiser** : sous-agents légers pour le mécanique, lecture ciblée des fichiers, cache des invites, pas de relecture inutile.
