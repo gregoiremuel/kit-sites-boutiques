@@ -191,6 +191,13 @@ Installés dans `.claude/skills/` du kit (licences MIT et Apache 2.0 conservées
 - **Quand une règle d'un skill contredit une règle de Greg** (exemple : Taste veut des titres à 8 vw, Greg a plafonné les titres à 56 px parce qu'ils étaient trop gros sur son téléphone), la règle de Greg gagne ; on compense par la couleur, la matière (photos), la structure et le mouvement, et on défend l'écart dans le compte rendu.
 - **Gabarit « édition », version 2** (site de Greg) : chapitres de couleur pleins (papier, acier, ciel, ardoise, marine, encre), tuiles plates aux angles droits qui montent comme un graphique pour les offres, page des offres en chapitres avec liens d'ancre (plus d'onglets), photo en panneau derrière les téléphones de l'accueil (clé facultative `accueil.photo_fond`), photo d'en-tête (`presentation.photo_2`), mouvement en transformations seulement (le contenu reste visible dès le chargement), aucune capitale espacée, aucun filet.
 
+### 2.14 Changer de cerveau sans rien perdre (31/10/2026)
+- **Une consigne commune** : `AGENTS.md` à la racine de chaque dépôt (lu par Codex, Cursor, OpenCode, Gemini CLI et la plupart des agents) ; `CLAUDE.md` contient seulement `@AGENTS.md`. On modifie toujours `AGENTS.md`.
+- **Les skills sont des fichiers** (`.claude/skills/<nom>/SKILL.md`, format ouvert Agent Skills) : un agent qui ne les charge pas seul les lit comme des fichiers ; `npx skills add <dépôt>` les installe aussi dans d'autres agents.
+- **La mémoire est dans les dépôts** : `METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md` de chaque site, `docs/A-VALIDER.md`. Fin de séance = `REPRISE.md` à jour et poussé.
+- **GLM** : le plus simple est Claude Code branché sur GLM (variables `ANTHROPIC_BASE_URL` et `ANTHROPIC_AUTH_TOKEN` de z.ai) : skills, outils, MCP et `CLAUDE.md` marchent à l'identique. Sans outil de vision (MCP Vision de z.ai), GLM ne voit pas les captures : l'installer. Détail et prompt du site de joaillerie : `prompts/5-site-joaillerie-glm.md`.
+- **Accès** : l'agent passe par GitHub (branche, demande de fusion) ; Greg fusionne ; Cloudflare déploie depuis `main`. Jamais de clé Cloudflare donnée à un agent.
+
 ## 3. Règles d'or
 
 ### Toujours

@@ -11,6 +11,8 @@ Skills installés dans `.claude/skills/` du kit (licences conservées) ; ils se 
 | Gestes | `emil-design-eng`, `animate`, `apple-design` | appui à 97 %, survol seulement sous `@media (hover:hover)`, `cubic-bezier(.23,1,.32,1)`, moins de 300 ms, `transform`/`opacity` seulement, contenu visible dès le chargement, tout coupé avec « moins d'animations ». Fin : `review-animations`. |
 | Pire cas | `break-ui` | `node outils/pire-cas.mjs <dossier du site>` puis `node outils/controle-visuel.mjs <adresse>`. |
 | Performance, sécurité | `performance-optimization`, `security-and-hardening` (Addy Osmani) | Core Web Vitals (CLS, LCP), page de modification, formulaires, en-têtes. |
+| Officiel Anthropic | `frontend-design` (plugin `claude-plugins-official`) | typographie et parti pris assumés, contre le design générique ; à installer : `/plugin install frontend-design@claude-plugins-official`. |
+| Navigateur | MCP Chrome DevTools (`npx chrome-devtools-mcp@latest`) | voir, mesurer et tracer la page dans un vrai navigateur ; utile surtout aux modèles sans Playwright sous la main. |
 | Compte claude.ai | `no-ai-slop`, `web-design-guidelines` | listes de « tells » IA et règles d'interface de Vercel : relecture finale. |
 
 Autres skills d'Emil présents : `animation-performance`, `animation-vocabulary`, `improve-animations`, `find-animation-opportunities`, `remove-animations`, `prototype`. Écartés : skills Swift, Expo, mobile natif ; Design Stack (doublon de Playwright et axe-core).

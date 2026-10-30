@@ -1,0 +1,21 @@
+# Kit sites boutiques : instructions pour Claude
+
+Avant toute tâche dans ce dossier, lis `METHODE.md` en entier et suis le skill `sites-boutiques` (`.claude/skills/sites-boutiques/`). C'est la méthode de Greg pour créer, montrer, mettre en ligne et entretenir les sites de commerces avec leur espace boutique.
+
+- **On ne réécrit jamais un moteur.** Un nouveau site = un nouveau contenu dans un des trois modèles de `modeles/` (vitrine : `fromagerie-la-fontaine` ; catalogue avec panier : `maison-tcheskiss` ; agence de services ou du bâtiment : `agence-operia`). On ne touche au code d'un moteur que pour corriger ou améliorer le moteur lui-même, puis on relance `npm run verifier` et `npm test` dans ce modèle.
+- **Règles d'or** (détail dans `METHODE.md`, partie 3) : ne rien inventer (l'inconnu va dans « à valider ») ; jamais de photos Google ou Wix ; jamais de photo de banque d'images présentée comme un produit du commerce ; photos du commerçant réduites et sans données GPS ; rien en ligne au nom d'un commerce qui n'a pas signé ; textes légaux = brouillons à faire relire ; aucun mot « site IA ».
+- **Un site, une identité** (`METHODE.md`, partie 3) : chaque nouveau site a sa couleur, ses polices, sa mise en page et ses formes, différentes de tous les sites déjà faits (relire le registre des styles), et une interface cohérente avec le métier du client. Si deux captures côte à côte se confondent, on recommence. Un look qui manque au moteur s'ajoute au moteur.
+- **Avant de livrer** : `npm run verifier` sans erreur, `npm test` tout « ok », `npm run accessibilite` sans point, `npm run apercu`, démo essayée (site, panier ou demande, page de modification, enregistrement), avis de cinq sous-agents Haiku (`METHODE.md`, 2.8 quater).
+- **Photos libres** : tester d'abord `images.unsplash.com` et `images.pexels.com` ; s'ils sont bloqués, s'arrêter et le dire à Greg, sans contourner (`METHODE.md`, 2.8 bis).
+- **Pièges connus** : `METHODE.md`, partie 4. Ajoute-y toute nouvelle leçon et change la version en haut du fichier.
+- **Avec Greg** : français, tutoiement, direct, textes prêts à coller. Réponse finale en trois parties : Réponse claire ; Niveau de confiance (0.0 à 1.0, avec la raison) ; Réserves clés.
+
+## Démarrage automatique (à faire sans que Greg le demande)
+1. **Dépôts** : si `gregoiremuel/kit-sites-boutiques` n'est pas dans la session, l'ajouter (`add_repo`) et le cloner ; ajouter `gregoiremuel/site-operia` seulement si on parle d'Opéria. Branche `ccr-04ab3608-pccm5z` ; si elle est fusionnée, repartir de `main` avec le même nom.
+2. **Skill** : charger `sites-boutiques` (`.claude/skills/sites-boutiques/` du kit) dès qu'il s'agit d'un site, d'un texte, d'un style, d'un contrôle ou d'une mise en ligne ; il dit quel skill de design lancer à quel moment (Taste, Impeccable, Frontend UI Engineering, Apple, Emil, performance, sécurité) et dans quel ordre. Ne pas choisir un seul skill par commodité : utiliser ceux que l'étape demande.
+3. **Outils** : tout contrôle passe par les outils du dépôt (`npm run verifier`, `npm test`, `npm run referencement`, `npm run accessibilite`, `npm run rendu`, `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`) ; regarder les captures, bureau et téléphone, avant de dire que c'est bon.
+4. **Modèle** : avant un gros chantier (direction artistique, réécriture de textes, arbitrage), dire à Greg sur quel modèle passer ; l'exécution d'un plan validé se fait sur un modèle plus économe, les tests répétitifs sur des sous-agents Haiku.
+5. **Fin** : pousser, ouvrir la demande de fusion, fusionner quand Greg le demande ; ne dire « en ligne » qu'après l'avoir constaté. Nouvelle leçon : l'ajouter à `METHODE.md` (partie 4) et au skill.
+
+## Pour tout agent (Claude, GLM, GPT, Gemini…)
+Ce fichier (`AGENTS.md`) est la consigne commune ; `CLAUDE.md` ne fait que l'importer. Les skills sont de simples dossiers `.claude/skills/<nom>/SKILL.md` dans le dépôt `kit-sites-boutiques` : si ton outil ne les charge pas tout seul, lis le `SKILL.md` utile (d'abord `sites-boutiques`) comme un fichier et applique-le. La méthode et la mémoire vivent dans les dépôts (`METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md`), jamais dans un seul modèle.

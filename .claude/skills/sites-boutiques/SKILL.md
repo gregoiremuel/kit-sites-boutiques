@@ -44,7 +44,8 @@ Greg (Grégoire Muel EI, Paris 16e) crée et tient à jour des sites pour les co
 | Contrôles, tests de bout en bout, report dans le kit | `references/revue-tests.md` |
 | Mise en ligne, fusion, KV, Cloudflare | `references/mise-en-ligne.md` |
 | Pièges connus et leur parade | `references/pieges.md` (complet : `METHODE.md`, partie 4) |
-| Joaillerie Atelier Muel | `references/joaillerie.md` |
+| Joaillerie Atelier Muel | `references/joaillerie.md` et le prompt complet `prompts/5-site-joaillerie-glm.md` |
+| Changer de modèle (GLM, GPT…) sans rien perdre | `METHODE.md` 2.14, `AGENTS.md` |
 
 ## 6. Travailler avec Greg
 - Français, tutoiement, direct. Il lit sur téléphone : phrases courtes, textes prêts à coller.
