@@ -2,7 +2,7 @@
 
 > **Projet séparé d'EIMS** (l'agence IA a son propre dépôt `agence-eims` et son propre prompt). **Ne remplis pas ce fichier dans le dépôt public** : fais-en une copie, ou colle-le dans l'agent et ajoute ton histoire à la suite.
 >
-> **Pour Greg** : remplis d'abord la partie « Mon histoire » (tes mots, même en vrac), mets tes photos dans `photos-brutes/` (hors du dépôt public si elles montrent des clients ou ton employeur), puis colle ce fichier entier comme premier message dans ton agent. Mode d'emploi en bas (« Installer l'agent »).
+> **Pour Greg** : écris ton histoire dans `site-joaillerie/docs/MON-HISTOIRE.md` (dépôt privé, tes mots, même en vrac) et dépose tes photos dans `site-joaillerie/photos-brutes/` (jamais envoyé sur GitHub). Puis, dans OpenCode ouvert sur `site-joaillerie`, tape : « Lis AGENTS.md et suis-le. » Mode d'emploi en bas (« Installer l'agent »).
 
 ---
 
@@ -30,7 +30,7 @@ Le but : un site de joaillerie **artisanale** (pas une grande maison), beau, sob
 - **Pas de secret dans le dépôt** (clés, mots de passe) : Secrets Cloudflare uniquement.
 - **Tailles** : texte jamais sous 14 px ; titre d'accueil 56 px au plus ; titres de pages 48 px ; rubriques 36 px ; sur téléphone 30 et 24 px.
 
-## 3. Mon histoire (à remplir par Greg, tes mots suffisent)
+## 3. Mon histoire (dans `docs/MON-HISTOIRE.md` du dépôt `site-joaillerie` ; si ce fichier manque, pose ces questions à Greg)
 
 - Comment j'ai appris la joaillerie (où, combien de temps, avec qui sans nommer l'employeur) : …
 - Ce que je fais de mes mains à l'atelier (techniques : fonte, forge, sertissage, gravure, cire perdue…) : …
