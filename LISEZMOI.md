@@ -11,6 +11,8 @@ Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans 
 | `prompts/2-module-site-de-reference.md` | À coller au-dessus du prompt 1 quand le commerçant aime un site. |
 | `prompts/3-modele-de-notes.md` | Le modèle de tes notes de boutique, en cinq parties. |
 | `prompts/4-conformite-web.md` | Audit de conformité web (France, UE) et titres Google d'un site : cookies, mentions, confidentialité, formulaires, accessibilité, tableau final. Pas un conseil juridique. |
+| `prompts/5-site-joaillerie-glm.md` | Le prompt complet du site de joaillerie Atelier Muel, pour GLM, Claude, GPT ou tout autre agent : règles, histoire à remplir, direction sans look IA, contrôles, installation de l'agent (GLM dans Claude Code, MCP, plugins). |
+| `AGENTS.md` | La consigne commune à tous les agents (Claude, GLM, GPT, Gemini) ; `CLAUDE.md` l'importe. Changer de cerveau ne change rien : méthode et mémoire sont dans les dépôts. |
 | `outils/fabrique-maquette.mjs` | La fabrique de maquettes en 1 heure : fiche Google collée → prompt → contrôle croisé → démonstration (`METHODE.md`, 2.2 bis). Les dossiers `maquettes/` restent sur l'ordinateur. |
 | `outils/visibilite-google.mjs` | Offre Visibilité Google : de la fiche du client aux brouillons de posts et de réponses aux avis, au contrôle et au rapport d'une page (`visibilite-google/README.md`). Rien n'est publié ; les dossiers `suivi-google/` restent sur l'ordinateur. |
 | `automatisation/` | Demandes reçues → n8n sur le VPS : tri par Haiku, confirmation au visiteur, notification (e-mail, Telegram), maquette lancée par Claude Code. Inactif tant que les Secrets `N8N_WEBHOOK_URL` et `N8N_SECRET` ne sont pas posés (`automatisation/README.md`). |
