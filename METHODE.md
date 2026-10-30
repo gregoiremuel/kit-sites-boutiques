@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 19, 30 octobre 2026. Grégoire Muel.
+Version 20, 31 octobre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -186,7 +186,7 @@ Installés dans `.claude/skills/` du kit (licences MIT et Apache 2.0 conservées
 - **`impeccable`** (Paul Bakaus, Apache 2.0) : critique, audit, polish, typographie, mise en page ; le lanceur télécharge un binaire au premier usage (sans réseau : lire `PRODUCT.md` et `DESIGN.md` à la main).
 - **`frontend-ui-engineering`** (Addy Osmani, MIT) : HTML sémantique, accessibilité, états, responsive.
 - **Skills d'Emil Kowalski** (MIT) : `apple-design`, `emil-design-eng`, `animate`, `animation-performance`, `animation-vocabulary`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `remove-animations`, `break-ui`, `prototype` (les skills Swift, Expo et mobile natif n'ont pas été copiés).
-- **Skill chapeau** : `creer-site-pro` (`.claude/skills/`) donne l'ordre de travail complet, les règles qui gagnent quand deux skills se contredisent et les pièges ; `revue-site-pro` et `site-joaillerie` s'y réfèrent. Outils du kit : `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`, `outils/chrome-root.sh`.
+- **Skill unique de Greg** : `sites-boutiques` (`.claude/skills/`, version 20 du 31/10/2026) réunit l'ancien skill de la méthode, `creer-site-pro`, `revue-site-pro` et `site-joaillerie` : ordre de travail, règles qui gagnent quand deux skills se contredisent, contrôles, mise en ligne, pièges, joaillerie (fichiers `references/`). Ajoutés le 31/10 : `performance-optimization` et `security-and-hardening` (Addy Osmani, MIT). Outils du kit : `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`, `outils/chrome-root.sh`.
 - **Ordre de travail pour un site** : 1. `draw.mjs` (trois directions, on en choisit une qui porte l'idée du client) ; 2. construire dans le moteur (jamais en réécrivant le moteur) ; 3. `inspect.mjs` sur chaque page importante ; 4. regarder les captures à 1440 et 390 px ; 5. `animate` et `apple-design` pour les gestes (appui, survol, ressort) ; 6. `npm run accessibilite`, `npm run rendu`.
 - **Quand une règle d'un skill contredit une règle de Greg** (exemple : Taste veut des titres à 8 vw, Greg a plafonné les titres à 56 px parce qu'ils étaient trop gros sur son téléphone), la règle de Greg gagne ; on compense par la couleur, la matière (photos), la structure et le mouvement, et on défend l'écart dans le compte rendu.
 - **Gabarit « édition », version 2** (site de Greg) : chapitres de couleur pleins (papier, acier, ciel, ardoise, marine, encre), tuiles plates aux angles droits qui montent comme un graphique pour les offres, page des offres en chapitres avec liens d'ancre (plus d'onglets), photo en panneau derrière les téléphones de l'accueil (clé facultative `accueil.photo_fond`), photo d'en-tête (`presentation.photo_2`), mouvement en transformations seulement (le contenu reste visible dès le chargement), aucune capitale espacée, aucun filet.
@@ -284,6 +284,11 @@ Installés dans `.claude/skills/` du kit (licences MIT et Apache 2.0 conservées
 | Search Console dit « bloqué » ou refuse le plan du site | Site encore en `MAQUETTE` « oui » (robots et `noindex`), ou propriété différente de `reglages.url` (domaine pas encore acheté) | Ouvrir d'abord (domaine, `MAQUETTE` « non »), puis propriété « Domaine » et envoi du plan du site |
 | Une page de confidentialité qui dit « ne dépose rien » alors qu'un flux envoie la demande à n8n, Telegram ou une IA | Texte écrit avant les automatismes | Relire `contact.traitement` à chaque nouveau service qui reçoit des données ; relever le HTML rendu et les flux n8n, pas seulement le code |
 | Un champ légal inventé pour « faire plein » (téléphone de l'hébergeur, e-mail) | Envie de supprimer la ligne « à compléter » | Champ vide, signalé par `npm run verifier` ; ne jamais le deviner |
+| Un bouton blanc sur fond sombre garde le texte sombre du bouton générique | Une règle générique avec plusieurs `:not()` est plus spécifique que la règle de contexte | Répéter les mêmes `:not()` dans la règle de contexte |
+| La case « + » d'un bouton reste blanche | `currentColor` dans un `::before` prend la couleur du pseudo-élément | Passer les couleurs par des variables (`--cc`, `--cb`) |
+| Panneau photo de l'accueil décalé sur téléphone | `width:100%` sur un bloc à marges négatives | `width:auto` |
+| Mêmes informations sur plusieurs pages (méthode, présentation, engagements, « 48 h ») | Chaque bloc ajouté répète l'accueil | Une information à un seul endroit, un lien ailleurs ; relire le texte rendu de chaque page avant de livrer |
+| Skills de Greg qui se contredisent (tailles, noms de modèles) | Quatre skills écrits à des dates différentes | Un seul skill `sites-boutiques` (31/10/2026), détail dans `references/` |
 
 ---
 
