@@ -16,7 +16,7 @@ Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans 
 | `automatisation/` | Demandes reçues → n8n sur le VPS : tri par Haiku, confirmation au visiteur, notification (e-mail, Telegram), maquette lancée par Claude Code. Inactif tant que les Secrets `N8N_WEBHOOK_URL` et `N8N_SECRET` ne sont pas posés (`automatisation/README.md`). |
 | `outils/diagnostic-fiche.mjs` | Mini-diagnostic gratuit de la fiche Google : fiche copiée → grille des 12 points → page d'une feuille à laisser au commerçant (sans note sur 100). Dossiers `diagnostics/` sur l'ordinateur seulement. |
 | `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`, `outils/chrome-root.sh` | Contrôle visuel d'un site lancé en local : chevauchements, rangées décalées, texte coupé, débordement, textes démesurés, captures par tranches ; lanceur Chromium pour les sessions « root ». |
-| `.claude/skills/` | Skills de direction artistique (`creer-site-pro` en tête, puis Taste, Impeccable, Frontend UI Engineering, skills d'Emil Kowalski) et les deux skills de Greg (`revue-site-pro`, `site-joaillerie`). Mode d'emploi : `METHODE.md` 2.13. |
+| `.claude/skills/` | **`sites-boutiques`** : le skill unique de Greg (méthode, création, revue, mise en ligne, pièges, joaillerie ; détail dans `references/`). À côté : skills de design (Taste, Impeccable, Frontend UI Engineering, Performance, Sécurité, skills d'Emil Kowalski). Mode d'emploi : `METHODE.md` 2.13. Paquets à importer dans claude.ai : `bash outils/paquets-skills.sh` (un zip par skill dans `paquets-skills/`, non suivi par git). |
 | `outils/coherence.mjs` | Mêmes nom, téléphone et adresse partout : compare la fiche Google copiée au site, aux réseaux, aux annuaires. |
 | `outils/prospection.mjs` | Suivi des visites : un CSV tenu à la main (`prospection/prospects-exemple.csv`), chaque semaine les chiffres à tenir et les relances dues ; un refus n'est jamais relancé. |
 | `livraison/MISE-EN-ROUTE-GOOGLE.md` | Ce qu'on fait le jour où le site d'un client passe en ligne : Search Console, fiche, annuaires, cohérence, suivi à 3 mois. |
@@ -24,7 +24,6 @@ Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans 
 | `modeles/fromagerie-la-fontaine/` | Le moteur **vitrine** (site d'une page + page de modification), avec son guide `LISEZMOI.md`. |
 | `modeles/agence-operia/` | Le moteur **agence** (expertises, réalisations avec galerie, équipe, références, demande de projet) + page de modification, avec son guide. |
 | `modeles/maison-tcheskiss/` | Le moteur **catalogue** (collections, pièces, panier qui envoie une demande de commande) + espace maison, avec son guide. |
-| `skill/SKILL.md` | Le skill Claude « sites-boutiques » (le résumé de la méthode pour Claude). |
 | `CLAUDE.md` | Lu automatiquement par Claude Code quand il ouvre ce dossier. |
 
 ## L'utiliser

@@ -10,3 +10,4 @@ suivi-google/
 diagnostics/
 prospection/*.csv
 !prospection/prospects-exemple.csv
+paquets-skills/
