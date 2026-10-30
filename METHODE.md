@@ -194,7 +194,7 @@ Installés dans `.claude/skills/` du kit (licences MIT et Apache 2.0 conservées
 ### 2.14 Changer de cerveau sans rien perdre (31/10/2026)
 - **Une consigne commune** : `AGENTS.md` à la racine de chaque dépôt (lu par Codex, Cursor, OpenCode, Gemini CLI et la plupart des agents) ; `CLAUDE.md` contient seulement `@AGENTS.md`. On modifie toujours `AGENTS.md`.
 - **Les skills sont des fichiers** (`.claude/skills/<nom>/SKILL.md`, format ouvert Agent Skills) : un agent qui ne les charge pas seul les lit comme des fichiers ; `npx skills add <dépôt>` les installe aussi dans d'autres agents.
-- **La mémoire est dans les dépôts** : `METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md` de chaque site, `docs/A-VALIDER.md`. Fin de séance = `REPRISE.md` à jour et poussé.
+- **La mémoire est dans les dépôts** : `METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md` de chaque site, `docs/A-VALIDER.md`, et `cerveau/` du dépôt **privé** `agence-eims` (profil de Greg, décisions, leçons, projets ; jamais dans ce kit public). Fin de séance = `REPRISE.md` à jour et poussé.
 - **GLM** : le plus simple est Claude Code branché sur GLM (variables `ANTHROPIC_BASE_URL` et `ANTHROPIC_AUTH_TOKEN` de z.ai) : skills, outils, MCP et `CLAUDE.md` marchent à l'identique. Sans outil de vision (MCP Vision de z.ai), GLM ne voit pas les captures : l'installer. Détail et prompt du site de joaillerie : `prompts/5-site-joaillerie-glm.md`.
 - **Accès** : l'agent passe par GitHub (branche, demande de fusion) ; Greg fusionne ; Cloudflare déploie depuis `main`. Jamais de clé Cloudflare donnée à un agent.
 

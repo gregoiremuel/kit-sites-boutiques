@@ -1,5 +1,7 @@
 # Prompt : le site de joaillerie d'Atelier Muel (pour GLM, Claude, GPT ou tout autre agent)
 
+> **Projet séparé d'EIMS** (l'agence IA a son propre dépôt `agence-eims` et son propre prompt). **Ne remplis pas ce fichier dans le dépôt public** : fais-en une copie, ou colle-le dans l'agent et ajoute ton histoire à la suite.
+>
 > **Pour Greg** : remplis d'abord la partie « Mon histoire » (tes mots, même en vrac), mets tes photos dans `photos-brutes/` (hors du dépôt public si elles montrent des clients ou ton employeur), puis colle ce fichier entier comme premier message dans ton agent. Mode d'emploi en bas (« Installer l'agent »).
 
 ---
@@ -12,7 +14,7 @@ Le but : un site de joaillerie **artisanale** (pas une grande maison), beau, sob
 
 ## 1. Avant d'écrire une ligne
 
-1. Ajoute et lis le dépôt `gregoiremuel/kit-sites-boutiques` : `AGENTS.md`, tout `cerveau/` (qui est Greg, ses décisions, les erreurs à éviter), `METHODE.md` (parties 2, 2.11 à 2.13, 3, 4), puis le skill `.claude/skills/sites-boutiques/SKILL.md` et **tous** ses fichiers `references/` (surtout `joaillerie.md` et `creation-design.md`). Si ton outil ne charge pas les skills tout seul, lis les `SKILL.md` comme des fichiers et applique-les.
+1. Ajoute et lis le dépôt `gregoiremuel/kit-sites-boutiques` : `AGENTS.md` ; puis `cerveau/` du dépôt privé `gregoiremuel/agence-eims` (qui est Greg, ses décisions, les erreurs à éviter), `METHODE.md` (parties 2, 2.11 à 2.13, 3, 4), puis le skill `.claude/skills/sites-boutiques/SKILL.md` et **tous** ses fichiers `references/` (surtout `joaillerie.md` et `creation-design.md`). Si ton outil ne charge pas les skills tout seul, lis les `SKILL.md` comme des fichiers et applique-les.
 2. Travaille dans le dépôt privé `gregoiremuel/site-joaillerie` (Greg l'a créé vide). Branche de travail : `travail`. Jamais de commit direct sur `main`.
 3. Copie le moteur **catalogue** (`modeles/maison-tcheskiss`) dans ce dépôt, puis **remplace entièrement** son `contenu-initial.json` et ses photos : rien de la Maison Tcheskiss ne doit rester (ni nom, ni texte, ni photo, ni couleur, ni police). On ne réécrit pas le moteur ; un look qui lui manque s'ajoute comme **gabarit** (`theme.gabarit`), testé.
 4. Écris `docs/FAITS.md` (ce que Greg a dit, mot pour mot quand c'est possible) et `docs/A-VALIDER.md` (tout ce qui manque). Montre-les à Greg et attends sa réponse avant le design.

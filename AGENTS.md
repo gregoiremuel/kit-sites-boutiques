@@ -1,6 +1,6 @@
 # Kit sites boutiques : instructions pour Claude
 
-Avant toute tâche, lis `cerveau/` (qui est Greg, ses décisions, les erreurs à éviter, ses projets), puis `METHODE.md` en entier, et suis le skill `sites-boutiques` (`.claude/skills/sites-boutiques/`). C'est la méthode de Greg pour créer, montrer, mettre en ligne et entretenir les sites de commerces avec leur espace boutique.
+Avant toute tâche, lis `cerveau/` du dépôt privé `gregoiremuel/agence-eims` (qui est Greg, ses décisions, les erreurs à éviter, ses projets), puis `METHODE.md` en entier, et suis le skill `sites-boutiques` (`.claude/skills/sites-boutiques/`). C'est la méthode de Greg pour créer, montrer, mettre en ligne et entretenir les sites de commerces avec leur espace boutique.
 
 - **On ne réécrit jamais un moteur.** Un nouveau site = un nouveau contenu dans un des trois modèles de `modeles/` (vitrine : `fromagerie-la-fontaine` ; catalogue avec panier : `maison-tcheskiss` ; agence de services ou du bâtiment : `agence-operia`). On ne touche au code d'un moteur que pour corriger ou améliorer le moteur lui-même, puis on relance `npm run verifier` et `npm test` dans ce modèle.
 - **Règles d'or** (détail dans `METHODE.md`, partie 3) : ne rien inventer (l'inconnu va dans « à valider ») ; jamais de photos Google ou Wix ; jamais de photo de banque d'images présentée comme un produit du commerce ; photos du commerçant réduites et sans données GPS ; rien en ligne au nom d'un commerce qui n'a pas signé ; textes légaux = brouillons à faire relire ; aucun mot « site IA ».
@@ -12,7 +12,7 @@ Avant toute tâche, lis `cerveau/` (qui est Greg, ses décisions, les erreurs à
 
 ## Démarrage automatique (à faire sans que Greg le demande)
 1. **Dépôts** : si `gregoiremuel/kit-sites-boutiques` n'est pas dans la session, l'ajouter (`add_repo`) et le cloner ; ajouter `gregoiremuel/site-operia` seulement si on parle d'Opéria. Branche `ccr-04ab3608-pccm5z` ; si elle est fusionnée, repartir de `main` avec le même nom.
-2. **Mémoire** : lire `cerveau/` (profil de Greg, décisions, leçons, projets) avant toute tâche, et mettre `cerveau/PROJETS.md` à jour en fin de séance.
+2. **Mémoire** : ajouter le dépôt privé `gregoiremuel/agence-eims` et lire son `cerveau/` (profil de Greg, décisions, leçons, projets) avant toute tâche ; mettre `cerveau/PROJETS.md` à jour en fin de séance. Jamais de profil ni de décision dans ce dépôt : il est **public**.
 3. **Skill** : charger `sites-boutiques` (`.claude/skills/sites-boutiques/` du kit) dès qu'il s'agit d'un site, d'un texte, d'un style, d'un contrôle ou d'une mise en ligne ; il dit quel skill de design lancer à quel moment (Taste, Impeccable, Frontend UI Engineering, Apple, Emil, performance, sécurité) et dans quel ordre. Ne pas choisir un seul skill par commodité : utiliser ceux que l'étape demande.
 4. **Outils** : tout contrôle passe par les outils du dépôt (`npm run verifier`, `npm test`, `npm run referencement`, `npm run accessibilite`, `npm run rendu`, `outils/controle-visuel.mjs`, `outils/captures.mjs`, `outils/pire-cas.mjs`) ; regarder les captures, bureau et téléphone, avant de dire que c'est bon.
 5. **Modèle** : avant un gros chantier (direction artistique, réécriture de textes, arbitrage), dire à Greg sur quel modèle passer ; l'exécution d'un plan validé se fait sur un modèle plus économe, les tests répétitifs sur des sous-agents Haiku.
