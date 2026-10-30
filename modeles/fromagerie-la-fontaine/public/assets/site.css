@@ -909,3 +909,13 @@ body.g-atelier .g-horaires .hnote{color:#d9c7a7}
 /* Repère des titres de plusieurs lignes : aligné sur la première ligne */
 body.g-depannage .sec > .wrap > h2,body.g-depannage .cmd-intro h2,body.g-depannage .about .txt h2,body.g-marche .sec > .wrap > h2,body.g-marche .cmd-intro h2,body.g-marche .about .txt h2{align-items:flex-start}
 body.g-depannage .sec > .wrap > h2::before,body.g-depannage .cmd-intro h2::before,body.g-depannage .about .txt h2::before,body.g-marche .sec > .wrap > h2::before,body.g-marche .cmd-intro h2::before,body.g-marche .about .txt h2::before{margin-top:.42em}
+
+/* Menus : chaque gabarit a son bouton, à sa place (le mot « Menu » est gardé pour la carte du restaurant) */
+.a-tete .menu-btn,.m-barre .menu-btn,.m-pilule .menu-btn,.d-tete .menu-btn{position:relative;width:48px;height:48px;padding:0;font-size:0;line-height:0}
+.a-tete .menu-btn{order:-1;margin-right:6px}
+.a-tete .menu-btn::before{content:"";position:absolute;left:11px;right:11px;top:15px;height:2px;background:currentColor;box-shadow:0 8px 0 currentColor,0 16px 0 currentColor}
+.m-barre .menu-btn,.m-pilule .menu-btn{border-radius:50%}
+.m-barre .menu-btn::before,.m-pilule .menu-btn::before{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:-10px 0 currentColor,10px 0 currentColor;transform:translate(-50%,-50%)}
+.d-tete .menu-btn{background:#fff;color:var(--bleu-fonce);border-color:#fff;border-radius:0}
+.d-tete .menu-btn::before{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 -10px currentColor,0 10px currentColor;transform:translate(-50%,-50%)}
+.c-barre .menu-btn{border:0;border-bottom:2px solid currentColor;border-radius:0;padding:8px 0;min-height:44px}
