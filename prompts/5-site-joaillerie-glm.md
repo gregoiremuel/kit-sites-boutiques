@@ -23,7 +23,7 @@ Le but : un site de joaillerie **artisanale** (pas une grande maison), beau, sob
 - **Ne jamais citer** l'employeur de Greg ni la Maison Tcheskiss, ni dire « ancien de… ».
 - **Photos** : seulement celles de Greg. Réduites à 1600 px de large au plus, JPEG ~80, **sans métadonnées** (`exiftool -all= -overwrite_original` ou Pillow sans `exif`). Aucune photo de banque d'images présentée comme une pièce. Une photo manque : un emplacement vide marqué, pas une image d'IA.
 - **Juridique** (brouillons à faire relire, pas de conseil) : mentions légales, CGV, confidentialité ; métaux précieux (poinçon de maître, garantie), rétractation de 14 jours en vente à distance et son exception pour une pièce faite sur mesure ou personnalisée, livraison assurée, garantie. Tout reste « à vérifier » tant que Greg ne l'a pas confirmé. Aucun champ légal inventé (SIRET, adresse, assurance) : vide, et listé.
-- **Paiement** : le moteur envoie une **demande de commande** (pas de paiement en ligne). Un paiement en ligne (Stripe) est une décision de Greg, à proposer avec ses frais, pas à ajouter seul.
+- **Achat (décidé par Greg le 31/10/2026)** : **demande de commande**, comme le moteur actuel ; Greg confirme et encaisse lui-même. Pas de paiement en ligne : Stripe ne s'ajoute que si Greg le redemande.
 - **Pas de secret dans le dépôt** (clés, mots de passe) : Secrets Cloudflare uniquement.
 - **Tailles** : texte jamais sous 14 px ; titre d'accueil 56 px au plus ; titres de pages 48 px ; rubriques 36 px ; sur téléphone 30 et 24 px.
 
