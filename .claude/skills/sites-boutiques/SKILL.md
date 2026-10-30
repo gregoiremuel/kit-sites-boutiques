@@ -9,7 +9,7 @@ Greg (Grégoire Muel EI, Paris 16e) crée et tient à jour des sites pour les co
 
 ## 1. Avant tout
 1. **Trouver le kit** : dépôt privé `gregoiremuel/kit-sites-boutiques` (l'ajouter à la session), sinon `kit-sites-boutiques.zip` joint, sinon le demander à Greg en une phrase.
-2. **Lire** : `cerveau/` du kit (profil de Greg, décisions, leçons, projets), `AGENTS.md` et `LISEZMOI.md` du site, puis `METHODE.md` (parties 2, 2.11 à 2.13, 3 et 4), `DESIGN.md`, `PRODUCT.md` et `docs/REGLES-DESIGN.md` s'ils existent.
+2. **Lire** : `cerveau/` du dépôt privé `gregoiremuel/agence-eims` (profil de Greg, décisions, leçons, projets), `AGENTS.md` et `LISEZMOI.md` du site, puis `METHODE.md` (parties 2, 2.11 à 2.13, 3 et 4), `DESIGN.md`, `PRODUCT.md` et `docs/REGLES-DESIGN.md` s'ils existent.
 3. **Branche** : celle donnée par la session ; si sa demande de fusion est déjà fusionnée, repartir de `main` avec le même nom (`git checkout -B <branche> origin/main`).
 4. **Modèle et coût** : direction artistique, réécriture des textes et arbitrages = gros modèle (Opus) ; exécution d'un plan validé = Sonnet ; tests répétitifs et relecture de rendu = sous-agents Haiku. Le dire à Greg **avant** de commencer un gros chantier.
 
@@ -45,9 +45,9 @@ Greg (Grégoire Muel EI, Paris 16e) crée et tient à jour des sites pour les co
 | Mise en ligne, fusion, KV, Cloudflare | `references/mise-en-ligne.md` |
 | Pièges connus et leur parade | `references/pieges.md` (complet : `METHODE.md`, partie 4) |
 | Joaillerie Atelier Muel | `references/joaillerie.md` et le prompt complet `prompts/5-site-joaillerie-glm.md` |
-| Changer de modèle (GLM, GPT…) sans rien perdre | `METHODE.md` 2.14, `AGENTS.md`, `cerveau/ROUTAGE-MODELES.md` |
-| EIMS, l'agence IA (chef qui délègue, interface, mémoire) | `prompts/6-eims-agence-ia.md` |
-| CAO de bijoux, manuel de l'agence, page HTML hors site | skills `cao-bijouterie-blender`, `manuel-agence`, `page-html` |
+| Changer de modèle (GLM, GPT…) sans rien perdre | `METHODE.md` 2.14, `AGENTS.md`, `cerveau/ROUTAGE-MODELES.md` (dépôt `agence-eims`) |
+| EIMS, l'agence IA (projet séparé) | dépôt privé `agence-eims` (`docs/PLAN.md`, `prompts/GLM-EIMS.md`) |
+| CAO de bijoux, page HTML hors site | skills `cao-bijouterie-blender`, `page-html` (le skill `manuel-agence` est dans `agence-eims`) |
 
 ## 6. Travailler avec Greg
 - Français, tutoiement, direct. Il lit sur téléphone : phrases courtes, textes prêts à coller.
