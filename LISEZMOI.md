@@ -12,6 +12,8 @@ Tout ce qu'il faut pour refaire un site de commerce, de maison ou d'agence sans 
 | `prompts/3-modele-de-notes.md` | Le modèle de tes notes de boutique, en cinq parties. |
 | `prompts/4-conformite-web.md` | Audit de conformité web (France, UE) et titres Google d'un site : cookies, mentions, confidentialité, formulaires, accessibilité, tableau final. Pas un conseil juridique. |
 | `prompts/5-site-joaillerie-glm.md` | Le prompt complet du site de joaillerie Atelier Muel, pour GLM, Claude, GPT ou tout autre agent : règles, histoire à remplir, direction sans look IA, contrôles, installation de l'agent (GLM dans Claude Code, MCP, plugins). |
+| `prompts/6-agence-koios.md` | Le prompt de l'agence Koios (second cerveau) : chef qui délègue, passerelle de modèles, mémoire, interface en temps réel, par étapes avec validation. |
+| `cerveau/` | La mémoire de Greg, lue par tout agent au démarrage : profil, routage des modèles, décisions, leçons, projets. |
 | `AGENTS.md` | La consigne commune à tous les agents (Claude, GLM, GPT, Gemini) ; `CLAUDE.md` l'importe. Changer de cerveau ne change rien : méthode et mémoire sont dans les dépôts. |
 | `outils/fabrique-maquette.mjs` | La fabrique de maquettes en 1 heure : fiche Google collée → prompt → contrôle croisé → démonstration (`METHODE.md`, 2.2 bis). Les dossiers `maquettes/` restent sur l'ordinateur. |
 | `outils/visibilite-google.mjs` | Offre Visibilité Google : de la fiche du client aux brouillons de posts et de réponses aux avis, au contrôle et au rapport d'une page (`visibilite-google/README.md`). Rien n'est publié ; les dossiers `suivi-google/` restent sur l'ordinateur. |
