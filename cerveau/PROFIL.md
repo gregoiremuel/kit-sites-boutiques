@@ -5,7 +5,7 @@
 - **Deux activités** :
   1. **Création et refonte de sites** pour commerces, artisans et entreprises (site `site-atelier-muel`, kit `kit-sites-boutiques`). Premier client en cours : Opéria (maître d'œuvre, Vertou), accord de publication à confirmer.
   2. **Joaillerie** : future marque **Atelier Muel** (site `site-joaillerie`). Joaillier de métier, salarié d'une maison de joaillerie **à ne jamais citer**. Fait aussi de la CAO de bijoux sous Blender (skill `cao-bijouterie-blender`).
-- **Agence IA « Koios »** en construction sur son VPS Hostinger (Paris) : n8n, Telegram, conteneur `atelier`, `~/cerveau/`. Projet : une agence pilotée par un modèle chef qui délègue à d'autres modèles, avec une interface en temps réel (`prompts/6-agence-koios.md`).
+- **EIMS** (écosystème d'IA modulaire et souverain, schéma `cerveau/eims/schema-eims.png`) : sa future agence et son second cerveau, sur son VPS Hostinger (Paris), où existe déjà une première version (Koios : n8n, Telegram, conteneur `atelier`, `~/cerveau/`). Un modèle chef qui délègue à des agents spécialisés servis par n'importe quel modèle, une interface en temps réel ; construction commencée par GLM (`prompts/6-eims-agence-ia.md`).
 
 ## Comment lui répondre
 - Français, **tutoiement**, direct. Il lit souvent **sur téléphone** : phrases courtes, listes, textes prêts à coller.

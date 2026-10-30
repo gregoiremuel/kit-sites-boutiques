@@ -12,4 +12,4 @@ Tout agent (Claude, GLM, GPT, Gemini, un modèle local) lit ces fichiers **au d�
 
 Règles : une information à un seul endroit (le détail d'un site reste dans son dépôt) ; jamais de secret ici ; dater chaque ajout (AAAA-MM-JJ) ; un fait non vérifié s'écrit « à vérifier ».
 
-Sur le VPS, `~/cerveau/` (agence Koios, utilisateur `orreg`) suit une organisation numérotée (`300-RESSOURCES`, `400-LECONS`…). Les deux doivent finir par ne faire qu'un : voir `prompts/6-agence-koios.md`, étape 1.
+Sur le VPS, `~/cerveau/` (Koios, première version d'EIMS, utilisateur `orreg`) suit une organisation numérotée (`300-RESSOURCES`, `400-LECONS`…). Les deux doivent finir par ne faire qu'un : voir `prompts/6-eims-agence-ia.md`, étape 1.

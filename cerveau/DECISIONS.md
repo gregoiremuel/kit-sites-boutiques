@@ -7,3 +7,4 @@
 - 2026-10-31 : site de joaillerie Atelier Muel dans le dépôt privé `site-joaillerie` ; achat par **demande de commande** (pas de paiement en ligne au départ).
 - 2026-10-31 : les agents travaillent par GitHub (branche, demande de fusion) ; Greg fusionne ; Cloudflare déploie ; aucune clé Cloudflare donnée à un agent.
 - En attente : retirer ou non les images d'Opéria du dépôt public `site-atelier-muel` tant qu'Opéria n'a pas donné son accord.
+- 2026-10-31 : le projet d'agence s'appelle **EIMS** (schéma `cerveau/eims/schema-eims.png`) ; GLM commence la construction (prompt `prompts/6-eims-agence-ia.md`) et le site de joaillerie (prompt 5).

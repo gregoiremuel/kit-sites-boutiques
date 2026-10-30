@@ -6,5 +6,5 @@
 | Kit et méthode | `gregoiremuel/kit-sites-boutiques` | skill unique, AGENTS.md, cerveau | tenir `METHODE.md` et `cerveau/` à jour |
 | Opéria | `gregoiremuel/site-operia` (privé) | refonte prête, accord à confirmer | accord, photos de chantiers, 20 anciens chantiers à reprendre |
 | Joaillerie Atelier Muel | `gregoiremuel/site-joaillerie` (privé, créé le 2026-10-31) | à démarrer | Greg remplit « Mon histoire » de `prompts/5-site-joaillerie-glm.md` et ajoute ses photos |
-| Agence Koios | VPS (`~/cerveau`, conteneur `atelier`, n8n) | en construction | `prompts/6-agence-koios.md`, étape 1 (inventaire) |
+| EIMS (agence IA) | `gregoiremuel/agence-eims` (à créer par Greg) + VPS (Koios, `~/cerveau`, n8n) | prompt prêt, à donner à GLM | `prompts/6-eims-agence-ia.md`, étape 1 (inventaire) |
 | VPS | `gregoiremuel/vps-docs` (export) | n8n installé, flux désactivés | 2FA n8n, clé API avec plafond, e-mail pro |
