@@ -82,11 +82,13 @@ Pousse la branche `travail`, ouvre une demande de fusion vers `main` avec : ce q
 3. Cloner les deux dépôts côte à côte (`kit-sites-boutiques` et `site-joaillerie`), puis dans le kit : `bash outils/installer-global.sh` (skills et consigne pour toutes les sessions).
 4. Outils en plus (une commande chacun, dans Claude Code) :
    - `/plugin install frontend-design@claude-plugins-official` (skill officiel d'Anthropic contre le design générique) ;
-   - MCP de vision et de recherche de Z.AI (inclus dans le plan GLM ; commande donnée par l'assistant « Coding Tool Helper » de z.ai) : sans vision, GLM ne voit pas les captures ;
+   - MCP de vision, de recherche et de lecture web de z.ai (inclus dans le plan GLM) : `npx @z_ai/coding-helper` ; **indispensable** : GLM est texte seul et la recherche web intégrée de Claude Code ne marche pas avec lui ;
    - `claude mcp add chrome-devtools -- npx chrome-devtools-mcp@latest` (mesurer et voir la page dans un vrai navigateur).
 5. Ouvrir Claude Code dans le dossier `site-joaillerie` et coller ce fichier.
 
 **Autre agent que Claude Code** (OpenCode, Codex, Cursor…) : installer les skills du kit avec `npx skills add gregoiremuel/kit-sites-boutiques` (dépôt privé : être connecté à GitHub), ou simplement laisser l'agent lire les `SKILL.md` comme des fichiers, comme le dit `AGENTS.md`.
+
+**À savoir (vérifié le 2026-10-31)** : le pilotage depuis le téléphone (Remote Control) ne marche pas quand Claude Code est branché sur GLM ; le GLM Coding Plan sert à **toi** dans ses outils officiels (Claude Code, OpenCode), pas à un robot automatique (il faut alors une clé API z.ai facturée à l'usage). **OpenCode** est l'outil le mieux adapté à GLM. Si GLM bloque ou que tu es loin de ton PC : Claude Code sur le web (ton abonnement Claude, depuis l'appli) suit le même prompt.
 
 **Autres cerveaux** : OpenCode (GLM, GPT, Claude…), Codex (GPT), Cursor, Gemini CLI lisent `AGENTS.md` ; les skills sont de simples fichiers `SKILL.md` qu'ils lisent quand `AGENTS.md` le leur dit. La méthode et la mémoire vivent dans les dépôts (`METHODE.md`, skill `sites-boutiques`, `docs/REPRISE.md`), pas dans le cerveau : on peut changer de modèle à tout moment.
 
