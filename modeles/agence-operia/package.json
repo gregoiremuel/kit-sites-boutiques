@@ -16,7 +16,8 @@
     "referencement": "node outils/referencement.mjs"
   },
   "devDependencies": {
-    "wrangler": "^4.45.0",
-    "axe-core": "^4.14.0"
+    "axe-core": "^4.14.0",
+    "playwright": "^1.64.1",
+    "wrangler": "^4.45.0"
   }
 }
