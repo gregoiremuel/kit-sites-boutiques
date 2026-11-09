@@ -1,6 +1,6 @@
 # Méthode « sites boutiques »
 
-Version 20, 31 octobre 2026. Grégoire Muel.
+Version 21, 9 novembre 2026. Grégoire Muel.
 
 Toute la méthode pour créer, montrer, vendre, mettre en ligne et entretenir les sites des commerces : les étapes, les règles, les pièges déjà rencontrés et leur parade, les listes de contrôle. Elle sert à Greg, à Claude (Claude Code ou l'app), à GLM et à toute personne à qui on confie le travail.
 
@@ -296,6 +296,9 @@ Installés dans `.claude/skills/` du kit (licences MIT et Apache 2.0 conservées
 | Panneau photo de l'accueil décalé sur téléphone | `width:100%` sur un bloc à marges négatives | `width:auto` |
 | Mêmes informations sur plusieurs pages (méthode, présentation, engagements, « 48 h ») | Chaque bloc ajouté répète l'accueil | Une information à un seul endroit, un lien ailleurs ; relire le texte rendu de chaque page avant de livrer |
 | Skills de Greg qui se contredisent (tailles, noms de modèles) | Quatre skills écrits à des dates différentes | Un seul skill `sites-boutiques` (31/10/2026), détail dans `references/` |
+| Le site en ligne montre un ancien domaine, d'anciens e-mails, « SITE TEST » alors que le dépôt est à jour | La clé « contenu » de la mémoire KV Cloudflare prend le pas sur `contenu-initial.json` ; un essai antérieur y est resté (09/11/2026) | Après tout changement de domaine ou d'e-mail dans le dépôt, lire le contenu servi en ligne ; si la clé « contenu » est périmée, la sauvegarder (fichier daté) puis la supprimer dans le tableau Cloudflare (le namespace auto-provisionné est invisible pour `wrangler kv`). `reglages.url` et `image_partage` ne se modifient pas dans `/admin` |
+| La construction après fusion échoue après l'upload (aucun déploiement, 521 sur le domaine, 404 sur workers.dev) | `custom_domain` en conflit avec un enregistrement A proxified existant (parking OVH 213.186.33.5) : l'attachement refuse (09/11/2026) | Supprimer les A de `@` et `www` dans le DNS Cloudflare AVANT de fusionner ou déployer (garder MX, SPF, DMARC, DKIM) ; sinon supprimer puis `npx wrangler deploy` depuis `main` |
+| « DS toujours présent » alors qu'il a été retiré | Le détecteur comptait les réponses NODATA (SOA) comme des DS | Filtrer sur `QueryType -eq 'DS'` avant de conclure (06/11/2026). Chez OVH, le formulaire DS manuel demande Key Tag, Flag (257 = KSK), Algorithme et clé publique, pas le digest |
 
 ---
 

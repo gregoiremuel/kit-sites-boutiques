@@ -27,3 +27,8 @@
 
 ## Modèles Claude
 - Jamais de nom de modèle deviné : vérifier avec le skill `claude-api` avant d'écrire un appel. Le code du kit (n8n, Visibilité Google) appelle `claude-haiku-4-5`, testé ; ne le changer qu'après vérification.
+
+## Domaine, KV et DNSSEC (09/11/2026)
+- Mémoire KV « contenu » : elle écrase `contenu-initial.json`. Après un changement de domaine ou d'e-mail dans le dépôt, vérifier le contenu servi et réaligner (sauvegarder puis supprimer la clé).
+- `custom_domain` contre un A proxified existant : faire supprimer les A de `@` et `www` AVANT de fusionner ou déployer, sinon la construction échoue après upload, sans déploiement.
+- Détecteur DS : filtrer sur `QueryType -eq 'DS'` ; une réponse NODATA n'est pas un DS. DNSSEC avec serveurs de noms Cloudflare : activer chez Cloudflare, déclarer le DS à la main chez OVH, jamais l'activation automatique d'OVH.
